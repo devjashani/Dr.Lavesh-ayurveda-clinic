@@ -2,9 +2,9 @@ import { Doctor } from './types';
 
 export const doctors: Doctor[] = [
   {
-    id: 'dr-aditya-bohra',
-    slug: 'dr-aditya-bohra',
-    name: 'Dr. Aditya Bohra',
+    id: 'dr-lavesh-bohra',
+    slug: 'dr-lavesh-bohra',
+    name: 'Dr. Lavesh Bohra',
     sanskritTitle: 'वरिष्ठ वैद्य (Senior Vaidya)',
     title: 'Chief Ayurvedic Physician & Panchakarma Specialist',
     degrees: [
@@ -20,7 +20,7 @@ export const doctors: Doctor[] = [
       'Chronic Degenerative Spine & Joint Disorders',
       'Autoimmune Gut Pathology & Metabolic Syndrome',
     ],
-    bio: 'Descended from a multi-generational lineage of Rajasthan Vaidyas, Dr. Aditya Bohra brings over 24 years of clinical mastery bridging classical Charaka texts with modern investigative pathology. Having conducted more than 18,500 radial pulse examinations, his clinical protocols focus on addressing deep-seated biological toxicity (Ama) before initiating cellular rejuvenation (Rasayana).',
+    bio: 'Descended from a multi-generational lineage of Rajasthan Vaidyas, Dr. Lavesh Bohra brings over 24 years of clinical mastery bridging classical Charaka texts with modern investigative pathology. Having conducted more than 18,500 radial pulse examinations, his clinical protocols focus on addressing deep-seated biological toxicity (Ama) before initiating cellular rejuvenation (Rasayana).',
     philosophy:
       'The human body is an intelligent living ecosystem, not a mechanical assembly of interchangeable parts. In classical Ayurveda, the physician does not merely conquer a symptom with suppressive chemistry; rather, we decode the subtle language of the pulse to understand which tissue layer (Dhatu) is starving, which channel (Srotas) is blocked, and where the biological flame (Agni) has flickered. When the root cause is pacified through authentic Panchakarma and pure botanicals, radiant health returns naturally.',
     lineage:
@@ -70,7 +70,7 @@ export const doctors: Doctor[] = [
     consultationFee: 1200,
     availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     languages: ['English', 'Hindi', 'Rajasthani', 'Sanskrit'],
-    image: '/images/doctors/dr-aditya-bohra.jpg',
+    image: '/images/doctors/dr-lavesh-bohra.jpg',
     charakaQuote: 'भिषग्द्रव्याण्युपस्थाता रोगी पादचतुष्टयम् — The physician, the medicine, the attendant, and the patient form the sacred quadad of healing.',
     reviews: [
       {

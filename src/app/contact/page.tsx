@@ -7,7 +7,7 @@ import { ContactClient } from './ContactClient';
 export const metadata: Metadata = {
   title: 'Contact & Clinic Location | Aarogyam Ayurveda Civil Lines Jaipur',
   description:
-    'Book an in-person Nadi Pariksha consultation at our Civil Lines, Jaipur clinic or schedule an online video consultation with Dr. Aditya Bohra.',
+    'Book an in-person Nadi Pariksha consultation at our Civil Lines, Jaipur clinic or schedule an online video consultation with Dr. Lavesh Bohra.',
   openGraph: {
     title: 'Contact Aarogyam Ayurveda | Civil Lines, Jaipur',
     description:

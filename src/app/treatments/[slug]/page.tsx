@@ -376,7 +376,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
               </ul>
               <p className="text-[11px] text-ink/60 font-mono italic pt-1">
                 * If you are pregnant, nursing, recovering from surgery, or taking cardiovascular
-                medication, disclose all medical history to Dr. Aditya Bohra during pulse diagnosis.
+                medication, disclose all medical history to Dr. Lavesh Bohra during pulse diagnosis.
               </p>
             </section>
 

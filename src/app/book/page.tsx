@@ -5,11 +5,11 @@ import { BookClient } from './BookClient';
 export const metadata: Metadata = {
   title: 'Book Consultation & Nadi Pariksha | Aarogyam Ayurveda Jaipur',
   description:
-    'Reserve an in-person pulse diagnosis (Nadi Pariksha) appointment or online video consultation with Dr. Aditya Bohra, MD (Ayurveda) at Aarogyam Ayurveda, Civil Lines, Jaipur.',
+    'Reserve an in-person pulse diagnosis (Nadi Pariksha) appointment or online video consultation with Dr. Lavesh Bohra, MD (Ayurveda) at Aarogyam Ayurveda, Civil Lines, Jaipur.',
   keywords: [
     'Book Ayurveda appointment Jaipur',
     'Nadi Pariksha booking',
-    'Dr Aditya Bohra consultation',
+    'Dr Lavesh Bohra consultation',
     'Ayurveda clinic Civil Lines Jaipur',
     'Panchakarma booking',
   ],

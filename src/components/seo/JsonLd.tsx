@@ -71,7 +71,7 @@ export function JsonLd() {
     },
     founder: {
       '@type': 'Physician',
-      name: 'Dr. Aditya Bohra',
+      name: 'Dr. Lavesh Bohra',
       jobTitle: 'Chief Ayurvedic Physician & Panchakarma Specialist',
       medicalSpecialty: 'Kayachikitsa & Panchakarma',
       description:
@@ -85,7 +85,7 @@ export function JsonLd() {
     physician: [
       {
         '@type': 'Physician',
-        name: 'Dr. Aditya Bohra',
+        name: 'Dr. Lavesh Bohra',
         jobTitle: 'Chief Vaidya · BAMS, MD (Kayachikitsa), PhD',
         telephone: '+911412398800',
         identifier: 'AYUSH-RJ-1999-4081',

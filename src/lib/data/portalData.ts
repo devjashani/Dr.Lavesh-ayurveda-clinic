@@ -74,8 +74,8 @@ export const mockPatientData: PatientPortalData = {
   contactNumber: '+91 98290 44122',
   email: 'meera.singhania@example.com',
   address: 'B-12, Tilak Nagar, Jaipur, Rajasthan',
-  attendingPhysician: 'Dr. Aditya Bohra',
-  physicianSlug: 'dr-aditya-bohra',
+  attendingPhysician: 'Dr. Lavesh Bohra',
+  physicianSlug: 'dr-lavesh-bohra',
   ayushRegistrationNo: 'AYUSH-RJ-1999-4081',
   primaryDiagnosis: 'Rheumatoid Arthritis with Synovial Effusion',
   sanskritDiagnosis: 'आमवात — रस-अस्थि धातुगत साम वात',
@@ -88,7 +88,7 @@ export const mockPatientData: PatientPortalData = {
   pulseHistory: [
     {
       date: '02 Nov 2026',
-      recordedBy: 'Dr. Aditya Bohra',
+      recordedBy: 'Dr. Lavesh Bohra',
       dominantGati: 'Sarpa-Manduka Gati (Rapid serpentine pulse with sharp Pitta spikes)',
       vataPercent: 48,
       pittaPercent: 34,
@@ -100,7 +100,7 @@ export const mockPatientData: PatientPortalData = {
     },
     {
       date: '18 Oct 2026',
-      recordedBy: 'Dr. Aditya Bohra',
+      recordedBy: 'Dr. Lavesh Bohra',
       dominantGati: 'Kathina Manduka Gati (Stiff, bounding inflammatory pulse with high resistance)',
       vataPercent: 62,
       pittaPercent: 26,

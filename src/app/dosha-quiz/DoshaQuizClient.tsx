@@ -642,7 +642,7 @@ export function DoshaQuizClient() {
                 <p className="text-body-base text-cream/80 leading-relaxed">
                   While this digital questionnaire identifies your baseline tendencies (<em>Prakriti</em>),
                   active symptoms and chronic illnesses reflect your current pathology (<em>Vikriti</em>).
-                  A 15-minute radial pulse diagnosis by Dr. Aditya Bohra accurately pinpoints deep-seated
+                  A 15-minute radial pulse diagnosis by Dr. Lavesh Bohra accurately pinpoints deep-seated
                   toxins across all seven tissue levels.
                 </p>
               </div>

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Patient Clinical Outcomes & Testimonials | Aarogyam Ayurveda',
     description:
-      'Verified case recoveries with documented lab markers and functional improvements supervised by Dr. Aditya Bohra and Dr. Ananya Sharma.',
+      'Verified case recoveries with documented lab markers and functional improvements supervised by Dr. Lavesh Bohra and Dr. Ananya Sharma.',
   },
 };
 

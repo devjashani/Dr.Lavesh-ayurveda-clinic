@@ -533,7 +533,7 @@ export function PlannerClient() {
                 <p>
                   This session estimator is designed for patient scheduling and budget planning. The
                   final therapy sequence, individual oil formulations (Taila Kalpana), and required
-                  course duration are definitively decided by Dr. Aditya Bohra following clinical pulse
+                  course duration are definitively decided by Dr. Lavesh Bohra following clinical pulse
                   diagnosis (Nadi Pariksha).
                 </p>
               </div>

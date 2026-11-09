@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     'Virechana skin detox',
     'Basti Karma Vata relief',
     'Netra Tarpana eye care',
-    'Dr Aditya Bohra treatments',
+    'Dr Lavesh Bohra treatments',
   ],
   openGraph: {
     title: 'Classical Ayurvedic Treatments & Panchakarma Protocols | Aarogyam',

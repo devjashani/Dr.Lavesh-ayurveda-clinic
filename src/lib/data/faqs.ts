@@ -84,7 +84,7 @@ export const faqs: FAQItem[] = [
     id: 'faq-pay-2',
     category: 'Payments',
     question: 'What are the consultation fees and how can I pay?',
-    answer: 'In-person initial consultation with Dr. Aditya Bohra is ₹1,200 (follow-ups within 21 days: ₹600). Consultation with Dr. Ananya Sharma is ₹950 (follow-ups: ₹500). Mukesh Gurjar lead therapist evaluation is ₹600. We accept all major UPI applications (Google Pay, PhonePe, Paytm), credit and debit cards, net banking, and cash at our front desk.',
+    answer: 'In-person initial consultation with Dr. Lavesh Bohra is ₹1,200 (follow-ups within 21 days: ₹600). Consultation with Dr. Ananya Sharma is ₹950 (follow-ups: ₹500). Mukesh Gurjar lead therapist evaluation is ₹600. We accept all major UPI applications (Google Pay, PhonePe, Paytm), credit and debit cards, net banking, and cash at our front desk.',
   },
   {
     id: 'faq-pay-3',

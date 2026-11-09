@@ -108,14 +108,14 @@ export function AdminClient() {
   const [newDoctorNote, setNewDoctorNote] = useState('');
 
   // Schedule Tab
-  const [selectedDoctorSlug, setSelectedDoctorSlug] = useState('dr-aditya-bohra');
+  const [selectedDoctorSlug, setSelectedDoctorSlug] = useState('dr-lavesh-bohra');
   const [newBlockedDate, setNewBlockedDate] = useState('');
   const [newBlockedReason, setNewBlockedReason] = useState('');
   const [scheduleSuccessMsg, setScheduleSuccessMsg] = useState('');
 
   // Prescription Builder Tab
   const [rxPatientId, setRxPatientId] = useState<string>(SEED_PATIENTS[0].id);
-  const [rxDoctorSlug, setRxDoctorSlug] = useState('dr-aditya-bohra');
+  const [rxDoctorSlug, setRxDoctorSlug] = useState('dr-lavesh-bohra');
   const [rxPulseGati, setRxPulseGati] = useState('Sarpa Gati (Vata-Pitta Pradhana)');
   const [rxAgniStatus, setRxAgniStatus] = useState('Vishamagni (Irregular & Bloating)');
   const [rxKoshtha, setRxKoshtha] = useState('Krura Koshtha (Vata Constipative)');
@@ -275,7 +275,7 @@ export function AdminClient() {
     const newVisitEntry = {
       date: today,
       doctorName:
-        role === 'Doctor' ? 'Dr. Aditya Bohra' : 'Dr. Aditya Bohra (Attending Vaidya)',
+        role === 'Doctor' ? 'Dr. Lavesh Bohra' : 'Dr. Lavesh Bohra (Attending Vaidya)',
       diagnosis: selectedPatientForDrawer.primaryDiagnosis,
       pulseGati: 'Manduka Gati (Pitta Shamana noted, Agni stabilizing)',
       notes: newDoctorNote.trim(),
@@ -508,7 +508,7 @@ export function AdminClient() {
               <div className="overflow-hidden">
                 <div className="text-xs font-medium text-cream truncate">
                   {role === 'Doctor'
-                    ? 'Dr. Aditya Bohra'
+                    ? 'Dr. Lavesh Bohra'
                     : role === 'Admin'
                     ? 'Administrator'
                     : 'Priya Sharma (Desk)'}
@@ -1045,7 +1045,7 @@ export function AdminClient() {
                     className="px-2.5 py-1.5 rounded-lg bg-[#FBF9F4] border border-[#DCD3BC] text-xs text-ink/80 focus:outline-none"
                   >
                     <option value="All">All Vaidyas</option>
-                    <option value="dr-aditya-bohra">Dr. Aditya Bohra</option>
+                    <option value="dr-lavesh-bohra">Dr. Lavesh Bohra</option>
                     <option value="dr-ananya-sharma">Dr. Ananya Sharma</option>
                   </select>
 
@@ -1535,7 +1535,7 @@ export function AdminClient() {
                     onChange={(e) => setSelectedDoctorSlug(e.target.value)}
                     className="px-3 py-1.5 rounded-lg bg-[#FBF9F4] border border-[#DCD3BC] text-xs font-semibold text-deep-forest focus:outline-none"
                   >
-                    <option value="dr-aditya-bohra">Dr. Aditya Bohra (Chief Vaidya)</option>
+                    <option value="dr-lavesh-bohra">Dr. Lavesh Bohra (Chief Vaidya)</option>
                     <option value="dr-ananya-sharma">Dr. Ananya Sharma (Prasuti & Stri)</option>
                   </select>
                 </div>
@@ -1733,8 +1733,8 @@ export function AdminClient() {
                     onChange={(e) => setRxDoctorSlug(e.target.value)}
                     className="w-full p-2 rounded-lg bg-paper border border-[#DCD3BC] text-xs font-medium text-deep-forest focus:outline-none"
                   >
-                    <option value="dr-aditya-bohra">
-                      Dr. Aditya Bohra, BAMS, MD (Kayachikitsa), PhD · AYUSH-RJ-1999-4081
+                    <option value="dr-lavesh-bohra">
+                      Dr. Lavesh Bohra, BAMS, MD (Kayachikitsa), PhD · AYUSH-RJ-1999-4081
                     </option>
                     <option value="dr-ananya-sharma">
                       Dr. Ananya Sharma, BAMS, MS (Prasuti & Stri) · AYUSH-RJ-2012-7712
@@ -2028,8 +2028,8 @@ export function AdminClient() {
                         <div>
                           <span className="text-[10px] text-ink/50 block">Attending Vaidya</span>
                           <span className="font-bold text-deep-forest">
-                            {rxDoctorSlug === 'dr-aditya-bohra'
-                              ? 'Dr. Aditya Bohra'
+                            {rxDoctorSlug === 'dr-lavesh-bohra'
+                              ? 'Dr. Lavesh Bohra'
                               : 'Dr. Ananya Sharma'}
                           </span>
                         </div>
@@ -2098,8 +2098,8 @@ export function AdminClient() {
                         </div>
                         <div className="text-right">
                           <div className="font-serif font-bold text-deep-forest">
-                            {rxDoctorSlug === 'dr-aditya-bohra'
-                              ? 'Dr. Aditya Bohra, MD (Kayachikitsa)'
+                            {rxDoctorSlug === 'dr-lavesh-bohra'
+                              ? 'Dr. Lavesh Bohra, MD (Kayachikitsa)'
                               : 'Dr. Ananya Sharma, MS (Prasuti)'}
                           </div>
                           <div className="text-[10px] text-ink/60 font-mono">
@@ -2271,7 +2271,7 @@ export function AdminClient() {
                     </label>
                     <input
                       type="text"
-                      defaultValue="Dr. Aditya Bohra · AYUSH-RJ-1999-4081"
+                      defaultValue="Dr. Lavesh Bohra · AYUSH-RJ-1999-4081"
                       className="w-full p-2 rounded bg-paper border border-[#DCD3BC] text-xs font-mono"
                     />
                   </div>

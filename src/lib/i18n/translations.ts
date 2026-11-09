@@ -120,7 +120,7 @@ export const translations: Record<Language, TranslationDictionary> = {
       trust2: '24+ Years Clinical Experience',
       trust3: 'AYUSH Certified Chikitsalaya',
       slotAvailable: 'Next Available Slot Today',
-      slotTime: '11:15 AM · Dr. Aditya Bohra',
+      slotTime: '11:15 AM · Dr. Lavesh Bohra',
       formTitle: 'Schedule Pulse Diagnosis',
       formSub: 'Direct appointment with Senior Vaidya',
       fieldName: 'Your Full Name',

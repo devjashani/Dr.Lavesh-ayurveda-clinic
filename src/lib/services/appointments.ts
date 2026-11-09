@@ -40,10 +40,10 @@ export type CreateAppointmentInput = Omit<
 
 // Initial mock booked slots to demonstrate real-world schedule collisions
 const INITIAL_MOCK_BOOKINGS: { dateOffset: number; slot: string; doctorId: string }[] = [
-  { dateOffset: 1, slot: '10:30 AM', doctorId: 'dr-aditya-bohra' },
-  { dateOffset: 1, slot: '11:15 AM', doctorId: 'dr-aditya-bohra' },
+  { dateOffset: 1, slot: '10:30 AM', doctorId: 'dr-lavesh-bohra' },
+  { dateOffset: 1, slot: '11:15 AM', doctorId: 'dr-lavesh-bohra' },
   { dateOffset: 1, slot: '05:15 PM', doctorId: 'dr-ananya-sharma' },
-  { dateOffset: 2, slot: '09:45 AM', doctorId: 'dr-aditya-bohra' },
+  { dateOffset: 2, slot: '09:45 AM', doctorId: 'dr-lavesh-bohra' },
   { dateOffset: 2, slot: '06:00 PM', doctorId: 'mukesh-gurjar' },
 ];
 
@@ -68,7 +68,7 @@ function getStoredAppointments(): Appointment[] {
         serviceName: 'Nadi Pariksha & Pulse Consultation',
         serviceCategory: 'Diagnostic',
         doctorId: b.doctorId,
-        doctorName: b.doctorId === 'dr-aditya-bohra' ? 'Dr. Aditya Bohra' : 'Dr. Ananya Sharma',
+        doctorName: b.doctorId === 'dr-lavesh-bohra' ? 'Dr. Lavesh Bohra' : 'Dr. Ananya Sharma',
         mode: 'in-clinic',
         date: getDateString(b.dateOffset),
         slot: b.slot,

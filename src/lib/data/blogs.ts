@@ -23,7 +23,7 @@ Classical Ayurveda identifies four clinical states of Agni:
 
 To kindle your Agni without aggravating internal heat, adopt these three classical habits: First, drink half a cup of warm water with a slice of fresh ginger and a pinch of saindhava lavana (rock salt) 15 minutes before lunch. Second, make lunch your largest meal between 12:00 PM and 1:30 PM, when the solar transit peaks and biological Pitta is highest. Third, avoid drinking cold or refrigerated water during meals, which quenches digestive enzymes like cold water on hot coals. By honoring Agni, you eliminate disease at its root origin.`,
     author: {
-      name: 'Dr. Aditya Bohra',
+      name: 'Dr. Lavesh Bohra',
       role: 'Chief Ayurvedic Physician & Panchakarma Specialist',
     },
     category: 'Clinical Cases',
@@ -53,7 +53,7 @@ The classical Ayurvedic treatment paradigm operates on three distinct, coordinat
 
 Clinical results from our cohorts demonstrate that patients undergoing a 14-day intensive Janu Basti protocol alongside lifestyle adjustments experience a 60% to 75% reduction in Visual Analogue Scale (VAS) pain scores and significant improvement in the Western Ontario and McMaster Universities Osteoarthritis Index (WOMAC). Before considering irreversible surgical replacement, giving your knee joints the nourishing benefit of authentic classical Ayurveda is often life-transforming.`,
     author: {
-      name: 'Dr. Aditya Bohra',
+      name: 'Dr. Lavesh Bohra',
       role: 'Chief Ayurvedic Physician & Panchakarma Specialist',
     },
     category: 'Clinical Cases',
@@ -84,7 +84,7 @@ During a 45-minute classical Shirodhara session using Brahmi Taila or Ksheerabal
 
 For home support, the most potent daily practice is Pada Abhyanga: massaging the soles of both feet with warm Sesame oil or Ksheerabala oil for five minutes before sleeping. The sole of the foot contains terminal reflex zones (Padamoola Marma) intimately connected to ocular and cerebral relaxation. Combined with a bedtime cup of warm A2 milk infused with nutmeg (Jatiphala), Ashwagandha, and cardamom, the restless mind naturally dissolves into deep, restorative, dreamless slumber.`,
     author: {
-      name: 'Dr. Aditya Bohra',
+      name: 'Dr. Lavesh Bohra',
       role: 'Chief Ayurvedic Physician & Panchakarma Specialist',
     },
     category: 'Herbal Formulations',
@@ -193,7 +193,7 @@ Eliminating deep-seated toxins leaves the digestive fire fragile, akin to a tiny
 
 Undergoing authentic Panchakarma once every year or two is nature's most comprehensive medical reset, ensuring disease is uprooted before it can take permanent hold.`,
     author: {
-      name: 'Dr. Aditya Bohra',
+      name: 'Dr. Lavesh Bohra',
       role: 'Chief Ayurvedic Physician & Panchakarma Specialist',
     },
     category: 'Panchakarma Science',

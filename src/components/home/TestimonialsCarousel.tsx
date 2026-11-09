@@ -28,7 +28,7 @@ const testimonials: TestimonialItem[] = [
     protocol: '14-Day Inpatient Kati Basti & Dashamoola Ksheerapaka',
     outcomeQuote:
       'Orthopedic surgeons in Delhi recommended an urgent L4-L5 spinal fusion. Within fourteen days of warm Mahanarayan oil Kati Basti under Dr. Bohra’s care, the radiating nerve impingement subsided completely. Today I walk four kilometers every morning without analgesics.',
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
     initials: 'DS',
   },
   {
@@ -40,7 +40,7 @@ const testimonials: TestimonialItem[] = [
     protocol: '21-Day Classical Virechana & Shaddharana Churna',
     outcomeQuote:
       'My inflammatory ESR was consistently 64 and my finger joints were swollen stiff every dawn. Classical gut cleansing followed by castor-oil bio-cleansing brought my ESR down to 18. For the first time in eight years, I can hold my teacup without morning throbbing.',
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
     initials: 'SA',
   },
   {
@@ -52,7 +52,7 @@ const testimonials: TestimonialItem[] = [
     protocol: '14-Day Shirodhara with Brahmi Thailam & Sarpagandha',
     outcomeQuote:
       'As a practicing allopathic cardiologist, I was naturally cautious. Yet Dr. Bohra’s Nadi reading was remarkably accurate to my autonomic dysregulation. Two weeks of daily rhythmic Shirodhara dropped my systolic pressure by 22 mmHg and restored unbroken 7-hour deep sleep.',
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
     initials: 'PN',
   },
   {
@@ -76,7 +76,7 @@ const testimonials: TestimonialItem[] = [
     protocol: '21-Day Inpatient Takradhara & Mahatiktaka Ghrita',
     outcomeQuote:
       'Topical corticosteroid creams gave me temporary relief followed by vicious rebound flares. The medicated buttermilk stream (Takradhara) coupled with strict diet rules cleared 90% of my plaques. Two monsoons have passed without a single recurrence.',
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
     initials: 'HR',
   },
 ];

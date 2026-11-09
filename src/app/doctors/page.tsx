@@ -23,7 +23,7 @@ import {
 export const metadata: Metadata = {
   title: 'Our Physicians & Vaidyas | Aarogyam Ayurveda Jaipur',
   description:
-    'Meet Dr. Aditya Bohra (MD Kayachikitsa), Dr. Ananya Sharma (MS Prasuti & Stri Roga), and Mukesh Gurjar (Lead Marma Specialist) at Aarogyam Ayurveda, Jaipur.',
+    'Meet Dr. Lavesh Bohra (MD Kayachikitsa), Dr. Ananya Sharma (MS Prasuti & Stri Roga), and Mukesh Gurjar (Lead Marma Specialist) at Aarogyam Ayurveda, Jaipur.',
   openGraph: {
     title: 'Our Physicians & Vaidyas | Aarogyam Ayurveda Jaipur',
     description:
@@ -32,8 +32,8 @@ export const metadata: Metadata = {
 };
 
 export default function DoctorsPage() {
-  const chief = doctors.find((d) => d.slug === 'dr-aditya-bohra') || doctors[0];
-  const faculty = doctors.filter((d) => d.slug !== 'dr-aditya-bohra');
+  const chief = doctors.find((d) => d.slug === 'dr-lavesh-bohra') || doctors[0];
+  const faculty = doctors.filter((d) => d.slug !== 'dr-lavesh-bohra');
 
   return (
     <div className="pt-28 md:pt-36 pb-24 bg-cream">

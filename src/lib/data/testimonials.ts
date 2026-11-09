@@ -11,7 +11,7 @@ export const testimonials: Testimonial[] = [
     quote: 'After 7 years of dependence on immunosuppressants and daily morning stiffness, Dr. Bohra restored painless mobility to my fingers within three weeks. The accuracy of his radial pulse diagnosis matched my rheumatology blood panels to the exact marker.',
     fullStory: 'I arrived at Aarogyam with severe swelling in both wrists, unable to write or grip a cup, with an ESR of 68 and severe fatigue. Dr. Bohra identified deep-seated Ama obstructing the Rasa Dhatu channels. Over three weeks of medicated internal oleation, Patra Pinda Swedana, and gentle Virechana, my inflammation markers dropped dramatically (ESR to 22). Six months later, I am completely off painkillers with normal morning hand function.',
     verifiedPatient: true,
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
   },
 
   {
@@ -24,7 +24,7 @@ export const testimonials: Testimonial[] = [
     quote: 'Two neurosurgeons had scheduled me for lumbar discectomy at L4-L5. A fellow army veteran urged me to visit Dr. Bohra first. The localized warm herbal oil reservoirs and classical basti resolved the shooting leg nerve pain completely without surgery.',
     fullStory: 'I had agonizing radiating pain down my right leg (VAS score 8/10), making it impossible to sit or walk more than 50 meters. Mukesh ji’s daily Kati Basti using Dhanwantharam Taila combined with classical decoction enemas relieved the root nerve compression. By day 10, the numbness in my toes had vanished. Today, I walk 5 kilometers every morning around Fateh Sagar Lake without a twinge.',
     verifiedPatient: true,
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
   },
 
   {
@@ -50,7 +50,7 @@ export const testimonials: Testimonial[] = [
     quote: 'My elbows, knees, and scalp were covered in thick, silver, itching plaques for eleven years. The classical Panchakarma bio-cleansing cleared 90% of my lesions and gave me my dignity back.',
     fullStory: 'Steroid ointments only provided temporary relief, causing skin thinning and rebound flare-ups every winter. Dr. Bohra explained that skin disease is fundamentally a blood and liver toxicity issue (Rakta-Dushti). After 7 days of internal ghee oleation followed by classical therapeutic purgation, the redness and scaling stopped spreading. My skin texture is smooth, and I have had zero winter relapses for two consecutive years.',
     verifiedPatient: true,
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
   },
 
   {
@@ -63,7 +63,7 @@ export const testimonials: Testimonial[] = [
     quote: 'Running a venture capital firm had left my nervous system in perpetual fight-or-flight mode. Sleeping pills left me foggy. Aarogyam’s quiet courtyard, Brahmi Shirodhara, and lifestyle coaching taught my brain how to sleep again.',
     fullStory: 'I was sleeping barely 3 hours of fragmented sleep every night, relying on high doses of Zolpidem. The rhythmic, continuous flow of warm herbal oil across the forehead during Shirodhara down-regulated my sympathetic nervous system within minutes. By the fifth session, I slept 7 continuous hours naturally. I now practice Pada Abhyanga daily at home in Mumbai.',
     verifiedPatient: true,
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
   },
 
   {
@@ -76,7 +76,7 @@ export const testimonials: Testimonial[] = [
     quote: 'I was passing blood and mucus 8 to 10 times a day, terrified to travel or leave the house. The traditional Takra therapy and Piccha Basti healed my intestinal mucosa when modern mesalamine failed to arrest the flares.',
     fullStory: 'Dr. Bohra’s prescription of Takra (medicated buttermilk churned with Musta and Bilva) combined with specialized retention basti healed the rectal ulcerations. Within two weeks, stool frequency reduced from 9 times daily to 2 well-formed bowel movements without blood. My calprotectin levels normalized from 420 to 45.',
     verifiedPatient: true,
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
   },
 
   {
@@ -102,7 +102,7 @@ export const testimonials: Testimonial[] = [
     quote: 'I could not sit on the floor or climb the stairs of our ancestral home without crying in pain. The warm herbal reservoirs on both knees restored joint flexibility so naturally that my orthopedic surgeon was astonished.',
     fullStory: 'Diagnosed with grade 3 medial joint space narrowing, I was advised total knee replacement. Aarogyam’s combination of Janu Basti with Ksheerabala Taila, Shallaki, and castor oil poultices restored the synovial cushioning. I can now walk up the temple stairs unassisted with zero pain.',
     verifiedPatient: true,
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
   },
 
   {
@@ -115,7 +115,7 @@ export const testimonials: Testimonial[] = [
     quote: 'My HbA1c had crept up to 8.4% and fasting blood sugar hovered at 178 mg/dL. In two months under Dr. Bohra’s clinical metabolic guidance, my HbA1c dropped to 6.3% and I shed 9 kg of visceral fat.',
     fullStory: 'Rather than simply increasing synthetic Metformin doses, the clinic focused on clearing Kapha-Meda obstruction in the liver. Daily dry herbal powder massages (Udwarthanam) combined with Nisha-Amalaki, Shilajit, and a calibrated low-glycemic pathya diet completely reversed my fatty liver on ultrasound.',
     verifiedPatient: true,
-    doctorInCharge: 'Dr. Aditya Bohra',
+    doctorInCharge: 'Dr. Lavesh Bohra',
   },
 
   {

@@ -51,8 +51,8 @@ export function PatientPortalClient() {
   // Next Appointment & Reschedule State
   const [nextAppointment, setNextAppointment] = useState({
     tokenNumber: 'AAR-2026-3511',
-    doctorName: 'Dr. Aditya Bohra',
-    doctorSlug: 'dr-aditya-bohra',
+    doctorName: 'Dr. Lavesh Bohra',
+    doctorSlug: 'dr-lavesh-bohra',
     serviceName: 'Nadi Pariksha & Pulse Consultation',
     date: 'Tomorrow, 10 Nov 2026',
     dateIso: '2026-11-10',
@@ -703,7 +703,7 @@ export function PatientPortalClient() {
                       14, Jacob Road, Civil Lines, Jaipur · AYUSH-RJ-2018-0482
                     </p>
                     <p className="font-mono text-[10px] text-forest mt-0.5">
-                      Chief Physician: Dr. Aditya Bohra, MD (Kayachikitsa) · Reg: AYUSH-RJ-1999-4081
+                      Chief Physician: Dr. Lavesh Bohra, MD (Kayachikitsa) · Reg: AYUSH-RJ-1999-4081
                     </p>
                   </div>
                   <div className="text-right font-mono text-xs">
@@ -757,7 +757,7 @@ export function PatientPortalClient() {
                   </div>
                   <div className="text-right">
                     <span className="font-sanskrit text-sm text-forest block">वैद्य हस्ताक्षर</span>
-                    <span className="font-bold text-deep-forest block">Dr. Aditya Bohra, MD</span>
+                    <span className="font-bold text-deep-forest block">Dr. Lavesh Bohra, MD</span>
                     <span className="text-[10px] text-ink/50">Digital Seal Verified</span>
                   </div>
                 </div>

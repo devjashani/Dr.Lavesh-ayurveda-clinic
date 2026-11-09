@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   keywords: [
     'About Aarogyam Ayurveda',
     'Ayurveda lineage Jaipur',
-    'Dr Aditya Bohra background',
+    'Dr Lavesh Bohra background',
     'Panchakarma facility Civil Lines',
     'Classical Ayurveda hospital Rajasthan',
   ],
@@ -58,10 +58,10 @@ const TIMELINE_MILESTONES = [
   },
   {
     year: '1999',
-    title: 'Modern Clinical Integration by Dr. Aditya Bohra',
+    title: 'Modern Clinical Integration by Dr. Lavesh Bohra',
     sanskrit: 'कायचिकित्सा अनुसन्धानम्',
     description:
-      'Dr. Aditya Bohra graduates from the National Institute of Ayurveda (NIA) and formalizes the Aarogyam clinical framework, integrating objective lab diagnostics with classical Nadi Pariksha.',
+      'Dr. Lavesh Bohra graduates from the National Institute of Ayurveda (NIA) and formalizes the Aarogyam clinical framework, integrating objective lab diagnostics with classical Nadi Pariksha.',
   },
   {
     year: '2012',
@@ -145,7 +145,7 @@ export default function AboutPage() {
                 <p>
                   Aarogyam Ayurveda was established not as a modern wellness brand, but as the natural
                   continuation of four generations of classical Vaidya scholarship in Rajasthan. Founded by
-                  Rajvaidya Pt. Vishwanath Bohra and today led by his grandson, <strong>Dr. Aditya Bohra, MD (Ayurveda)</strong>,
+                  Rajvaidya Pt. Vishwanath Bohra and today led by his grandson, <strong>Dr. Lavesh Bohra, MD (Ayurveda)</strong>,
                   our clinic stands as a rare bridge between the profound philosophical depths of the
                   <em> Charaka Samhita</em> and modern clinical rigor.
                 </p>
@@ -464,7 +464,7 @@ export default function AboutPage() {
               Begin Your Healing Journey with Classical Pulse Diagnosis
             </h3>
             <p className="text-body-base text-cream/80 leading-relaxed">
-              Experience the authentic atmosphere of our Civil Lines clinic. Meet Dr. Aditya Bohra
+              Experience the authentic atmosphere of our Civil Lines clinic. Meet Dr. Lavesh Bohra
               for an individualized Nadi Pariksha and personalized clinical roadmap.
             </p>
             <div className="pt-2 flex flex-wrap gap-4">

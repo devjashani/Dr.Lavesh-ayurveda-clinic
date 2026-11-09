@@ -18,8 +18,8 @@ export function DoctorSection() {
           <div className="lg:col-span-5 relative flex justify-center">
             <div className="relative w-full max-w-[380px] sm:max-w-[420px] aspect-[4/5] rounded-t-[160px] rounded-b-[4px] overflow-hidden bg-cream border border-forest/20 shadow-[0_12px_36px_rgba(20,41,28,0.08)]">
               <Image
-                src="/images/doctors/dr-aditya-bohra.jpg"
-                alt="Dr. Aditya Bohra, Senior Ayurvedic Physician"
+                src="/images/doctors/dr-lavesh-bohra.jpg"
+                alt="Dr. Lavesh Bohra, Senior Ayurvedic Physician"
                 fill
                 sizes="(max-width: 768px) 100vw, 420px"
                 className="object-cover object-top"
@@ -63,7 +63,7 @@ export function DoctorSection() {
 
             <div>
               <h2 className="text-display-h2 text-deep-forest font-normal tracking-tight">
-                Dr. Aditya Bohra
+                Dr. Lavesh Bohra
               </h2>
               <p className="font-serif italic text-forest/80 text-lg mt-0.5">
                 BAMS (NIA Jaipur), MD (Ayurveda Kayachikitsa), PhD (Panchakarma)
@@ -104,7 +104,7 @@ export function DoctorSection() {
 
               <div className="pt-3 border-t border-forest/10 flex flex-wrap items-center gap-4">
                 <Button
-                  href="/book?doctor=dr-aditya-bohra"
+                  href="/book?doctor=dr-lavesh-bohra"
                   variant="primary"
                   size="md"
                   showArrow
@@ -112,7 +112,7 @@ export function DoctorSection() {
                   Book with Dr. Bohra
                 </Button>
                 <Button
-                  href="/doctors/dr-aditya-bohra"
+                  href="/doctors/dr-lavesh-bohra"
                   variant="secondary"
                   size="md"
                 >

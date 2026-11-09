@@ -61,7 +61,7 @@ export default function TermsPage() {
             </h2>
             <ul className="list-disc pl-5 space-y-1.5 text-ink/75">
               <li>
-                <strong>Consultation Fees:</strong> Consultation fees (e.g. ₹1,200 for Dr. Aditya Bohra, ₹950 for Dr. Ananya Sharma) cover the professional diagnostic evaluation and prescription design. Medicines, specialized therapeutic procedures (Kati Basti, Shirodhara), and laboratory tests are billed separately.
+                <strong>Consultation Fees:</strong> Consultation fees (e.g. ₹1,200 for Dr. Lavesh Bohra, ₹950 for Dr. Ananya Sharma) cover the professional diagnostic evaluation and prescription design. Medicines, specialized therapeutic procedures (Kati Basti, Shirodhara), and laboratory tests are billed separately.
               </li>
               <li>
                 <strong>OPD Rescheduling:</strong> Individual appointments may be rescheduled up to 12 hours prior to the scheduled slot without penalty. Missed appointments without notice may forfeit the reservation fee.

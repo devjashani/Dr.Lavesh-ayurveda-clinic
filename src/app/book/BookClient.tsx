@@ -149,7 +149,7 @@ export function BookClient() {
 
   // Form selections
   const [selectedServiceId, setSelectedServiceId] = useState<string>('nadi-pariksha');
-  const [selectedDoctorId, setSelectedDoctorId] = useState<string>(paramDoctor || 'dr-aditya-bohra');
+  const [selectedDoctorId, setSelectedDoctorId] = useState<string>(paramDoctor || 'dr-lavesh-bohra');
   const [selectedMode, setSelectedMode] = useState<'in-clinic' | 'online'>('in-clinic');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedSlot, setSelectedSlot] = useState<string>('');
