@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { MOTION_TOKENS, usePrefersReducedMotion } from '@/lib/motion';
 
 interface StepProgressProps {
   currentStep: number;
@@ -19,6 +21,9 @@ const STEPS = [
 ];
 
 export function StepProgress({ currentStep, onStepClick }: StepProgressProps) {
+  const prefersReduced = usePrefersReducedMotion();
+  const progressPercent = Math.min(Math.max(((currentStep - 1) / 5) * 100, 0), 100);
+
   return (
     <div className="w-full mb-8 sm:mb-12">
       {/* Mobile Step Header */}
@@ -27,19 +32,23 @@ export function StepProgress({ currentStep, onStepClick }: StepProgressProps) {
           Step {currentStep} of 6: {STEPS[currentStep - 1]?.label}
         </span>
         <span className="font-mono text-xs text-ink/50">
-          {Math.round(((currentStep - 1) / 5) * 100)}% Complete
+          {Math.round(progressPercent)}% Complete
         </span>
       </div>
 
       {/* Progress Track */}
       <div className="relative">
-        {/* Background line */}
+        {/* Background inactive track */}
         <div className="absolute top-1/2 left-0 w-full h-[2px] bg-forest/15 -translate-y-1/2 z-0" />
 
-        {/* Active filled line */}
-        <div
-          className="absolute top-1/2 left-0 h-[2px] bg-turmeric -translate-y-1/2 z-0 transition-all duration-300 ease-out"
-          style={{ width: `${((currentStep - 1) / 5) * 100}%` }}
+        {/* Animated active filled line in turmeric */}
+        <motion.div
+          animate={{ width: `${progressPercent}%` }}
+          transition={{
+            duration: prefersReduced ? 0 : 0.45,
+            ease: MOTION_TOKENS.ease,
+          }}
+          className="absolute top-1/2 left-0 h-[2px] bg-turmeric -translate-y-1/2 z-0 shadow-[0_0_8px_rgba(217,154,43,0.5)]"
         />
 
         {/* Steps Nodes */}
@@ -55,20 +64,28 @@ export function StepProgress({ currentStep, onStepClick }: StepProgressProps) {
                 className="flex flex-col items-center cursor-default"
                 onClick={() => isClickable && onStepClick(s.step)}
               >
-                <div
-                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-mono text-xs transition-all ${
+                <motion.div
+                  animate={{
+                    scale: isCurrent ? 1.12 : 1.0,
+                  }}
+                  transition={{ duration: 0.3, ease: MOTION_TOKENS.ease }}
+                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-mono text-xs transition-colors duration-300 ${
                     isCompleted
                       ? 'bg-forest text-paper cursor-pointer hover:bg-deep-forest'
                       : isCurrent
-                      ? 'bg-turmeric text-deep-forest font-bold ring-4 ring-turmeric/20 scale-110 shadow-xs'
+                      ? 'bg-turmeric text-deep-forest font-bold ring-4 ring-turmeric/25 shadow-xs'
                       : 'bg-paper border-2 border-forest/20 text-ink/40'
                   }`}
                 >
-                  {isCompleted ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" /> : s.step}
-                </div>
+                  {isCompleted ? (
+                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" />
+                  ) : (
+                    s.step
+                  )}
+                </motion.div>
 
                 <span
-                  className={`hidden sm:block mt-2 font-mono text-[11px] whitespace-nowrap transition-colors ${
+                  className={`hidden sm:block mt-2 font-mono text-[11px] whitespace-nowrap transition-colors duration-300 ${
                     isCurrent
                       ? 'text-deep-forest font-semibold'
                       : isCompleted
@@ -86,4 +103,3 @@ export function StepProgress({ currentStep, onStepClick }: StepProgressProps) {
     </div>
   );
 }
-

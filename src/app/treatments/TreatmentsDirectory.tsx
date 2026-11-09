@@ -14,6 +14,7 @@ import {
   Clock,
   Sparkles,
   ArrowRight,
+  ArrowUpRight,
   ShieldCheck,
   Compass,
   X,
@@ -210,8 +211,16 @@ export function TreatmentsDirectory({ treatments }: TreatmentsDirectoryProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.98 }}
                     transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                    className={`${colSpanClass} group bg-cream/70 hover:bg-cream border border-forest/15 hover:border-forest/35 rounded-[4px] overflow-hidden transition-all duration-300 flex flex-col shadow-xs`}
+                    className={`${colSpanClass} group bg-cream/70 hover:bg-cream border border-forest/15 hover:border-turmeric/60 hover:-translate-y-1 rounded-[4px] overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col shadow-xs relative`}
                   >
+                    {/* Arrow circle fades in at corner */}
+                    <div
+                      aria-hidden="true"
+                      className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-paper/95 text-deep-forest border border-forest/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 shadow-2xs pointer-events-none"
+                    >
+                      <ArrowUpRight className="w-4 h-4 text-turmeric" />
+                    </div>
+
                     <Link
                       href={`/treatments/${therapy.slug}`}
                       className="flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-forest"
@@ -226,7 +235,7 @@ export function TreatmentsDirectory({ treatments }: TreatmentsDirectoryProps) {
                               alt={therapy.name}
                               fill
                               sizes="(max-width: 1024px) 100vw, 50vw"
-                              className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                              className="object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-[1.06] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/60 via-transparent to-transparent lg:hidden" />
                             <div className="absolute top-4 left-4 flex flex-wrap gap-2">
@@ -310,7 +319,7 @@ export function TreatmentsDirectory({ treatments }: TreatmentsDirectoryProps) {
                               alt={therapy.name}
                               fill
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                              className="object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-[1.06] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/40 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
                             <div className="absolute top-3 left-3 flex items-center gap-2">

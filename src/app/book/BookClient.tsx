@@ -133,6 +133,24 @@ export const BOOKING_SERVICES: BookingService[] = [
 
 const SESSION_STORAGE_KEY = 'aarogyam_booking_session';
 
+const stepVariants = {
+  enter: (dir: number) => ({
+    x: dir > 0 ? 36 : -36,
+    opacity: 0,
+    filter: 'blur(4px)',
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    filter: 'blur(0px)',
+  },
+  exit: (dir: number) => ({
+    x: dir > 0 ? -36 : 36,
+    opacity: 0,
+    filter: 'blur(4px)',
+  }),
+};
+
 export function BookClient() {
   const searchParams = useSearchParams();
   const { language, t } = useLanguage();
@@ -146,6 +164,7 @@ export function BookClient() {
 
   // Step state: 1 to 6
   const [step, setStep] = useState<number>(1);
+  const [direction, setDirection] = useState<1 | -1>(1);
 
   // Form selections
   const [selectedServiceId, setSelectedServiceId] = useState<string>('nadi-pariksha');
@@ -382,6 +401,7 @@ export function BookClient() {
 
   // Step Navigation handlers
   const handleNextStep = () => {
+    setDirection(1);
     if (step === 1 && validateStep1()) setStep(2);
     else if (step === 2 && validateStep2()) setStep(3);
     else if (step === 3 && validateStep3()) setStep(4);
@@ -390,6 +410,7 @@ export function BookClient() {
 
   const handlePrevStep = () => {
     if (step > 1) {
+      setDirection(-1);
       setErrors({});
       setBookingError('');
       setStep((s) => s - 1);
@@ -439,6 +460,7 @@ export function BookClient() {
       // Success: Save confirmed appointment and advance to Step 6
       setConfirmedAppointment(result.appointment);
       setIsSubmitting(false);
+      setDirection(1);
       setStep(6);
 
       // Clear pending draft from sessionStorage
@@ -471,6 +493,7 @@ export function BookClient() {
 
   const handleBookAnother = () => {
     setConfirmedAppointment(null);
+    setDirection(-1);
     setStep(1);
     setFullName('');
     setWhatsappNumber('');
@@ -522,7 +545,10 @@ export function BookClient() {
         <StepProgress
           currentStep={step}
           onStepClick={(s) => {
-            if (s < step && step < 6) setStep(s);
+            if (s < step && step < 6) {
+              setDirection(s > step ? 1 : -1);
+              setStep(s);
+            }
           }}
         />
 
@@ -539,16 +565,19 @@ export function BookClient() {
           </div>
         )}
 
-        {/* STEP 1: CONCERN & SERVICE */}
-        {step === 1 && (
-          <motion.div
-            key="step1"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25 }}
-            className="space-y-6"
-          >
+        <AnimatePresence mode="wait" custom={direction}>
+          {/* STEP 1: CONCERN & SERVICE */}
+          {step === 1 && (
+            <motion.div
+              key="step1"
+              custom={direction}
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-6"
+            >
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
               <div className="max-w-2xl mb-6">
                 <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
@@ -654,10 +683,12 @@ export function BookClient() {
         {step === 2 && (
           <motion.div
             key="step2"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25 }}
+            custom={direction}
+            variants={stepVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-6"
           >
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
@@ -806,10 +837,12 @@ export function BookClient() {
         {step === 3 && (
           <motion.div
             key="step3"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25 }}
+            custom={direction}
+            variants={stepVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-6"
           >
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
@@ -889,10 +922,12 @@ export function BookClient() {
         {step === 4 && (
           <motion.div
             key="step4"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25 }}
+            custom={direction}
+            variants={stepVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-6"
           >
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
@@ -1088,10 +1123,12 @@ export function BookClient() {
         {step === 5 && (
           <motion.div
             key="step5"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25 }}
+            custom={direction}
+            variants={stepVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-6"
           >
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
@@ -1236,9 +1273,12 @@ export function BookClient() {
         {step === 6 && confirmedAppointment && (
           <motion.div
             key="step6"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.35 }}
+            custom={direction}
+            variants={stepVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
             <AppointmentVoucher
               appointment={confirmedAppointment}
@@ -1246,6 +1286,7 @@ export function BookClient() {
             />
           </motion.div>
         )}
+      </AnimatePresence>
       </Container>
     </div>
   );

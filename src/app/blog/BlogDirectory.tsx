@@ -7,7 +7,7 @@ import { BlogPost } from '@/lib/data/types';
 import { Container } from '@/components/ui/Container';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { Clock, Calendar, ArrowRight, User, BookOpen, Sparkles } from 'lucide-react';
+import { Clock, Calendar, ArrowRight, ArrowUpRight, User, BookOpen, Sparkles } from 'lucide-react';
 
 interface BlogDirectoryProps {
   posts: BlogPost[];
@@ -145,10 +145,18 @@ export function BlogDirectory({ posts }: BlogDirectoryProps) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  className={`bg-paper border border-forest/15 rounded-[4px] p-6 flex flex-col justify-between hover:border-forest/35 transition-all shadow-xs group ${
+                  className={`relative bg-paper border border-forest/15 rounded-[4px] p-6 flex flex-col justify-between hover:border-turmeric/60 hover:-translate-y-1 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs group ${
                     isThird ? 'lg:bg-cream/70' : ''
                   }`}
                 >
+                  {/* Arrow circle fades in at corner */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-cream/90 text-deep-forest border border-forest/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 shadow-2xs pointer-events-none"
+                  >
+                    <ArrowUpRight className="w-4 h-4 text-turmeric" />
+                  </div>
+
                   <div>
                     {/* Visual Card Header */}
                     <div className="flex items-center justify-between gap-2 mb-3">

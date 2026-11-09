@@ -6,6 +6,7 @@ import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
 import { Badge } from '@/components/ui/Badge';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { Reveal, RevealText } from '@/components/motion';
 
 export function PhilosophySection() {
   return (
@@ -30,7 +31,12 @@ export function PhilosophySection() {
       <Container size="default">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* LEFT: Sanskrit Pull Quote */}
-          <div className="lg:col-span-6 flex flex-col justify-center border-l-2 border-turmeric/70 pl-6 sm:pl-10">
+          <Reveal
+            delay={0.08}
+            direction="left"
+            blur={true}
+            className="lg:col-span-6 flex flex-col justify-center border-l-2 border-turmeric/70 pl-6 sm:pl-10"
+          >
             <Badge variant="sage" dot className="self-start mb-4">
               Classical Creed • Charaka Samhita
             </Badge>
@@ -48,38 +54,52 @@ export function PhilosophySection() {
                 &ldquo;The paramount purpose of Ayurveda is twofold: to preserve the pristine health of the healthy, and to decisively pacify disease from the root in those who suffer.&rdquo;
               </p>
             </blockquote>
-          </div>
+          </Reveal>
 
           {/* RIGHT: We Treat the Root, Not the Symptom */}
           <div className="lg:col-span-6 flex flex-col space-y-5 text-left">
-            <div className="inline-flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
-              <span className="text-eyebrow font-semibold text-forest tracking-widest">
-                Our Clinical Doctrine
-              </span>
-            </div>
+            <Reveal delay={0.12} direction="down" blur={false}>
+              <div className="inline-flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
+                <span className="text-eyebrow font-semibold text-forest tracking-widest">
+                  Our Clinical Doctrine
+                </span>
+              </div>
+            </Reveal>
 
-            <h2 className="text-display-h2 text-deep-forest font-normal tracking-tight">
-              We treat the biological root, never merely the symptom.
-            </h2>
+            <RevealText
+              as="h2"
+              delay={0.18}
+              lines={[
+                'We treat the biological root,',
+                'never merely the symptom.',
+              ]}
+              className="text-display-h2 text-deep-forest font-normal tracking-tight"
+            />
 
-            <p className="text-body-base text-ink/80 leading-relaxed">
-              When modern pharmaceuticals suppress pain, rashes, or acidity, the underlying metabolic endotoxin (<em>Ama</em>) is rarely eliminated. Instead, it is driven deeper into the constitutional tissues (<em>Dhatus</em>), re-emerging years later as chronic autoimmune or degenerate disease.
-            </p>
+            <Reveal delay={0.28} blur={true}>
+              <p className="text-body-base text-ink/80 leading-relaxed">
+                When modern pharmaceuticals suppress pain, rashes, or acidity, the underlying metabolic endotoxin (<em>Ama</em>) is rarely eliminated. Instead, it is driven deeper into the constitutional tissues (<em>Dhatus</em>), re-emerging years later as chronic autoimmune or degenerate disease.
+              </p>
+            </Reveal>
 
-            <p className="text-body-base text-ink/80 leading-relaxed">
-              At Aarogyam, our Vaidyas decipher your subtle radial pulse to identify where cellular intelligence has strayed. Through individualized dietary protocol (<em>Pathya</em>), bio-cleansing (<em>Shodhana</em>), and herbs aged in bronze vessels, we awaken your body’s sovereign power to heal itself.
-            </p>
+            <Reveal delay={0.36} blur={true}>
+              <p className="text-body-base text-ink/80 leading-relaxed">
+                At Aarogyam, our Vaidyas decipher your subtle radial pulse to identify where cellular intelligence has strayed. Through individualized dietary protocol (<em>Pathya</em>), bio-cleansing (<em>Shodhana</em>), and herbs aged in bronze vessels, we awaken your body’s sovereign power to heal itself.
+              </p>
+            </Reveal>
 
-            <div className="pt-2 flex items-center gap-4">
-              <Link
-                href="/about"
-                className="animated-underline text-forest font-semibold text-sm tracking-wide inline-flex items-center gap-1.5 group"
-              >
-                <span>Read our clinical heritage & lineage</span>
-                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-            </div>
+            <Reveal delay={0.42} blur={false}>
+              <div className="pt-2 flex items-center gap-4">
+                <Link
+                  href="/about"
+                  className="animated-underline text-forest font-semibold text-sm tracking-wide inline-flex items-center gap-1.5 group"
+                >
+                  <span>Read our clinical heritage & lineage</span>
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </Reveal>
           </div>
         </div>
       </Container>

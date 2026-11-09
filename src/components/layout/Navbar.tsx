@@ -99,7 +99,7 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'relative py-1 text-sm tracking-wide transition-colors duration-200 group',
+                    'relative py-1.5 text-sm tracking-wide transition-colors duration-200 group inline-flex items-center flex-col',
                     isActive
                       ? 'text-deep-forest font-semibold'
                       : 'text-ink/80 hover:text-deep-forest'
@@ -108,10 +108,22 @@ export function Navbar() {
                   <span className={language === 'HI' ? 'font-serif text-sm' : ''}>
                     {language === 'HI' ? link.sanskrit : link.label}
                   </span>
+
+                  {/* Underline draws left to right on hover */}
+                  <span
+                    className={cn(
+                      'absolute bottom-0 left-0 w-full h-[1.5px] origin-left transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none',
+                      isActive
+                        ? 'bg-turmeric scale-x-100'
+                        : 'bg-deep-forest scale-x-0 group-hover:scale-x-100'
+                    )}
+                  />
+
+                  {/* Active link has a small turmeric dot */}
                   {isActive && (
                     <motion.span
-                      layoutId="activeNavIndicator"
-                      className="absolute -bottom-1 left-0 right-0 h-[2px] bg-turmeric rounded-full"
+                      layoutId="activeNavDot"
+                      className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-turmeric shadow-xs"
                       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     />
                   )}

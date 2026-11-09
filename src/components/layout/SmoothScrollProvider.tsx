@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     // Respect user's motion preferences
     if (typeof window === 'undefined') return;
@@ -31,13 +33,40 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
     gsap.ticker.add(tickerCallback);
 
+    // Section Transitions: Smooth background color interpolation with ScrollTrigger
+    // Scoped strictly via gsap.context on containerRef and targeting only explicit sections with [data-dark-section]
+    const ctx = gsap.context(() => {
+      if (!containerRef.current) return;
+      const darkSections = containerRef.current.querySelectorAll<HTMLElement>('section[data-dark-section]');
+
+      darkSections.forEach((section) => {
+        gsap.fromTo(
+          section,
+          {
+            backgroundColor: '#1C3725',
+          },
+          {
+            backgroundColor: '#14291C',
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 85%',
+              end: 'top 20%',
+              scrub: 0.8,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      });
+    }, containerRef);
+
     return () => {
       gsap.ticker.remove(tickerCallback);
+      ctx.revert();
       lenis.destroy();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
-  return <>{children}</>;
+  return <div ref={containerRef}>{children}</div>;
 }
-

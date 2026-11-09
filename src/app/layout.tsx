@@ -8,6 +8,7 @@ import { ScrollProgress } from '@/components/layout/ScrollProgress';
 import { FloatingActions } from '@/components/layout/FloatingActions';
 import { SmoothScrollProvider } from '@/components/layout/SmoothScrollProvider';
 import { PageTransition } from '@/components/layout/PageTransition';
+import { IntroPreloader } from '@/components/layout/IntroPreloader';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 import { JsonLd } from '@/components/seo/JsonLd';
 
@@ -101,6 +102,9 @@ export default function RootLayout({
         <JsonLd />
       </head>
       <body className="min-h-full flex flex-col bg-paper text-ink font-sans selection:bg-sage/30 selection:text-deep-forest relative">
+        {/* First-load Session Intro Preloader */}
+        <IntroPreloader />
+
         {/* Subtle Paper Grain Overlay */}
         <div className="paper-grain" aria-hidden="true" />
 

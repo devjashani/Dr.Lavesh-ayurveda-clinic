@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ArrowUpRight } from 'lucide-react';
+import { Reveal } from '@/components/motion';
 
 interface ConditionTag {
   name: string;
@@ -31,38 +32,43 @@ export function ConditionsCloud() {
   return (
     <section className="py-20 sm:py-24 bg-cream/70 border-b border-forest/15 relative overflow-hidden">
       <Container size="default">
-        <SectionHeading
-          eyebrow="Clinical Specialization"
-          sanskritEyebrow="व्याधि निदान"
-          title="Chronic Conditions We Treat"
-          subtitle="We specialize in difficult-to-treat, recurrent metabolic, inflammatory, and degenerative disorders where long-term allopathic suppression has reached its limitations."
-          align="center"
-        />
+        <Reveal delay={0} direction="up">
+          <SectionHeading
+            eyebrow="Clinical Specialization"
+            sanskritEyebrow="व्याधि निदान"
+            title="Chronic Conditions We Treat"
+            subtitle="We specialize in difficult-to-treat, recurrent metabolic, inflammatory, and degenerative disorders where long-term allopathic suppression has reached its limitations."
+            align="center"
+          />
+        </Reveal>
 
         {/* Compact Tag Cloud */}
         <div className="flex flex-wrap items-center justify-center gap-3 max-w-5xl mx-auto mt-10">
-          {conditionsList.map((cond) => (
-            <Link
-              key={cond.name}
-              href="/conditions"
-              className="group inline-flex items-center gap-2.5 px-4 py-2.5 rounded-[4px] bg-paper border border-forest/20 text-deep-forest hover:border-forest hover:bg-forest/5 transition-all duration-200 text-xs sm:text-sm shadow-2xs"
-            >
-              <span className="font-sans font-medium">{cond.name}</span>
-              <span className="font-serif italic text-xs text-forest/85 font-medium group-hover:text-forest transition-colors">
-                ({cond.sanskrit})
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-forest/40 group-hover:text-forest transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
+          {conditionsList.map((cond, idx) => (
+            <Reveal key={cond.name} delay={0.1 + (idx % 6) * 0.05} direction="up" blur={false}>
+              <Link
+                href="/conditions"
+                className="group inline-flex items-center gap-2.5 px-4 py-2.5 rounded-[4px] bg-paper border border-forest/20 text-deep-forest hover:border-forest hover:bg-forest/5 transition-all duration-200 text-xs sm:text-sm shadow-2xs"
+              >
+                <span className="font-sans font-medium">{cond.name}</span>
+                <span className="font-serif italic text-xs text-forest/85 font-medium group-hover:text-forest transition-colors">
+                  ({cond.sanskrit})
+                </span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-forest/40 group-hover:text-forest transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </Reveal>
           ))}
         </div>
 
         <div className="mt-10 text-center">
-          <Link
-            href="/conditions"
-            className="animated-underline text-xs font-semibold uppercase tracking-widest text-forest"
-          >
-            Explore all 34 clinical pathology monographs →
-          </Link>
+          <Reveal delay={0.35} direction="up">
+            <Link
+              href="/conditions"
+              className="animated-underline text-xs font-semibold uppercase tracking-widest text-forest"
+            >
+              Explore all 34 clinical pathology monographs →
+            </Link>
+          </Reveal>
         </div>
       </Container>
     </section>

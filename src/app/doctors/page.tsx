@@ -7,6 +7,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
+import { StatBlock } from '@/components/motion';
 import {
   Clock,
   MapPin,
@@ -15,6 +16,7 @@ import {
   Award,
   BookOpen,
   ArrowRight,
+  ArrowUpRight,
   ShieldCheck,
   Stethoscope,
   Sparkles,
@@ -57,35 +59,50 @@ export default function DoctorsPage() {
           </p>
         </div>
 
-        {/* Clinical Trust Points Bar */}
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 p-5 md:p-6 bg-paper rounded-[4px] border border-forest/10 shadow-xs">
-          <div className="flex items-center gap-3">
-            <ShieldCheck className="w-5 h-5 text-forest shrink-0" />
-            <div>
-              <div className="font-mono text-xs text-forest uppercase font-medium">AYUSH Certified</div>
-              <div className="font-body text-xs text-ink/70">Verified State Registration</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Clock className="w-5 h-5 text-turmeric shrink-0" />
-            <div>
-              <div className="font-mono text-xs text-forest uppercase font-medium">40+ Min Pulse OPD</div>
-              <div className="font-body text-xs text-ink/70">Unhurried Assessment</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Award className="w-5 h-5 text-forest shrink-0" />
-            <div>
-              <div className="font-mono text-xs text-forest uppercase font-medium">40+ Combined Yrs</div>
-              <div className="font-body text-xs text-ink/70">Clinical Mastery</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Stethoscope className="w-5 h-5 text-clay shrink-0" />
-            <div>
-              <div className="font-mono text-xs text-forest uppercase font-medium">18,500+ Nadi Readings</div>
-              <div className="font-body text-xs text-ink/70">Empirical Accuracy</div>
-            </div>
+        {/* Upgraded Clinical Faculty Stats Bar */}
+        <div className="mt-10 bg-paper rounded-[4px] border border-forest/15 shadow-xs py-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0">
+            <StatBlock
+              value={18500}
+              suffix="+"
+              label="Nadi Pulse Readings"
+              sanskrit="रोगि परीक्षा"
+              sub="Conducted by resident Vaidyas in Jaipur"
+              delay={0}
+              duration={2.2}
+              showDivider={true}
+            />
+            <StatBlock
+              value={40}
+              suffix="+"
+              label="Combined Faculty Years"
+              sanskrit="संयुक्त अनुभव"
+              sub="Clinical hospital and inpatient practice"
+              delay={0.15}
+              duration={2.2}
+              showDivider={true}
+            />
+            <StatBlock
+              value={45}
+              suffix=" Min"
+              label="Unhurried Intake"
+              sanskrit="परीक्षण अवधि"
+              sub="Average first consultation duration"
+              delay={0.3}
+              duration={2.2}
+              showDivider={true}
+            />
+            <StatBlock
+              value={4.96}
+              suffix=" / 5"
+              decimals={2}
+              label="Verified Rating"
+              sanskrit="संतुष्टि प्रमाण"
+              sub="From 1,420+ independently audited reviews"
+              delay={0.45}
+              duration={2.2}
+              showDivider={false}
+            />
           </div>
         </div>
       </Container>
@@ -215,8 +232,16 @@ export default function DoctorsPage() {
           {faculty.map((doc) => (
             <div
               key={doc.id}
-              className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 flex flex-col justify-between hover:border-forest/30 transition-colors shadow-xs"
+              className="relative bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 flex flex-col justify-between hover:border-turmeric/60 hover:-translate-y-1 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs group"
             >
+              {/* Arrow circle fades in at corner */}
+              <div
+                aria-hidden="true"
+                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-cream/90 text-deep-forest border border-forest/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 shadow-2xs pointer-events-none"
+              >
+                <ArrowUpRight className="w-4 h-4 text-turmeric" />
+              </div>
+
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <Badge variant={doc.slug === 'dr-ananya-sharma' ? 'clay' : 'sage'}>

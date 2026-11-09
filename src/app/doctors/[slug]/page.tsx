@@ -6,6 +6,7 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
+import { StatBlock } from '@/components/motion';
 import { doctors } from '@/lib/data/doctors';
 import {
   Clock,
@@ -79,6 +80,61 @@ export default async function DoctorProfilePage({ params }: PageProps) {
           <span>/</span>
           <span className="text-forest font-medium">{doctor.name}</span>
         </nav>
+      </Container>
+
+      {/* Doctor Clinical Metrics Strip */}
+      <Container className="mb-10">
+        <div className="bg-paper rounded-[4px] border border-forest/15 shadow-xs py-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0">
+            <StatBlock
+              value={doctor.experienceYears}
+              suffix="+"
+              label="Years Experience"
+              sanskrit="अनुभव वर्ष"
+              sub="Unbroken clinical practice"
+              delay={0}
+              duration={2.2}
+              showDivider={true}
+            />
+            <StatBlock
+              value={
+                doctor.slug === 'dr-lavesh-bohra'
+                  ? 18500
+                  : doctor.slug === 'dr-ananya-sharma'
+                  ? 4200
+                  : 6800
+              }
+              suffix="+"
+              label="Clinical Readings"
+              sanskrit="रोगि परीक्षा"
+              sub="Documented patient examinations"
+              delay={0.15}
+              duration={2.2}
+              showDivider={true}
+            />
+            <StatBlock
+              value={doctor.slug === 'mukesh-gurjar' ? 60 : 45}
+              suffix=" Min"
+              label="Consultation Intake"
+              sanskrit="परामर्श समय"
+              sub="Unhurried diagnostic assessment"
+              delay={0.3}
+              duration={2.2}
+              showDivider={true}
+            />
+            <StatBlock
+              value={doctor.slug === 'dr-lavesh-bohra' ? 4.96 : 4.94}
+              suffix=" / 5"
+              decimals={2}
+              label="Patient Rating"
+              sanskrit="संतुष्टि प्रमाण"
+              sub="Independently verified reviews"
+              delay={0.45}
+              duration={2.2}
+              showDivider={false}
+            />
+          </div>
+        </div>
       </Container>
 
       {/* Main Profile Layout */}

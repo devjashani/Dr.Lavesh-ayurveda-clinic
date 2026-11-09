@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Container } from '@/components/ui/Container';
+import { StatBlock } from '@/components/motion';
 
 interface StatItem {
   value: number;
@@ -45,63 +46,26 @@ const stats: StatItem[] = [
 ];
 
 export function StatsCounter() {
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-        }
-      },
-      { threshold: 0.25 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasAnimated]);
-
   return (
-    <section
-      ref={sectionRef}
-      className="py-16 sm:py-20 bg-cream border-b border-forest/15 relative"
-    >
+    <section className="py-16 sm:py-20 bg-cream border-b border-forest/15 relative">
       <Container size="default">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 divide-y sm:divide-y-0 sm:divide-x divide-forest/15">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
           {stats.map((stat, idx) => (
-            <div
+            <StatBlock
               key={stat.label}
-              className={`flex flex-col text-center ${idx > 0 ? 'pt-6 sm:pt-0 sm:px-6' : 'sm:pr-6'}`}
-            >
-              <div className="font-display text-4xl sm:text-5xl font-normal text-deep-forest tracking-tight">
-                {hasAnimated
-                  ? stat.decimals
-                    ? stat.value.toFixed(stat.decimals)
-                    : stat.value.toLocaleString('en-IN')
-                  : '0'}
-                <span className="text-[#9E6517]">{stat.suffix}</span>
-              </div>
-
-              <div className="mt-2">
-                <span className="text-xs uppercase font-semibold tracking-wider text-forest block">
-                  {stat.label}
-                </span>
-                <span className="font-serif italic text-xs text-forest/85 font-medium block mt-0.5">
-                  {stat.sanskrit}
-                </span>
-                <p className="text-[11px] text-ink/75 mt-1 leading-snug">
-                  {stat.sub}
-                </p>
-              </div>
-            </div>
+              value={stat.value}
+              decimals={stat.decimals || 0}
+              suffix={stat.suffix}
+              label={stat.label}
+              sanskrit={stat.sanskrit}
+              sub={stat.sub}
+              delay={idx * 0.15}
+              duration={2.2}
+              showDivider={idx < stats.length - 1}
+            />
           ))}
         </div>
       </Container>
     </section>
   );
 }
-

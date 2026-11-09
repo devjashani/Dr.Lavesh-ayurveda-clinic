@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ShieldCheck, Sparkles, Clock, CheckCircle2, Calendar, Phone, ArrowRight, User } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { Reveal, RevealText, Magnetic } from '@/components/motion';
 
 export function HeroSection() {
   const { language, t } = useLanguage();
@@ -17,6 +18,20 @@ export function HeroSection() {
     concern: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
+
+  const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (typeof window === 'undefined' || window.matchMedia('(pointer: coarse)').matches) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCursorPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleHeroMouseLeave = () => {
+    setCursorPos(null);
+  };
 
   // Parallax subtle scroll effect
   const { scrollY } = useScroll();
@@ -38,76 +53,116 @@ export function HeroSection() {
   ];
 
   return (
-    <section className="relative pt-6 pb-16 sm:pt-10 sm:pb-24 lg:pt-12 lg:pb-28 overflow-hidden">
+    <section
+      onMouseMove={handleHeroMouseMove}
+      onMouseLeave={handleHeroMouseLeave}
+      className="relative pt-6 pb-16 sm:pt-10 sm:pb-24 lg:pt-12 lg:pb-28 overflow-hidden"
+    >
+      {/* Desktop-only subtle turmeric cursor-follow glow */}
+      {cursorPos && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute hidden lg:block rounded-full bg-turmeric/[0.07] blur-3xl z-0 transition-opacity duration-300"
+          style={{
+            left: cursorPos.x - 250,
+            top: cursorPos.y - 250,
+            width: 500,
+            height: 500,
+          }}
+        />
+      )}
+
       {/* Ambient background glows */}
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-sage/10 rounded-full blur-3xl pointer-events-none -ml-24" />
       <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-turmeric/5 rounded-full blur-3xl pointer-events-none -mr-28" />
+
+      {/* Pranayama floating botanical sprig (left accent) */}
+      <div aria-hidden="true" className="absolute top-2/3 -left-6 w-32 h-32 text-forest/[0.07] pointer-events-none z-0 animate-pranayama-delayed hidden md:block">
+        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-full h-full">
+          <path d="M20 80 C20 40 50 20 80 15 C75 45 55 75 20 80 Z" />
+          <path d="M20 80 L60 35 M35 60 L50 48 M50 48 L65 36" />
+        </svg>
+      </div>
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
           {/* LEFT COLUMN: Editorial & Headline */}
           <div className="lg:col-span-7 flex flex-col items-start text-left z-10">
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cream border border-forest/15 text-xs text-forest mb-5 shadow-2xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
-              <span className="font-mono text-[11px] uppercase tracking-wider font-semibold">
-                {t.hero.eyebrow}
-              </span>
-            </div>
-
-            {/* Headline */}
-            <div className="mb-6">
-              <h1 className="text-display-hero text-deep-forest font-normal tracking-tight">
-                <span className="block">{t.hero.titleStart}</span>
-                <span className="block font-serif italic font-light text-[#9E6517] selection:text-deep-forest">
-                  {t.hero.titleAccent}
+            <Reveal delay={0.04} direction="down" blur={false}>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cream border border-forest/15 text-xs text-forest mb-5 shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
+                <span className="font-mono text-[11px] uppercase tracking-wider font-semibold">
+                  {t.hero.eyebrow}
                 </span>
-              </h1>
-            </div>
+              </div>
+            </Reveal>
+
+            {/* Line-by-Line Masked Headline Reveal */}
+            <RevealText
+              as="h1"
+              delay={0.1}
+              stagger={0.08}
+              className="text-display-hero text-deep-forest font-normal tracking-tight mb-6"
+              lines={[
+                t.hero.titleStart,
+                <span key="accent" className="font-serif italic font-light text-[#9E6517] selection:text-deep-forest">
+                  {t.hero.titleAccent}
+                </span>,
+              ]}
+            />
 
             {/* 2 Lines of Calm Supporting Copy */}
-            <p className="text-body-lg text-ink/80 max-w-xl leading-relaxed font-sans">
-              {t.hero.subhead}
-            </p>
+            <Reveal delay={0.22} blur={true}>
+              <p className="text-body-lg text-ink/80 max-w-xl leading-relaxed font-sans">
+                {t.hero.subhead}
+              </p>
+            </Reveal>
 
-            {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4 mt-8">
-              <Button href="/book" variant="primary" size="lg" showArrow className="min-h-[48px]">
-                {t.hero.ctaBook}
-              </Button>
-              <Button
-                href="/dosha-quiz"
-                variant="secondary"
-                size="lg"
-                icon={<Sparkles className="w-4 h-4 text-turmeric" />}
-                className="min-h-[48px]"
-              >
-                {t.hero.ctaQuiz}
-              </Button>
-            </div>
+            {/* Magnetic CTAs */}
+            <Reveal delay={0.3} blur={false} className="flex flex-wrap items-center gap-4 mt-8">
+              <Magnetic>
+                <Button href="/book" variant="primary" size="lg" showArrow className="min-h-[48px]">
+                  {t.hero.ctaBook}
+                </Button>
+              </Magnetic>
+              <Magnetic>
+                <Button
+                  href="/dosha-quiz"
+                  variant="secondary"
+                  size="lg"
+                  icon={<Sparkles className="w-4 h-4 text-turmeric" />}
+                  className="min-h-[48px]"
+                >
+                  {t.hero.ctaQuiz}
+                </Button>
+              </Magnetic>
+            </Reveal>
 
             {/* 3 Small Trust Points with Thin Line Icons */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10 pt-8 border-t border-forest/15 w-full text-xs text-ink/75">
-              <div className="flex items-center gap-2.5">
-                <ShieldCheck className="w-4 h-4 text-forest stroke-[1.25] shrink-0" />
-                <span className="font-medium text-deep-forest">{t.hero.trust1}</span>
+            <Reveal delay={0.38} blur={false} className="w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10 pt-8 border-t border-forest/15 w-full text-xs text-ink/75">
+                <div className="flex items-center gap-2.5">
+                  <ShieldCheck className="w-4 h-4 text-forest stroke-[1.25] shrink-0" />
+                  <span className="font-medium text-deep-forest">{t.hero.trust1}</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Clock className="w-4 h-4 text-forest stroke-[1.25] shrink-0" />
+                  <span className="font-medium text-deep-forest">{t.hero.trust2}</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-forest stroke-[1.25] shrink-0" />
+                  <span className="font-medium text-deep-forest">{t.hero.trust3}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-forest stroke-[1.25] shrink-0" />
-                <span className="font-medium text-deep-forest">{t.hero.trust2}</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-forest stroke-[1.25] shrink-0" />
-                <span className="font-medium text-deep-forest">{t.hero.trust3}</span>
-              </div>
-            </div>
+            </Reveal>
           </div>
 
           {/* RIGHT COLUMN: Arch Image + Botanical Line Art + Mini-Form */}
           <div className="lg:col-span-5 relative flex flex-col items-center">
-            {/* Self-Drawing Botanical SVG Line Art */}
+            {/* Self-Drawing Botanical SVG Line Art with Pranayama Breathing */}
             <svg
-              className="absolute -top-10 -right-6 w-36 h-36 text-sage/40 pointer-events-none z-0"
+              className="absolute -top-10 -right-6 w-36 h-36 text-sage/40 pointer-events-none z-0 animate-pranayama"
               viewBox="0 0 100 100"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -223,38 +278,52 @@ export function HeroSection() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-3">
-                  {/* Name */}
+                  {/* Name Floating Label Input */}
                   <div className="relative">
                     <input
+                      id="hero-name"
                       type="text"
                       required
-                      placeholder={t.hero.fieldName}
+                      placeholder=" "
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-paper/90 border border-forest/20 text-xs px-3 py-2.5 rounded-[3px] text-ink placeholder:text-ink/40 focus:outline-none focus:border-forest focus:ring-1 focus:ring-forest/20 min-h-[44px]"
+                      className="peer w-full bg-paper/90 border border-forest/20 text-xs px-3 pt-4 pb-1.5 rounded-[3px] text-ink focus:outline-none focus:border-turmeric focus:ring-2 focus:ring-turmeric/25 transition-all duration-300 min-h-[46px]"
                       aria-label={t.hero.fieldName}
                     />
+                    <label
+                      htmlFor="hero-name"
+                      className="absolute left-3 top-1 text-[10px] uppercase font-mono tracking-wider text-forest/80 font-medium transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-placeholder-shown:font-sans peer-placeholder-shown:text-ink/50 peer-focus:top-1 peer-focus:text-[10px] peer-focus:uppercase peer-focus:font-mono peer-focus:text-turmeric"
+                    >
+                      {t.hero.fieldName}
+                    </label>
                   </div>
 
-                  {/* Phone */}
+                  {/* Phone Floating Label Input */}
                   <div className="relative">
                     <input
+                      id="hero-phone"
                       type="tel"
                       required
-                      placeholder={t.hero.fieldPhone}
+                      placeholder=" "
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full bg-paper/90 border border-forest/20 text-xs px-3 py-2.5 rounded-[3px] text-ink placeholder:text-ink/40 focus:outline-none focus:border-forest focus:ring-1 focus:ring-forest/20 min-h-[44px]"
+                      className="peer w-full bg-paper/90 border border-forest/20 text-xs px-3 pt-4 pb-1.5 rounded-[3px] text-ink focus:outline-none focus:border-turmeric focus:ring-2 focus:ring-turmeric/25 transition-all duration-300 min-h-[46px]"
                       aria-label={t.hero.fieldPhone}
                     />
+                    <label
+                      htmlFor="hero-phone"
+                      className="absolute left-3 top-1 text-[10px] uppercase font-mono tracking-wider text-forest/80 font-medium transition-all duration-200 pointer-events-none peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-xs peer-placeholder-shown:normal-case peer-placeholder-shown:font-sans peer-placeholder-shown:text-ink/50 peer-focus:top-1 peer-focus:text-[10px] peer-focus:uppercase peer-focus:font-mono peer-focus:text-turmeric"
+                    >
+                      {t.hero.fieldPhone}
+                    </label>
                   </div>
 
                   {/* Health Concern */}
-                  <div>
+                  <div className="relative">
                     <select
                       value={formData.concern}
                       onChange={(e) => setFormData({ ...formData, concern: e.target.value })}
-                      className="w-full bg-paper/90 border border-forest/20 text-xs px-3 py-2.5 rounded-[3px] text-ink/80 focus:outline-none focus:border-forest focus:ring-1 focus:ring-forest/20 cursor-pointer min-h-[44px]"
+                      className="w-full bg-paper/90 border border-forest/20 text-xs px-3 py-2.5 rounded-[3px] text-ink/80 focus:outline-none focus:border-turmeric focus:ring-2 focus:ring-turmeric/25 transition-all duration-300 cursor-pointer min-h-[46px]"
                       aria-label={t.hero.fieldConcern}
                     >
                       <option value="">{t.hero.fieldConcern}</option>
@@ -267,13 +336,15 @@ export function HeroSection() {
                   </div>
 
                   {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="w-full bg-deep-forest hover:bg-forest text-cream text-xs font-semibold py-2.5 rounded-[3px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer min-h-[44px]"
-                  >
-                    <span>{t.hero.formBtn}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-turmeric" />
-                  </button>
+                  <Magnetic className="w-full">
+                    <button
+                      type="submit"
+                      className="w-full bg-deep-forest hover:bg-forest text-cream text-xs font-semibold py-2.5 rounded-[3px] transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer min-h-[44px]"
+                    >
+                      <span>{t.hero.formBtn}</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-turmeric" />
+                    </button>
+                  </Magnetic>
                 </form>
               )}
             </motion.div>

@@ -170,16 +170,34 @@ body {
   left: 0;
   bottom: -2px;
   width: 100%;
-  height: 1px;
+  height: 1.5px;
   background-color: currentColor;
   transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .animated-underline:hover::after {
   transform: scaleX(1);
-  transform-origin: left;
+}
+
+/* Automatic animated underline on inline prose links */
+.prose a:not([class*="btn"]):not([class*="button"]),
+.text-body-base a:not([class*="btn"]):not([class*="button"]),
+p a:not([class*="btn"]):not([class*="button"]):not([class*="underline"]) {
+  position: relative;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px;
+  transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.prose a:not([class*="btn"]):not([class*="button"]):hover,
+.text-body-base a:not([class*="btn"]):not([class*="button"]):hover,
+p a:not([class*="btn"]):not([class*="button"]):not([class*="underline"]):hover {
+  background-size: 100% 1.5px;
 }
 
 /* Fine hairline borders */
@@ -219,6 +237,48 @@ body {
   100% {
     transform: translateX(-33.333%);
   }
+}
+
+/* Gentle pulse ring every 6 seconds */
+@keyframes pulseRingSixSec {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  12% {
+    transform: scale(1.3);
+    opacity: 0.45;
+  }
+  24% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.animate-pulse-ring-6s {
+  animation: pulseRingSixSec 6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* Pranayama Breathing Float for Botanical Elements (6 to 8s loop, 6px movement) */
+@keyframes pranayamaFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(1.5deg);
+  }
+}
+
+.animate-pranayama {
+  animation: pranayamaFloat 7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.animate-pranayama-delayed {
+  animation: pranayamaFloat 7.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) -3.5s infinite;
 }
 
 /* Accessibility: Visible Focus Rings */

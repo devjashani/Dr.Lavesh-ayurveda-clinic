@@ -6,6 +6,7 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
+import { StatBlock } from '@/components/motion';
 import {
   ShieldCheck,
   Award,
@@ -189,6 +190,53 @@ export default function AboutPage() {
                 <span>Est. 1999</span>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* CLINICAL STATS SECTION */}
+        <section className="mb-20 py-8 sm:py-10 bg-cream/70 rounded-[4px] border border-forest/15 shadow-2xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
+            <StatBlock
+              value={18500}
+              suffix="+"
+              label="Patients Restored"
+              sanskrit="रोगमुक्त जन"
+              sub="Documented chronic disease remissions since 1999"
+              delay={0}
+              duration={2.2}
+              showDivider={true}
+            />
+            <StatBlock
+              value={78}
+              suffix="+"
+              label="Years of Lineage"
+              sanskrit="वैद्य परम्परा"
+              sub="Four generations of continuous Charaka practice"
+              delay={0.15}
+              duration={2.2}
+              showDivider={true}
+            />
+            <StatBlock
+              value={34}
+              suffix=""
+              label="Nations Welcomed"
+              sanskrit="वैश्विक सेवा"
+              sub="International patients receiving residential Panchakarma"
+              delay={0.3}
+              duration={2.2}
+              showDivider={true}
+            />
+            <StatBlock
+              value={4.96}
+              suffix=" / 5"
+              decimals={2}
+              label="Audited Clinical Rating"
+              sanskrit="संतुष्टि प्रमाण"
+              sub="From 1,420+ independently verified reviews"
+              delay={0.45}
+              duration={2.2}
+              showDivider={false}
+            />
           </div>
         </section>
 

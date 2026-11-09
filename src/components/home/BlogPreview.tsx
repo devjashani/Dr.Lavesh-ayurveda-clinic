@@ -7,7 +7,8 @@ import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { ArrowRight, Clock, BookOpen } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Clock, BookOpen } from 'lucide-react';
+import { Reveal, Magnetic } from '@/components/motion';
 
 interface ArticleItem {
   slug: string;
@@ -61,79 +62,90 @@ export function BlogPreview() {
   return (
     <section className="py-20 sm:py-28 bg-paper border-b border-forest/15 relative overflow-hidden">
       <Container size="default">
-        <SectionHeading
-          eyebrow="Wisdom & Research"
-          sanskritEyebrow="ज्ञान प्रबोधिनी"
-          title="Clinical Monographs & Seasonal Regimens"
-          subtitle="Scholarly essays, herb monographs, and clinical case observations authored by our senior Vaidyas to demystify classical texts."
-          align="asymmetric"
-        />
+        <Reveal delay={0} direction="up">
+          <SectionHeading
+            eyebrow="Wisdom & Research"
+            sanskritEyebrow="ज्ञान प्रबोधिनी"
+            title="Clinical Monographs & Seasonal Regimens"
+            subtitle="Scholarly essays, herb monographs, and clinical case observations authored by our senior Vaidyas to demystify classical texts."
+            align="asymmetric"
+          />
+        </Reveal>
 
         {/* 3 Asymmetrical Cards with varied Aspect Ratios */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start mt-10">
-          {articles.map((art) => (
-            <article
-              key={art.slug}
-              className="bg-cream rounded-[4px] border border-forest/15 overflow-hidden flex flex-col justify-between group hover:border-forest/40 transition-all duration-300 shadow-xs"
-            >
-              <div>
-                {/* Visual Image with distinct aspect ratio */}
-                <div className={`relative w-full ${art.aspectRatio} overflow-hidden bg-forest/10 border-b border-forest/10`}>
-                  <Image
-                    src={art.image}
-                    alt={art.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <Badge variant="cream" size="sm">
-                      {art.category}
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Body Content */}
-                <div className="p-6">
-                  <div className="flex items-center justify-between text-[11px] text-forest/70 mb-2 font-mono">
-                    <span>{art.date}</span>
-                    <span>{art.readTime}</span>
-                  </div>
-
-                  <span className="font-serif italic text-xs text-forest/80 block mb-1">
-                    {art.sanskrit}
-                  </span>
-
-                  <h3 className="font-display text-xl font-normal text-deep-forest group-hover:text-forest transition-colors leading-snug">
-                    <Link href={`/blog/${art.slug}`}>
-                      {art.title}
-                    </Link>
-                  </h3>
-
-                  <p className="text-xs text-ink/75 leading-relaxed mt-2.5 line-clamp-3">
-                    {art.excerpt}
-                  </p>
-                </div>
-              </div>
-
-              {/* Bottom link */}
-              <div className="px-6 pb-6 pt-2">
-                <Link
-                  href={`/blog/${art.slug}`}
-                  className="animated-underline text-xs font-semibold text-deep-forest inline-flex items-center gap-1 group/link"
+          {articles.map((art, idx) => (
+            <Reveal key={art.slug} delay={0.12 + idx * 0.08} direction="up" blur={true}>
+              <article className="relative bg-cream rounded-[4px] border border-forest/15 overflow-hidden flex flex-col justify-between group hover:border-turmeric/60 hover:-translate-y-1 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs h-full">
+                {/* Arrow circle fades in at corner */}
+                <div
+                  aria-hidden="true"
+                  className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-paper/95 text-deep-forest border border-forest/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 shadow-2xs pointer-events-none"
                 >
-                  <span>Read Full Monograph</span>
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:translate-x-1" />
-                </Link>
-              </div>
-            </article>
+                  <ArrowUpRight className="w-4 h-4 text-turmeric" />
+                </div>
+
+                <div>
+                  {/* Visual Image with distinct aspect ratio, 1.06 zoom and grayscale lift */}
+                  <div className={`relative w-full ${art.aspectRatio} overflow-hidden bg-forest/10 border-b border-forest/10`}>
+                    <Image
+                      src={art.image}
+                      alt={art.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <Badge variant="cream" size="sm">
+                        {art.category}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  {/* Body Content */}
+                  <div className="p-6">
+                    <div className="flex items-center justify-between text-[11px] text-forest/70 mb-2 font-mono">
+                      <span>{art.date}</span>
+                      <span>{art.readTime}</span>
+                    </div>
+
+                    <span className="font-serif italic text-xs text-forest/80 block mb-1">
+                      {art.sanskrit}
+                    </span>
+
+                    <h3 className="font-display text-xl font-normal text-deep-forest group-hover:text-forest transition-colors leading-snug">
+                      <Link href={`/blog/${art.slug}`}>
+                        {art.title}
+                      </Link>
+                    </h3>
+
+                    <p className="text-xs text-ink/75 leading-relaxed mt-2.5 line-clamp-3">
+                      {art.excerpt}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom link */}
+                <div className="px-6 pb-6 pt-2">
+                  <Link
+                    href={`/blog/${art.slug}`}
+                    className="animated-underline text-xs font-semibold text-deep-forest inline-flex items-center gap-1 group/link"
+                  >
+                    <span>Read Full Monograph</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:translate-x-1" />
+                  </Link>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
 
         <div className="mt-12 text-center">
-          <Button href="/blog" variant="secondary" size="md" showArrow>
-            Explore All Clinical Journal Articles
-          </Button>
+          <Magnetic strength={8}>
+            <Button href="/blog" variant="secondary" size="md" showArrow>
+              Explore All Clinical Journal Articles
+            </Button>
+          </Magnetic>
         </div>
       </Container>
     </section>

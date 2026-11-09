@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import {
   Search,
-  ChevronDown,
+  Plus,
   Phone,
   MessageCircle,
   Mail,
@@ -19,6 +19,7 @@ import {
   CreditCard,
   Leaf,
 } from 'lucide-react';
+import { MOTION_TOKENS, usePrefersReducedMotion } from '@/lib/motion';
 
 interface FaqClientProps {
   faqs: FAQItem[];
@@ -163,29 +164,35 @@ export function FaqClient({ faqs }: FaqClientProps) {
                         >
                           <button
                             onClick={() => toggleItem(item.id)}
-                            className="w-full p-4 sm:p-5 text-left flex items-start justify-between gap-4 cursor-pointer"
+                            aria-expanded={isOpen}
+                            className="w-full p-4 sm:p-5 text-left flex items-start justify-between gap-4 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest group"
                           >
-                            <span className="font-display text-sm sm:text-base text-deep-forest font-medium leading-snug">
+                            <span className="font-display text-sm sm:text-base text-deep-forest font-medium leading-snug group-hover:text-forest transition-colors">
                               {item.question}
                             </span>
-                            <span
-                              className={`p-1 rounded-full bg-cream text-forest shrink-0 mt-0.5 transition-transform duration-200 ${
-                                isOpen ? 'rotate-180 bg-forest text-paper' : ''
-                              }`}
+                            <motion.span
+                              animate={{
+                                rotate: isOpen ? 45 : 0,
+                                backgroundColor: isOpen ? '#1F3D2B' : '#FBF8F1',
+                                color: isOpen ? '#F6F1E7' : '#1F3D2B',
+                              }}
+                              transition={{ duration: 0.28, ease: MOTION_TOKENS.ease }}
+                              className="p-1 rounded-full border border-forest/20 shrink-0 mt-0.5 shadow-2xs"
                             >
-                              <ChevronDown className="w-4 h-4" />
-                            </span>
+                              <Plus className="w-4 h-4" />
+                            </motion.span>
                           </button>
 
-                          <AnimatePresence>
+                          <AnimatePresence initial={false}>
                             {isOpen && (
                               <motion.div
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: 'auto', opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.2 }}
+                                transition={{ duration: 0.35, ease: MOTION_TOKENS.ease }}
+                                className="overflow-hidden"
                               >
-                                <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm font-body text-ink/80 leading-relaxed border-t border-forest/5">
+                                <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm font-body text-ink/80 leading-relaxed border-t border-forest/10">
                                   {item.answer}
                                 </div>
                               </motion.div>
