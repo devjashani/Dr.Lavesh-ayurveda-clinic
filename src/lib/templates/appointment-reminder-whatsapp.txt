@@ -1,0 +1,28 @@
+🌿 *AAROGYAM AYURVEDA — CLINICAL REMINDER* 🌿
+
+Namaste *{{patient_name}}* ji,
+
+This is a reminder for your upcoming Ayurvedic appointment:
+
+🗓️ *Tomorrow:* {{appointment_date}}
+⏰ *Time:* {{appointment_slot}}
+🩺 *Doctor:* {{doctor_name}}
+🏷️ *Token:* {{token_number}}
+📍 *Mode:* {{consultation_mode}}
+
+{{#if is_in_clinic}}
+Address: 14 Jacob Road, Civil Lines, Jaipur.
+{{else}}
+Video Link: https://meet.aarogyamayurveda.com/room/{{token_number}}
+{{/if}}
+
+⚠️ *Kindly remember:*
+• Fast or keep a 2.5-hour gap after food for accurate Nadi Pariksha.
+• Avoid caffeine, tea, or smoking prior to consultation.
+• Carry all past medical and lab reports.
+
+Reply to this message if you need directions or need to adjust your timing.
+
+Aarogyam Ayurveda Care Team
++91 141 238 9400
+

@@ -1,0 +1,47 @@
+Subject: Appointment Confirmed: {{service_name}} with {{doctor_name}} [Token: {{token_number}}]
+
+Dear {{patient_name}},
+
+Namaste. 
+
+Your clinical appointment at Aarogyam Ayurveda Hospital & Panchakarma Centre has been successfully scheduled and confirmed.
+
+APPOINTMENT SUMMARY
+--------------------------------------------------------------------------------
+Token Number        : {{token_number}}
+Consultation Type   : {{service_name}}
+Attending Vaidya    : {{doctor_name}}
+Consultation Mode   : {{consultation_mode}}
+Date & Scheduled Slot: {{appointment_date}} at {{appointment_slot}}
+Clinic Address      : 14, Jacob Road, Civil Lines, Jaipur, Rajasthan 302006
+AYUSH Registration  : AYUSH-RJ-2018-0482
+
+CRITICAL PRE-CONSULTATION INSTRUCTIONS (नाड़ी परीक्षा पूर्व नियम)
+--------------------------------------------------------------------------------
+For accurate radial pulse diagnosis (Nadi Pariksha) and metabolic assessment:
+1. Fasting Requirement: Please arrive on an empty stomach, or allow at least 2.5 hours after a light herbal tea or meal.
+2. Substances to Avoid: Avoid caffeine, tobacco, alcohol, chewing betel leaves, and heavy physical exercise for 3 hours prior to your pulse reading.
+3. Medical Records: Please bring all prior medical investigations (blood panels, MRIs, X-rays, discharge summaries) and a list of any ongoing allopathic medications.
+4. Punctuality: Please report to the reception desk 10 minutes prior to your allocated slot.
+
+{{#if is_online}}
+VIDEO CONSULTATION ACCESS LINK:
+Your secure, encrypted clinical video consultation room:
+https://meet.aarogyamayurveda.com/room/{{token_number}}
+Please ensure a quiet environment with good ambient lighting for tongue and facial observation.
+{{/if}}
+
+NEED TO RESCHEDULE OR CANCEL?
+--------------------------------------------------------------------------------
+Appointments may be rescheduled up to 12 hours in advance without charge.
+Call our Front Desk: +91 141 238 9400
+WhatsApp Helpline  : +91 94140 12345
+Email Support      : appointments@aarogyamayurveda.com
+
+May you be blessed with enduring health and vitality.
+
+In Service of Classical Ayurveda,
+The Medical Directorate
+Aarogyam Ayurveda Hospital
+Civil Lines, Jaipur
+

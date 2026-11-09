@@ -1,0 +1,40 @@
+Subject: Reminder: Your Appointment Tomorrow with {{doctor_name}} [Token: {{token_number}}]
+
+Dear {{patient_name}},
+
+Namaste.
+
+This is a gentle clinical reminder regarding your scheduled Ayurvedic consultation tomorrow at Aarogyam Ayurveda.
+
+APPOINTMENT DETAILS
+--------------------------------------------------------------------------------
+Token Number        : {{token_number}}
+Consultation Type   : {{service_name}}
+Attending Physician : {{doctor_name}}
+Consultation Mode   : {{consultation_mode}}
+Date & Time         : Tomorrow, {{appointment_date}} at {{appointment_slot}}
+Location            : 14, Jacob Road, Civil Lines, Jaipur
+
+PRE-APPOINTMENT CHECKLIST
+--------------------------------------------------------------------------------
+[ ] Fasting / Digestion: Maintain at least 2.5 hours gap after eating so your radial pulse is clear.
+[ ] Avoid Stimulants   : No coffee, black tea, energy drinks, or nicotine before the session.
+[ ] Medical Reports    : Keep your blood panels, imaging, and current prescriptions handy.
+[ ] Arrival Time       : Please arrive 10 minutes prior to complete initial vital sign recording.
+
+{{#if is_online}}
+VIDEO CONSULTATION LINK:
+Your video room opens 5 minutes before the appointment:
+https://meet.aarogyamayurveda.com/room/{{token_number}}
+{{/if}}
+
+Need immediate assistance?
+Reception Desk: +91 141 238 9400
+WhatsApp Helpline: +91 94140 12345
+
+We look forward to guiding your healing journey.
+
+Warm regards,
+Patient Care Team
+Aarogyam Ayurveda Hospital, Jaipur
+
