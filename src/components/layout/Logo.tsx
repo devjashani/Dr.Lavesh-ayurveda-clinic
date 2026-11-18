@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export interface LogoProps {
   className?: string;
@@ -14,16 +17,19 @@ export function Logo({
   showTagline = true,
 }: LogoProps) {
   const isLight = variant === 'light';
+  const { language } = useLanguage();
+
+  const brandName = language === 'GU' ? 'વાંકલ આયુર્વેદ' : 'VANKAL AYURVEDA';
 
   return (
     <Link
       href="/"
-      className={cn('inline-flex items-center gap-3 group select-none', className)}
+      className={cn('inline-flex items-center gap-3 group select-none h-11 shrink-0', className)}
     >
       {/* Classical Leaf / Mudra SVG Mark */}
       <div
         className={cn(
-          'w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300',
+          'w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300',
           isLight
             ? 'bg-cream/10 text-cream border border-cream/20 group-hover:bg-cream/20'
             : 'bg-forest/10 text-deep-forest border border-forest/20 group-hover:bg-forest/15'
@@ -70,43 +76,27 @@ export function Logo({
       </div>
 
       {/* Wordmark Typography */}
-      <div className="flex flex-col text-left">
+      <div className="flex flex-col text-left justify-center h-11">
         <span
           className={cn(
             'font-display text-xl sm:text-2xl font-semibold tracking-tight leading-none',
             isLight ? 'text-cream' : 'text-deep-forest'
           )}
         >
-          Aarogyam
+          {brandName}
         </span>
-        <div className="flex items-center gap-1.5 mt-0.5">
+        {showTagline && (
           <span
+            aria-hidden="true"
             className={cn(
-              'font-sans text-[10px] tracking-[0.2em] uppercase font-medium',
-              isLight ? 'text-cream/70' : 'text-forest/80'
+              'font-serif text-[11px] italic leading-none font-medium mt-1 tracking-wide',
+              isLight ? 'text-cream/80' : 'text-forest'
             )}
           >
-            Ayurveda
+            વાંકલ
           </span>
-          {showTagline && (
-            <>
-              <span aria-hidden="true" className={cn('text-[9px] opacity-40', isLight ? 'text-cream' : 'text-ink')}>
-                •
-              </span>
-              <span
-                aria-hidden="true"
-                className={cn(
-                  'font-serif text-[11px] italic leading-none font-medium',
-                  isLight ? 'text-cream/80' : 'text-forest'
-                )}
-              >
-                आरोग्यम्
-              </span>
-            </>
-          )}
-        </div>
+        )}
       </div>
     </Link>
   );
 }
-

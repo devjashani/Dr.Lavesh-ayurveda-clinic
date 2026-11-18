@@ -7,9 +7,6 @@ import { DoshaTeaser } from '@/components/home/DoshaTeaser';
 import { ProcessTimeline } from '@/components/home/ProcessTimeline';
 import { DoctorSection } from '@/components/home/DoctorSection';
 import { ConditionsCloud } from '@/components/home/ConditionsCloud';
-import { TestimonialsCarousel } from '@/components/home/TestimonialsCarousel';
-import { StatsCounter } from '@/components/home/StatsCounter';
-import { BlogPreview } from '@/components/home/BlogPreview';
 import { FinalCta } from '@/components/home/FinalCta';
 
 export default function HomePage() {
@@ -39,16 +36,7 @@ export default function HomePage() {
       {/* 8. CONDITIONS */}
       <ConditionsCloud />
 
-      {/* 9. TESTIMONIALS */}
-      <TestimonialsCarousel />
-
-      {/* 10. STATS */}
-      <StatsCounter />
-
-      {/* 11. BLOG PREVIEW */}
-      <BlogPreview />
-
-      {/* 12. FINAL CTA */}
+      {/* 9. FINAL CTA */}
       <FinalCta />
     </div>
   );

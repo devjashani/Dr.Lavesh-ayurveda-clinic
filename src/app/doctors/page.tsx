@@ -1,174 +1,127 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { doctors } from '@/lib/data';
+import { IMAGES } from '@/lib/config/images';
 import { Container } from '@/components/ui/Container';
-import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
-import { StatBlock } from '@/components/motion';
 import {
   Clock,
-  MapPin,
-  Calendar,
   Languages,
   Award,
-  BookOpen,
   ArrowRight,
-  ArrowUpRight,
   ShieldCheck,
-  Stethoscope,
-  Sparkles,
+  Calendar,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Our Physicians & Vaidyas | Aarogyam Ayurveda Jaipur',
+  title: 'About the Doctor | Dr. Lavesh Bohra | Vankal Ayurveda',
   description:
-    'Meet Dr. Lavesh Bohra (MD Kayachikitsa), Dr. Ananya Sharma (MS Prasuti & Stri Roga), and Mukesh Gurjar (Lead Marma Specialist) at Aarogyam Ayurveda, Jaipur.',
+    'Learn about Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University, Registered Ayurvedic Practitioner at Vankal Ayurveda.',
   openGraph: {
-    title: 'Our Physicians & Vaidyas | Aarogyam Ayurveda Jaipur',
+    title: 'Dr. Lavesh Bohra | Registered Ayurvedic Practitioner | Vankal Ayurveda',
     description:
-      'Meet our university-trained, AYUSH-registered Ayurvedic physicians specializing in Nadi Pariksha, Panchakarma, and integrative chronic disease care.',
+      'Individual Ayurvedic consultations and lifestyle care rooted in classical principles by Dr. Lavesh Bohra.',
   },
 };
 
 export default function DoctorsPage() {
-  const chief = doctors.find((d) => d.slug === 'dr-lavesh-bohra') || doctors[0];
-  const faculty = doctors.filter((d) => d.slug !== 'dr-lavesh-bohra');
+  const doctor = doctors.find((d) => d.slug === 'dr-lavesh-bohra') || doctors[0];
 
   return (
-    <div className="pt-28 md:pt-36 pb-24 bg-cream">
+    <div className="pt-28 md:pt-36 pb-24 bg-cream min-h-screen">
       {/* Page Header */}
-      <Container className="mb-14 md:mb-20">
+      <Container className="mb-14 md:mb-16">
         <div className="max-w-3xl">
           <Badge variant="sage" className="mb-4">
-            चिकित्सकमण्डलम् · Faculty of Medicine
+            ચિકિત્સક પરિચય · Ayurvedic Practitioner
           </Badge>
           <h1 className="font-display text-display-h1 text-deep-forest tracking-tight leading-[1.08] mb-6">
             Grounded in Classical Samhitas. <br />
             <span className="italic font-normal text-turmeric">
-              Informed by Modern Pathology.
+              Individualized Patient Care.
             </span>
           </h1>
           <p className="font-body text-base md:text-lg text-ink/75 leading-relaxed">
-            Every physician and therapist at Aarogyam holds accredited post-graduate university
-            credentials and descends from traditional clinical lineages. Consultations are unhurried,
-            lasting 40 to 50 minutes, honoring the ancient dictum that true diagnosis requires observing
-            the whole individual, not merely silencing an isolated symptom.
+            At Vankal Ayurveda, consultations are unhurried and personalized, honoring the classical
+            principle that authentic assessment requires understanding the unique individual, their
+            metabolic fire (Agni), and their daily and seasonal habits.
           </p>
-        </div>
-
-        {/* Upgraded Clinical Faculty Stats Bar */}
-        <div className="mt-10 bg-paper rounded-[4px] border border-forest/15 shadow-xs py-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0">
-            <StatBlock
-              value={18500}
-              suffix="+"
-              label="Nadi Pulse Readings"
-              sanskrit="रोगि परीक्षा"
-              sub="Conducted by resident Vaidyas in Jaipur"
-              delay={0}
-              duration={2.2}
-              showDivider={true}
-            />
-            <StatBlock
-              value={40}
-              suffix="+"
-              label="Combined Faculty Years"
-              sanskrit="संयुक्त अनुभव"
-              sub="Clinical hospital and inpatient practice"
-              delay={0.15}
-              duration={2.2}
-              showDivider={true}
-            />
-            <StatBlock
-              value={45}
-              suffix=" Min"
-              label="Unhurried Intake"
-              sanskrit="परीक्षण अवधि"
-              sub="Average first consultation duration"
-              delay={0.3}
-              duration={2.2}
-              showDivider={true}
-            />
-            <StatBlock
-              value={4.96}
-              suffix=" / 5"
-              decimals={2}
-              label="Verified Rating"
-              sanskrit="संतुष्टि प्रमाण"
-              sub="From 1,420+ independently audited reviews"
-              delay={0.45}
-              duration={2.2}
-              showDivider={false}
-            />
-          </div>
         </div>
       </Container>
 
-      {/* Featured Chief Physician Spotlight Card */}
+      {/* Featured Physician Profile Card */}
       <Container className="mb-20">
         <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-10 md:p-12 relative overflow-hidden shadow-sm">
-          {/* Subtle decorative background watermark */}
+          {/* Decorative background watermark */}
           <div className="absolute right-0 bottom-0 text-[180px] font-sanskrit text-forest/[0.03] select-none pointer-events-none translate-x-12 translate-y-12">
-            वैद्य
+            વૈદ્ય
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
             {/* Left Portrait & Quick Meta */}
             <div className="lg:col-span-5 flex flex-col items-center sm:items-start text-center sm:text-left">
-              <div className="relative w-56 sm:w-64 md:w-72 aspect-4/5 rounded-t-full rounded-b-[4px] overflow-hidden border border-forest/20 shadow-md bg-forest/5 mb-6">
-                <div className="w-full h-full bg-gradient-to-b from-forest/20 via-paper to-forest/30 flex items-center justify-center p-6 text-center">
+              <div className="relative w-56 sm:w-64 md:w-72 aspect-4/5 rounded-t-full rounded-b-[4px] overflow-hidden border border-forest/20 shadow-md bg-cream mb-6">
+                <Image
+                  src={IMAGES.doctorPortrait}
+                  alt="Dr. Lavesh Bohra, Ayurvedic practitioner at VANKAL AYURVEDA"
+                  fill
+                  sizes="(max-width: 768px) 90vw, 320px"
+                  className="object-cover object-top"
+                  placeholder="blur"
+                  blurDataURL={IMAGES.doctorPortraitBlur}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-3 left-4 right-4 text-cream flex items-baseline justify-between z-10">
                   <div>
-                    <span className="font-sanskrit text-3xl text-forest/40 block mb-2">ॐ</span>
-                    <span className="font-display text-lg text-deep-forest font-medium block">
-                      {chief.name}
+                    <span className="text-[9px] uppercase font-mono tracking-widest text-turmeric block">
+                      Registration Status
                     </span>
-                    <span className="font-mono text-[11px] text-forest/70 block mt-1">
-                      {chief.ayushRegistrationNo}
+                    <span className="font-mono text-[11px] font-semibold">
+                      {doctor.ayushRegistrationNo}
                     </span>
                   </div>
-                </div>
-                <div className="absolute top-3 right-3">
-                  <Badge variant="turmeric" className="shadow-xs">
-                    Chief Physician
-                  </Badge>
+                  <span className="font-serif italic text-[11px] text-paper/80">
+                    નોંધાયેલા વૈદ્ય
+                  </span>
                 </div>
               </div>
 
               <div className="space-y-1.5 w-full">
                 <div className="flex items-center gap-2 text-xs text-ink/80 font-body">
                   <Clock className="w-3.5 h-3.5 text-turmeric shrink-0" />
-                  <span>OPD: 9:00 AM – 1:30 PM & 4:30 PM – 7:30 PM</span>
+                  <span>Consultations: By Prior Appointment</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-ink/80 font-body">
                   <Languages className="w-3.5 h-3.5 text-sage shrink-0" />
-                  <span>Languages: English, Hindi, Rajasthani, Sanskrit</span>
+                  <span>Languages: English, Hindi, Gujarati</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-ink/80 font-body">
                   <Award className="w-3.5 h-3.5 text-clay shrink-0" />
-                  <span>In-Person Consultation: ₹{chief.consultationFee}</span>
+                  <span>Consultation Fee: ₹{doctor.consultationFee}</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Bio & Clinical Monograph Preview */}
+            {/* Right Bio & Details */}
             <div className="lg:col-span-7 flex flex-col">
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <Badge variant="forest">Chief Vaidya</Badge>
-                <span className="font-sanskrit text-xs text-sage">{chief.sanskritTitle}</span>
+                <Badge variant="forest">Ayurvedic Physician</Badge>
+                <span className="font-sanskrit text-xs text-sage">{doctor.sanskritTitle}</span>
               </div>
               <h2 className="font-display text-display-h2 text-deep-forest mb-2">
-                {chief.name}
+                {doctor.name}
               </h2>
               <p className="font-body text-sm font-medium text-forest mb-4">
-                {chief.title}
+                {doctor.title}
               </p>
 
               {/* Degrees list */}
               <div className="flex flex-wrap gap-2 mb-6">
-                {chief.degrees.map((deg, i) => (
+                {doctor.degrees.map((deg, i) => (
                   <span
                     key={i}
                     className="inline-block text-[11px] font-mono bg-cream px-2.5 py-1 rounded-[2px] border border-forest/10 text-ink/80"
@@ -179,21 +132,21 @@ export default function DoctorsPage() {
               </div>
 
               <p className="font-body text-sm md:text-base text-ink/80 leading-relaxed mb-6">
-                {chief.bio}
+                {doctor.bio}
               </p>
 
               {/* Classical Quote Callout */}
               <blockquote className="p-4 rounded-[3px] bg-cream/70 border-l-2 border-turmeric text-xs md:text-sm text-ink/85 italic mb-6">
-                "{chief.charakaQuote}"
+                "{doctor.charakaQuote}"
               </blockquote>
 
               {/* Clinical Focus Chips */}
               <div className="mb-8">
                 <span className="font-mono text-xs uppercase tracking-wider text-forest/70 block mb-2 font-medium">
-                  Primary Clinical Focus:
+                  Practice Focus:
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {chief.specialties.map((spec, idx) => (
+                  {doctor.specialties.map((spec, idx) => (
                     <span
                       key={idx}
                       className="text-xs bg-forest/5 text-deep-forest px-3 py-1 rounded-full border border-forest/15"
@@ -206,11 +159,11 @@ export default function DoctorsPage() {
 
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-4 pt-2 border-t border-forest/10">
-                <Button href={`/book?doctor=${chief.slug}`} variant="primary">
-                  Book with Dr. Bohra
+                <Button href={`/book?doctor=${doctor.slug}`} variant="primary">
+                  Book Consultation
                 </Button>
-                <Button href={`/doctors/${chief.slug}`} variant="secondary">
-                  Read Full Clinical Profile
+                <Button href={`/doctors/${doctor.slug}`} variant="secondary">
+                  Read Full Profile
                   <ArrowRight className="w-3.5 h-3.5 ml-1.5 inline" />
                 </Button>
               </div>
@@ -219,123 +172,30 @@ export default function DoctorsPage() {
         </div>
       </Container>
 
-      {/* Rest of the Faculty: 2 Column Layout */}
-      <Container className="mb-20">
-        <SectionHeading
-          eyebrow="Specialist Faculty & Lead Therapists"
-          title="Multidisciplinary Classical Care"
-          subtitle="From women's reproductive endocrinology to authentic hands-on Marma therapy, our medical team brings specialized depth to each clinical department."
-          className="mb-12"
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {faculty.map((doc) => (
-            <div
-              key={doc.id}
-              className="relative bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 flex flex-col justify-between hover:border-turmeric/60 hover:-translate-y-1 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-xs group"
-            >
-              {/* Arrow circle fades in at corner */}
-              <div
-                aria-hidden="true"
-                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-cream/90 text-deep-forest border border-forest/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 shadow-2xs pointer-events-none"
-              >
-                <ArrowUpRight className="w-4 h-4 text-turmeric" />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <Badge variant={doc.slug === 'dr-ananya-sharma' ? 'clay' : 'sage'}>
-                    {doc.experienceYears}+ Years Clinical Experience
-                  </Badge>
-                  <span className="font-mono text-[11px] text-ink/60">
-                    {doc.ayushRegistrationNo}
-                  </span>
-                </div>
-
-                <div className="flex items-start gap-4 mb-5">
-                  <div className="w-20 h-24 rounded-t-full rounded-b-[3px] bg-gradient-to-b from-forest/20 via-paper to-forest/30 border border-forest/20 shrink-0 flex items-center justify-center p-2 text-center overflow-hidden">
-                    <span className="font-sanskrit text-lg text-forest/50">ॐ</span>
-                  </div>
-                  <div>
-                    <span className="font-sanskrit text-xs text-sage block">
-                      {doc.sanskritTitle}
-                    </span>
-                    <h3 className="font-display text-xl text-deep-forest font-medium">
-                      {doc.name}
-                    </h3>
-                    <p className="font-body text-xs font-medium text-forest/90 mt-0.5">
-                      {doc.title}
-                    </p>
-                    <p className="font-mono text-xs text-clay mt-1">
-                      Consultation: ₹{doc.consultationFee}
-                    </p>
-                  </div>
-                </div>
-
-                <p className="font-body text-xs sm:text-sm text-ink/75 leading-relaxed mb-5 line-clamp-3">
-                  {doc.bio}
-                </p>
-
-                {/* Specialties */}
-                <div className="mb-6">
-                  <div className="font-mono text-[11px] uppercase tracking-wider text-forest/70 mb-2 font-medium">
-                    Specialized In:
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {doc.specialties.slice(0, 3).map((spec, i) => (
-                      <span
-                        key={i}
-                        className="text-[11px] bg-cream px-2 py-0.5 rounded-[2px] border border-forest/10 text-ink/80"
-                      >
-                        {spec}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Card Footer */}
-              <div className="pt-4 border-t border-forest/10 flex items-center justify-between gap-3">
-                <Link
-                  href={`/doctors/${doc.slug}`}
-                  className="font-body text-xs text-forest hover:text-deep-forest underline underline-offset-4 font-medium"
-                >
-                  View Profile & Research
-                </Link>
-                <Button href={`/book?doctor=${doc.slug}`} variant="secondary" className="text-xs px-3.5 py-1.5">
-                  Book Slot
-                </Button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Container>
-
       <BotanicalDivider className="my-16" />
 
-      {/* Philosophy Section: The 4 Pillars (Chatushpada) */}
+      {/* Philosophy Section */}
       <Container>
         <div className="bg-forest text-paper p-8 sm:p-12 rounded-[4px] border border-deep-forest relative overflow-hidden">
           <div className="max-w-2xl relative z-10">
             <span className="font-mono text-xs text-turmeric uppercase tracking-wider block mb-2 font-medium">
-              Classical Philosophy · चरक संहिता सूत्रस्थान ९
+              Classical Philosophy · ચરક સંહિતા સૂત્રસ્થાન ૩૦
             </span>
             <h3 className="font-display text-display-h3 text-paper mb-4">
-              "भिषग्द्रव्याण्युपस्थाता रोगी पादचतुष्टयम्"
+              "પ્રયોજનં ચાસ્ય સ્વસ્થસ્ય સ્વાસ્થ્યરક્ષણમાતુરસ્ય વિકારપ્રશમનં ચ||"
             </h3>
             <p className="font-body text-sm sm:text-base text-paper/80 leading-relaxed mb-6">
-              According to Maharshi Charaka, successful healing requires four equal pillars: the Physician
-              (Vaidya) endowed with clinical wisdom, the Botanical Medicine (Dravya) of proven purity,
-              the Attending Nurse or Therapist (Upasthata) with compassionate hands, and the Patient (Rogi)
-              who observes wholesome dietary discipline (Pathya). At Aarogyam, all four pillars work in
-              sacred harmony.
+              The purpose of Ayurveda is twofold: to preserve the pristine health of the healthy and
+              to pacify disorders in the afflicted. At Vankal Ayurveda, we prioritize individual
+              understanding, providing personalized dietary regimens (Ahara), balanced routines (Dinacharya),
+              and seasonal care (Ritucharya).
             </p>
             <div className="flex flex-wrap gap-4">
               <Button href="/book" variant="primary" className="bg-turmeric text-deep-forest hover:bg-turmeric/90">
                 Schedule a Consultation
               </Button>
               <Button href="/about" variant="secondary" className="border-paper/40 text-paper hover:bg-paper/10">
-                Explore Clinic Heritage
+                About Our Approach
               </Button>
             </div>
           </div>

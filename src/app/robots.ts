@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin', '/portal'],
       },
     ],
-    sitemap: 'https://aarogyamayurveda.com/sitemap.xml',
+    sitemap: 'https://vankalayurveda.com/sitemap.xml',
   };
 }
 

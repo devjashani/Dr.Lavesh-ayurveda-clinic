@@ -24,7 +24,7 @@ export function PhilosophySection() {
           dominantBaseline="middle"
           className="font-serif text-[110px] fill-deep-forest"
         >
-          आयुर्वेद
+          આયુર્વેદ
         </text>
       </svg>
 
@@ -43,11 +43,11 @@ export function PhilosophySection() {
 
             <blockquote className="space-y-4">
               <p className="font-serif text-2xl sm:text-3xl text-deep-forest leading-relaxed font-normal">
-                &ldquo;प्रयोजनं चास्य स्वस्थस्य स्वास्थ्यरक्षणमातुरस्य विकारप्रशमनं च॥&rdquo;
+                &ldquo;પ્રયોજનં ચાસ્ય સ્વસ્થસ્ય સ્વાસ્થ્યરક્ષણમાતુરસ્ય વિકારપ્રશમનં ચ||&rdquo;
               </p>
 
               <cite className="block text-xs font-mono tracking-wider text-forest/70 uppercase not-italic">
-                — चरक संहिता, सूत्रस्थान ३०/२६
+                — ચરક સંહિતા, સૂત્રસ્થાન ૩૦/૨૬
               </cite>
 
               <p className="text-body-base text-ink/80 leading-relaxed pt-2 font-display italic text-lg sm:text-xl">
@@ -79,13 +79,13 @@ export function PhilosophySection() {
 
             <Reveal delay={0.28} blur={true}>
               <p className="text-body-base text-ink/80 leading-relaxed">
-                When modern pharmaceuticals suppress pain, rashes, or acidity, the underlying metabolic endotoxin (<em>Ama</em>) is rarely eliminated. Instead, it is driven deeper into the constitutional tissues (<em>Dhatus</em>), re-emerging years later as chronic autoimmune or degenerate disease.
+                When lifestyle imbalances, poor digestion, or stress disturb your natural rhythm, suppressing symptoms rarely provides lasting equilibrium. Classical Ayurveda focuses on identifying underlying disharmonies and restoring metabolic balance (<em>Agni</em>) through thoughtful, patient care.
               </p>
             </Reveal>
 
             <Reveal delay={0.36} blur={true}>
               <p className="text-body-base text-ink/80 leading-relaxed">
-                At Aarogyam, our Vaidyas decipher your subtle radial pulse to identify where cellular intelligence has strayed. Through individualized dietary protocol (<em>Pathya</em>), bio-cleansing (<em>Shodhana</em>), and herbs aged in bronze vessels, we awaken your body’s sovereign power to heal itself.
+                At Vankal Ayurveda, Dr. Lavesh Bohra provides individual consultations and personalized lifestyle care. Through tailored dietary guidance (<em>Ahara</em>), daily habits (<em>Dinacharya</em>), and seasonal routines (<em>Ritucharya</em>), we support your body’s natural capacity to maintain vitality.
               </p>
             </Reveal>
 
@@ -95,7 +95,7 @@ export function PhilosophySection() {
                   href="/about"
                   className="animated-underline text-forest font-semibold text-sm tracking-wide inline-flex items-center gap-1.5 group"
                 >
-                  <span>Read our clinical heritage & lineage</span>
+                  <span>Learn about our philosophy & approach</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>

@@ -4,25 +4,25 @@ import { treatments } from '@/lib/data/treatments';
 import { TreatmentsDirectory } from './TreatmentsDirectory';
 
 export const metadata: Metadata = {
-  title: 'Classical Ayurvedic Treatments & Panchakarma Protocols | Aarogyam Jaipur',
+  title: 'Classical Ayurvedic Therapies & Protocols | Vankal Ayurveda',
   description:
-    'Explore 12 authentic classical Ayurvedic therapies including Vamana, Virechana, Basti Karma, Shirodhara, Kati Basti, and Netra Tarpana at Aarogyam Ayurveda, Civil Lines, Jaipur.',
+    'Explore classical Ayurvedic therapies including Vamana, Virechana, Basti Karma, Shirodhara, Kati Basti, and Netra Tarpana at Vankal Ayurveda.',
   keywords: [
-    'Ayurvedic treatments Jaipur',
-    'Panchakarma therapy Jaipur',
-    'Shirodhara Rajasthan',
-    'Kati Basti sciatica relief',
-    'Virechana skin detox',
-    'Basti Karma Vata relief',
-    'Netra Tarpana eye care',
+    'Ayurvedic treatments',
+    'Panchakarma therapy',
+    'Shirodhara',
+    'Kati Basti sciatica',
+    'Virechana skin care',
+    'Basti Karma',
+    'Netra Tarpana',
     'Dr Lavesh Bohra treatments',
   ],
   openGraph: {
-    title: 'Classical Ayurvedic Treatments & Panchakarma Protocols | Aarogyam',
+    title: 'Classical Ayurvedic Therapies & Protocols | Vankal Ayurveda',
     description:
-      'Explore 12 authentic classical Ayurvedic therapies documented in Charaka and Sushruta Samhitas. Administered under pulse diagnosis at Aarogyam Jaipur.',
-    url: 'https://aarogyamayurveda.com/treatments',
-    siteName: 'Aarogyam Classical Ayurveda Clinic',
+      'Explore classical Ayurvedic therapies documented in Charaka and Sushruta Samhitas at Vankal Ayurveda.',
+    url: 'https://vankalayurveda.com/treatments',
+    siteName: 'Vankal Ayurveda',
     locale: 'en_IN',
     type: 'website',
   },

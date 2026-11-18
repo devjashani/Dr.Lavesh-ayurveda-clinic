@@ -83,24 +83,6 @@ export interface Doctor {
   reviews?: { patientName: string; rating: number; date: string; comment: string; condition: string }[];
 }
 
-export interface BlogPost {
-  id: string;
-  slug: string;
-  title: string;
-  sanskritSubheading?: string;
-  excerpt: string;
-  content: string;
-  author: {
-    name: string;
-    role: string;
-  };
-  category: 'Ritucharya' | 'Dinacharya' | 'Herbal Formulations' | 'Panchakarma Science' | 'Clinical Cases';
-  readTimeMinutes: number;
-  publishedAt: string;
-  tags: string[];
-  coverImage: string;
-}
-
 export interface Testimonial {
   id: string;
   patientName: string;

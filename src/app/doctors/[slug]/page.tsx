@@ -1,30 +1,21 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
-import { StatBlock } from '@/components/motion';
 import { doctors } from '@/lib/data/doctors';
+import { IMAGES } from '@/lib/config/images';
 import {
   Clock,
-  MapPin,
-  Calendar,
   Languages,
   Award,
-  BookOpen,
   ArrowRight,
   ShieldCheck,
-  Stethoscope,
-  Sparkles,
-  Phone,
-  MessageCircle,
-  FileText,
-  Star,
   CheckCircle2,
-  GraduationCap,
   Building,
 } from 'lucide-react';
 
@@ -42,16 +33,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!doctor) {
     return {
-      title: 'Physician Not Found | Aarogyam Ayurveda',
+      title: 'Physician Not Found | Vankal Ayurveda',
       description: 'The requested Ayurvedic physician profile could not be found.',
     };
   }
 
   return {
-    title: `${doctor.name} (${doctor.sanskritTitle || 'Vaidya'}) | Aarogyam Ayurveda Jaipur`,
-    description: `${doctor.title} with ${doctor.experienceYears}+ years clinical experience. ${doctor.bio.slice(0, 150)}...`,
+    title: `${doctor.name} | Registered Ayurvedic Practitioner | Vankal Ayurveda`,
+    description: `${doctor.title}. ${doctor.degrees.join(', ')}. ${doctor.bio.slice(0, 150)}...`,
     openGraph: {
-      title: `${doctor.name} | Aarogyam Ayurveda Medical Faculty`,
+      title: `${doctor.name} | Vankal Ayurveda`,
       description: doctor.bio.slice(0, 160),
     },
   };
@@ -61,7 +52,7 @@ export default async function DoctorProfilePage({ params }: PageProps) {
   const { slug } = await params;
   const doctor = doctors.find((d) => d.slug === slug);
 
-  if (!doctor) {
+  if (!doctor || doctor.slug !== 'dr-lavesh-bohra') {
     notFound();
   }
 
@@ -75,305 +66,120 @@ export default async function DoctorProfilePage({ params }: PageProps) {
           </Link>
           <span>/</span>
           <Link href="/doctors" className="hover:text-forest transition-colors">
-            Faculty
+            Doctor
           </Link>
           <span>/</span>
           <span className="text-forest font-medium">{doctor.name}</span>
         </nav>
       </Container>
 
-      {/* Doctor Clinical Metrics Strip */}
-      <Container className="mb-10">
-        <div className="bg-paper rounded-[4px] border border-forest/15 shadow-xs py-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0">
-            <StatBlock
-              value={doctor.experienceYears}
-              suffix="+"
-              label="Years Experience"
-              sanskrit="अनुभव वर्ष"
-              sub="Unbroken clinical practice"
-              delay={0}
-              duration={2.2}
-              showDivider={true}
-            />
-            <StatBlock
-              value={
-                doctor.slug === 'dr-lavesh-bohra'
-                  ? 18500
-                  : doctor.slug === 'dr-ananya-sharma'
-                  ? 4200
-                  : 6800
-              }
-              suffix="+"
-              label="Clinical Readings"
-              sanskrit="रोगि परीक्षा"
-              sub="Documented patient examinations"
-              delay={0.15}
-              duration={2.2}
-              showDivider={true}
-            />
-            <StatBlock
-              value={doctor.slug === 'mukesh-gurjar' ? 60 : 45}
-              suffix=" Min"
-              label="Consultation Intake"
-              sanskrit="परामर्श समय"
-              sub="Unhurried diagnostic assessment"
-              delay={0.3}
-              duration={2.2}
-              showDivider={true}
-            />
-            <StatBlock
-              value={doctor.slug === 'dr-lavesh-bohra' ? 4.96 : 4.94}
-              suffix=" / 5"
-              decimals={2}
-              label="Patient Rating"
-              sanskrit="संतुष्टि प्रमाण"
-              sub="Independently verified reviews"
-              delay={0.45}
-              duration={2.2}
-              showDivider={false}
-            />
-          </div>
-        </div>
-      </Container>
-
       {/* Main Profile Layout */}
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          {/* Left Column: Portrait & Sticky Consultation Card */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="bg-paper border border-forest/15 rounded-[4px] p-6 shadow-xs text-center">
-              {/* Arch Portrait Graphic */}
-              <div className="relative mx-auto w-48 sm:w-56 aspect-4/5 rounded-t-full rounded-b-[4px] overflow-hidden border border-forest/20 shadow-md bg-forest/5 mb-5">
-                <div className="w-full h-full bg-gradient-to-b from-forest/20 via-paper to-forest/30 flex items-center justify-center p-6 text-center">
-                  <div>
-                    <span className="font-sanskrit text-4xl text-forest/40 block mb-2">ॐ</span>
-                    <span className="font-display text-base text-deep-forest font-medium block">
-                      {doctor.name}
-                    </span>
-                    <span className="font-mono text-[10px] text-forest/70 block mt-1">
-                      {doctor.ayushRegistrationNo}
-                    </span>
-                  </div>
-                </div>
+          {/* Left Column: Physician Card & Logistics (4 cols) */}
+          <div className="lg:col-span-4 bg-paper border border-forest/15 rounded-[4px] p-6 shadow-xs space-y-6 lg:sticky lg:top-28">
+            <div className="text-center">
+              <div className="relative w-40 sm:w-48 aspect-4/5 rounded-t-full rounded-b-[3px] mx-auto overflow-hidden border border-forest/20 shadow-xs bg-cream mb-4">
+                <Image
+                  src={IMAGES.doctorPortrait}
+                  alt="Dr. Lavesh Bohra, Ayurvedic practitioner at VANKAL AYURVEDA"
+                  fill
+                  sizes="(max-width: 768px) 90vw, 200px"
+                  className="object-cover object-top"
+                  placeholder="blur"
+                  blurDataURL={IMAGES.doctorPortraitBlur}
+                />
               </div>
-
-              <Badge variant="sage" className="mb-2">
-                {doctor.experienceYears}+ Years Clinical Practice
-              </Badge>
               <h1 className="font-display text-2xl text-deep-forest font-medium">
                 {doctor.name}
               </h1>
-              <p className="font-sanskrit text-xs text-sage mt-0.5">
+              <span className="font-sanskrit text-xs text-sage block mt-0.5">
                 {doctor.sanskritTitle}
-              </p>
-              <p className="font-body text-xs text-forest/90 font-medium mt-1 mb-4">
+              </span>
+              <p className="font-body text-xs font-medium text-forest/90 mt-1">
                 {doctor.title}
               </p>
-
-              {/* Consultation Details */}
-              <div className="p-3 bg-cream rounded-[3px] border border-forest/10 text-left text-xs space-y-2 mb-6">
-                <div className="flex justify-between items-center py-1 border-b border-forest/5">
-                  <span className="text-ink/60">Initial Consultation</span>
-                  <span className="font-mono font-medium text-deep-forest text-sm">
-                    ₹{doctor.consultationFee}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-1 border-b border-forest/5">
-                  <span className="text-ink/60">Registration</span>
-                  <span className="font-mono text-xs text-forest">
-                    {doctor.ayushRegistrationNo}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-1 border-b border-forest/5">
-                  <span className="text-ink/60">Mode</span>
-                  <span className="text-xs text-ink/80 font-medium">
-                    In-Clinic & Video
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-1">
-                  <span className="text-ink/60">Days</span>
-                  <span className="text-xs text-ink/80 font-medium">
-                    {doctor.availableDays.length === 7
-                      ? 'Mon – Sun'
-                      : `${doctor.availableDays[0]} – ${doctor.availableDays[doctor.availableDays.length - 1]}`}
-                  </span>
-                </div>
-              </div>
-
-              {/* Booking Actions */}
-              <div className="space-y-3">
-                <Button
-                  href={`/book?doctor=${doctor.slug}`}
-                  variant="primary"
-                  className="w-full justify-center"
-                >
-                  Book with {doctor.name.split(' ')[0]} {doctor.name.split(' ')[1]}
-                </Button>
-                <Button
-                  href="https://wa.me/919414012345?text=Namaste%2C%20I%20would%20like%20to%20inquire%20about%20a%20consultation%20with%20Aarogyam%20Ayurveda."
-                  variant="secondary"
-                  external
-                  className="w-full justify-center text-xs"
-                >
-                  <MessageCircle className="w-3.5 h-3.5 mr-1.5 text-forest" />
-                  Inquire via WhatsApp
-                </Button>
+              <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-cream border border-forest/15 text-[11px] font-mono text-forest">
+                <ShieldCheck className="w-3.5 h-3.5 text-turmeric" />
+                <span>{doctor.ayushRegistrationNo}</span>
               </div>
             </div>
 
-            {/* OPD Hours Box */}
-            <div className="bg-paper border border-forest/15 rounded-[4px] p-5 shadow-xs">
-              <div className="flex items-center gap-2 mb-3">
-                <Clock className="w-4 h-4 text-turmeric" />
-                <h3 className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium">
-                  OPD & Clinical Timings
-                </h3>
+            <div className="space-y-3 pt-4 border-t border-forest/10 text-xs text-ink/80 font-body">
+              <div className="flex items-start gap-2.5">
+                <Clock className="w-4 h-4 text-turmeric shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-medium text-deep-forest block">Consultation Hours</span>
+                  <span className="text-ink/70">Monday – Saturday: By prior appointment</span>
+                </div>
               </div>
-              <p className="font-body text-xs text-ink/80 leading-relaxed mb-3">
-                {doctor.opdTimings}
-              </p>
-              <div className="flex items-center gap-2 text-xs text-ink/60">
-                <MapPin className="w-3.5 h-3.5 text-forest shrink-0" />
-                <span>Civil Lines Clinic, Jaipur</span>
+
+              <div className="flex items-start gap-2.5">
+                <Languages className="w-4 h-4 text-sage shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-medium text-deep-forest block">Languages</span>
+                  <span className="text-ink/70">{doctor.languages.join(', ')}</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2.5">
+                <Award className="w-4 h-4 text-clay shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-medium text-deep-forest block">Consultation Fee</span>
+                  <span className="text-ink/70">
+                    ₹{doctor.consultationFee} (Includes Prakriti assessment & lifestyle plan)
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Languages Spoken */}
-            <div className="bg-paper border border-forest/15 rounded-[4px] p-5 shadow-xs">
-              <div className="flex items-center gap-2 mb-3">
-                <Languages className="w-4 h-4 text-sage" />
-                <h3 className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium">
-                  Languages Spoken
-                </h3>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {doctor.languages.map((lang, i) => (
-                  <span
-                    key={i}
-                    className="text-xs bg-cream px-2.5 py-1 rounded-[2px] border border-forest/10 text-ink/80 font-medium"
-                  >
-                    {lang}
-                  </span>
-                ))}
-              </div>
+            <div className="pt-2">
+              <Button href={`/book?doctor=${doctor.slug}`} variant="primary" className="w-full justify-center">
+                Book Consultation
+              </Button>
             </div>
           </div>
 
-          {/* Right Column: In-depth Monograph */}
-          <div className="lg:col-span-8 space-y-10">
-            {/* Header intro & Biography */}
+          {/* Right Column: Bio, Philosophy, Education, Focus (8 cols) */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Bio Card */}
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
-              <div className="mb-4">
-                <span className="font-mono text-xs uppercase tracking-wider text-forest/70 font-medium">
-                  Clinical Monograph
-                </span>
-                <h2 className="font-display text-display-h2 text-deep-forest mt-1">
-                  Biography & Practice
-                </h2>
-              </div>
-              <p className="font-body text-sm sm:text-base text-ink/85 leading-relaxed mb-6">
+              <Badge variant="forest" className="mb-4">
+                Clinical Overview
+              </Badge>
+              <h2 className="font-display text-2xl sm:text-3xl text-deep-forest mb-4">
+                About Dr. Lavesh Bohra
+              </h2>
+              <p className="font-body text-sm sm:text-base text-ink/80 leading-relaxed mb-4">
                 {doctor.bio}
               </p>
-
-              {/* Degrees list */}
-              <div className="space-y-2 pt-4 border-t border-forest/10">
-                <span className="font-mono text-xs uppercase tracking-wider text-forest/70 font-medium block">
-                  Academic Qualifications:
-                </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {doctor.degrees.map((deg, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-2 text-xs bg-cream p-2.5 rounded-[2px] border border-forest/10 text-deep-forest"
-                    >
-                      <GraduationCap className="w-4 h-4 text-forest shrink-0" />
-                      <span>{deg}</span>
-                    </div>
-                  ))}
-                </div>
+              <div className="p-4 rounded-[3px] bg-cream/70 border-l-2 border-turmeric text-xs md:text-sm text-ink/85 italic">
+                "{doctor.charakaQuote}"
               </div>
             </div>
 
-            {/* Clinical Philosophy & Charaka Quote */}
+            {/* Philosophy Card */}
             {doctor.philosophy && (
-              <div className="bg-forest text-paper rounded-[4px] p-6 sm:p-8 border border-deep-forest relative overflow-hidden">
-                <div className="relative z-10">
-                  <span className="font-mono text-xs text-turmeric uppercase tracking-wider block mb-2 font-medium">
-                    Clinical Philosophy · दर्शनम्
-                  </span>
-                  {doctor.charakaQuote && (
-                    <blockquote className="font-display text-lg sm:text-xl text-paper/95 italic mb-4 border-l-2 border-turmeric pl-4">
-                      "{doctor.charakaQuote}"
-                    </blockquote>
-                  )}
-                  <p className="font-body text-xs sm:text-sm text-paper/85 leading-relaxed">
-                    {doctor.philosophy}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Lineage & Tradition */}
-            {doctor.lineage && (
               <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
                 <div className="flex items-center gap-2 mb-3">
-                  <BookOpen className="w-4 h-4 text-clay" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
                   <h3 className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium">
-                    Vaidya Lineage & Hospital Mentorship
+                    Clinical Philosophy & Approach
                   </h3>
                 </div>
-                <p className="font-body text-sm text-ink/80 leading-relaxed">
-                  {doctor.lineage}
+                <p className="font-body text-sm sm:text-base text-ink/80 leading-relaxed">
+                  {doctor.philosophy}
                 </p>
               </div>
             )}
 
-            {/* Clinical Focus & Conditions Treated */}
-            {doctor.clinicalFocus && (
-              <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
-                <div className="mb-4">
-                  <span className="font-mono text-xs uppercase tracking-wider text-forest/70 font-medium">
-                    Specialized Pathologies
-                  </span>
-                  <h3 className="font-display text-xl text-deep-forest mt-1">
-                    Clinical Focus & Conditions
-                  </h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {doctor.clinicalFocus.map((focus, i) => (
-                    <div
-                      key={i}
-                      className="flex items-start gap-2.5 p-3 rounded-[3px] bg-cream border border-forest/10"
-                    >
-                      <CheckCircle2 className="w-4 h-4 text-forest shrink-0 mt-0.5" />
-                      <span className="font-body text-xs text-ink/85 font-medium">
-                        {focus}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-5 pt-4 border-t border-forest/10 flex items-center justify-between text-xs">
-                  <span className="text-ink/60">
-                    Explore associated therapies in our directory:
-                  </span>
-                  <Link
-                    href="/conditions"
-                    className="text-forest hover:text-deep-forest font-medium underline underline-offset-4 flex items-center gap-1"
-                  >
-                    View All Conditions <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              </div>
-            )}
-
-            {/* Education Timeline */}
+            {/* Education Card */}
             {doctor.education && (
               <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
                 <div className="flex items-center gap-2 mb-6">
                   <Building className="w-4 h-4 text-forest" />
                   <h3 className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium">
-                    Formal Medical University Qualifications
+                    Medical Qualifications
                   </h3>
                 </div>
                 <div className="space-y-4">
@@ -399,73 +205,25 @@ export default async function DoctorProfilePage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Publications & Research */}
-            {doctor.publications && doctor.publications.length > 0 && (
+            {/* Clinical Focus Card */}
+            {doctor.clinicalFocus && (
               <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
                 <div className="flex items-center gap-2 mb-4">
-                  <FileText className="w-4 h-4 text-turmeric" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-forest shrink-0" />
                   <h3 className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium">
-                    Published Clinical Research & Papers
+                    Practice Areas & Consultation Focus
                   </h3>
                 </div>
-                <div className="space-y-3">
-                  {doctor.publications.map((pub, idx) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {doctor.clinicalFocus.map((focus, idx) => (
                     <div
                       key={idx}
-                      className="p-3.5 rounded-[3px] bg-cream/70 border border-forest/10"
+                      className="flex items-start gap-2.5 p-3 rounded-[3px] bg-cream/70 border border-forest/10"
                     >
-                      <h4 className="font-body text-xs sm:text-sm font-medium text-deep-forest leading-snug">
-                        "{pub.title}"
-                      </h4>
-                      <p className="font-mono text-[11px] text-forest/80 mt-1">
-                        {pub.journal} · {pub.year}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Verified Patient Reviews */}
-            {doctor.reviews && doctor.reviews.length > 0 && (
-              <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <span className="font-mono text-xs uppercase tracking-wider text-forest/70 font-medium">
-                      Patient Testimonies
-                    </span>
-                    <h3 className="font-display text-xl text-deep-forest mt-0.5">
-                      Clinical Outcomes & Patient Reviews
-                    </h3>
-                  </div>
-                  <Badge variant="sage">Verified Cases</Badge>
-                </div>
-
-                <div className="space-y-4">
-                  {doctor.reviews.map((rev, i) => (
-                    <div
-                      key={i}
-                      className="p-4 rounded-[3px] bg-cream border border-forest/10 space-y-2"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <span className="font-body text-sm font-medium text-deep-forest">
-                            {rev.patientName}
-                          </span>
-                          <span className="text-xs text-ink/50 ml-2">({rev.date})</span>
-                        </div>
-                        <div className="flex items-center gap-0.5 text-turmeric">
-                          {[...Array(rev.rating)].map((_, r) => (
-                            <Star key={r} className="w-3.5 h-3.5 fill-current" />
-                          ))}
-                        </div>
-                      </div>
-                      <div className="text-xs font-mono text-forest">
-                        Condition: {rev.condition}
-                      </div>
-                      <p className="font-body text-xs sm:text-sm text-ink/80 italic leading-relaxed">
-                        "{rev.comment}"
-                      </p>
+                      <CheckCircle2 className="w-4 h-4 text-forest shrink-0 mt-0.5" />
+                      <span className="font-body text-xs text-ink/85 font-medium">
+                        {focus}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -478,15 +236,14 @@ export default async function DoctorProfilePage({ params }: PageProps) {
                 Consult with {doctor.name}
               </h3>
               <p className="font-body text-sm text-ink/75 max-w-xl mx-auto">
-                Schedule a 40-minute in-person radial pulse diagnosis in Civil Lines, Jaipur,
-                or book an online video consultation from anywhere in the world.
+                Schedule an individual Ayurvedic consultation or personalized lifestyle care session with Dr. Lavesh Bohra.
               </p>
               <div className="flex flex-wrap justify-center gap-4 pt-2">
                 <Button href={`/book?doctor=${doctor.slug}`} variant="primary">
                   Book Appointment Now
                 </Button>
                 <Button href="/doctors" variant="secondary">
-                  View All Physicians
+                  Back to Doctor Overview
                 </Button>
               </div>
             </div>

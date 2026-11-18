@@ -6,7 +6,7 @@ export const conditions: Condition[] = [
     id: 'acidity-ibs',
     letter: 'A',
     name: 'Acidity & Irritable Bowel Syndrome',
-    sanskritName: 'अम्लपित्त एवं ग्रहणी दोष',
+    sanskritName: 'અમ્લપિત્ત તેમજ ગ્રહણી દોષ',
     category: 'Gastrointestinal & Metabolism',
     doshaInvolvement: 'Pitta-Vata aggravation with Mandagni (sluggish digestive fire)',
     pathophysiology:
@@ -20,7 +20,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['gastric-agni-care', 'virechana', 'basti-karma'],
     classicalDietAdvice:
       'Favor medicated churned buttermilk (Takra) with roasted cumin and rock salt. Strictly avoid raw unpeeled vegetables, chilies, vinegar, fried foods, and late-night dinners.',
-    quoteCharaka: 'तक्रं तु ग्रहणीदोषे दीपनं ग्राहि लाघवम् — Churned buttermilk is the supreme restorative for gut mucosal vitality.',
+    quoteCharaka: 'તક્રં તુ ગ્રહણીદોષે દીપનં ગ્રાહિ લાઘવમ્ — Churned buttermilk is the supreme restorative for gut mucosal vitality.',
   },
 
   // A - ARTHRITIS
@@ -28,7 +28,7 @@ export const conditions: Condition[] = [
     id: 'arthritis',
     letter: 'A',
     name: 'Arthritis & Degenerative Joint Disorders',
-    sanskritName: 'सन्धिगत वात एवं आमवात',
+    sanskritName: 'સન્ધિગત વાત તેમજ આમવાત',
     category: 'Musculoskeletal & Autoimmune',
     doshaInvolvement: 'Vata dominance in joints (Sandhigata) or Ama-Vata systemic toxicity',
     pathophysiology:
@@ -42,7 +42,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['janu-basti', 'abhyanga-swedana', 'kati-basti', 'basti-karma'],
     classicalDietAdvice:
       'Favor warm, lightly spiced mung dal khichdi, garlic decoctions in sesame oil, and ginger tea. Strictly eliminate curd, nightshades (potatoes, tomatoes), and chilled beverages.',
-    quoteCharaka: 'सन्धिवातप्रशमनं तैलं स्वेदो बस्तिकर्म च — Medicated oils, fomentation, and Basti are the pillars of joint restoration.',
+    quoteCharaka: 'સન્ધિવાતપ્રશમનં તૈલં સ્વેદો બસ્તિકર્મ ચ — Medicated oils, fomentation, and Basti are the pillars of joint restoration.',
   },
 
   // D - DIABETES SUPPORT
@@ -50,7 +50,7 @@ export const conditions: Condition[] = [
     id: 'diabetes-support',
     letter: 'D',
     name: 'Diabetes & Metabolic Support',
-    sanskritName: 'प्रमेह चिकित्सा एवं मेदोरोध',
+    sanskritName: 'પ્રમેહ ચિકિત્સા તેમજ મેદોરોધ',
     category: 'Endocrine & Metabolic',
     doshaInvolvement: 'Kapha-Pitta dominance affecting Medo Dhatu (adipose tissue) and Kleda',
     pathophysiology:
@@ -64,7 +64,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['gastric-agni-care', 'virechana', 'vamana'],
     classicalDietAdvice:
       'Favor bitter gourds (Karela), barley (Yava), roasted chickpeas (Chana), fenugreek seeds (Methi), and Amla. Avoid polished white rice, refined sugars, sweet fruits, and midday naps.',
-    quoteCharaka: 'व्यायामः प्रमेहाणां श्रेष्ठम् — Classical physical activity and metabolic detoxification are unmatched for glucose harmony.',
+    quoteCharaka: 'વ્યાયામઃ પ્રમેહાણાં શ્રેષ્ઠમ્ — Classical physical activity and metabolic detoxification are unmatched for glucose harmony.',
   },
 
   // H - HAIR FALL & ALOPECIA
@@ -72,7 +72,7 @@ export const conditions: Condition[] = [
     id: 'hair-fall',
     letter: 'H',
     name: 'Hair Fall & Alopecia',
-    sanskritName: 'खालित्य एवं पालित्य (शिरोरोग)',
+    sanskritName: 'ખાલિત્ય તેમજ પાલિત્ય (શિરોરોગ)',
     category: 'Dermatological & Cranial',
     doshaInvolvement: 'Pitta-Vata imbalance combined with Rakta (blood) channel obstruction',
     pathophysiology:
@@ -86,7 +86,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['nasya-karma', 'shirodhara', 'raktamokshana'],
     classicalDietAdvice:
       'Incorporate fresh Amla, soaked black raisins, curry leaves, and sesame seeds daily. Avoid excessively salty snacks, deep-fried junk food, and synthetic shampoos.',
-    quoteCharaka: 'नासा हि शिरसो द्वारं — Nasal therapy nourishes cranial micro-channels directly to restore follicular root strength.',
+    quoteCharaka: 'નાસા હિ શિરસો દ્વારં — Nasal therapy nourishes cranial micro-channels directly to restore follicular root strength.',
   },
 
   // I - INSOMNIA
@@ -94,7 +94,7 @@ export const conditions: Condition[] = [
     id: 'insomnia',
     letter: 'I',
     name: 'Insomnia & Sleep Disturbances',
-    sanskritName: 'अनिद्रा एवं निद्रानाश',
+    sanskritName: 'અનિદ્રા તેમજ નિદ્રાનાશ',
     category: 'Neurological & Mental Health',
     doshaInvolvement: 'High Vata and Pitta vitiating the heart, sensory organs, and Manovaha Srotas',
     pathophysiology:
@@ -108,7 +108,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['shirodhara', 'abhyanga-swedana', 'nasya-karma'],
     classicalDietAdvice:
       'Warm A2 cow’s milk infused with nutmeg (Jaiphal) and Ashwagandha at bedtime. Gentle foot massage (Pada Abhyanga) with warm sesame oil before sleeping.',
-    quoteCharaka: 'निद्रायत्तं सुखं दुःखं पुष्टिः कार्श्यं बलाबलम् — Sound sleep is the foundational pillar of physical nourishment and emotional joy.',
+    quoteCharaka: 'નિદ્રાયત્તં સુખં દુઃખં પુષ્ટિઃ કાર્શ્યં બલાબલમ્ — Sound sleep is the foundational pillar of physical nourishment and emotional joy.',
   },
 
   // M - MIGRAINE
@@ -116,7 +116,7 @@ export const conditions: Condition[] = [
     id: 'migraine',
     letter: 'M',
     name: 'Migraine & Chronic Headaches',
-    sanskritName: 'अर्धावभेदक एवं सूर्यवर्त',
+    sanskritName: 'અર્ધાવભેદક તેમજ સૂર્યાવર્ત',
     category: 'Neurological & Cranial',
     doshaInvolvement: 'Vata-Pitta vitiation causing vascular spasms in cranial micro-channels',
     pathophysiology:
@@ -130,7 +130,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['nasya-karma', 'shirodhara', 'greeva-basti', 'virechana'],
     classicalDietAdvice:
       'Consume cooling sweet fruits (pomegranates, sweet grapes), coriander-cumin tea, and avoid aged cheese, fermented batters, and skipped breakfasts.',
-    quoteCharaka: 'शिरोविरेचनं कुर्यात् — Trans-nasal cranial cleansing is the paramount remedy for unilateral migraine attacks.',
+    quoteCharaka: 'શિરોવિરેચનં કુર્યાત્ — Trans-nasal cranial cleansing is the paramount remedy for unilateral migraine attacks.',
   },
 
   // O - OBESITY
@@ -138,7 +138,7 @@ export const conditions: Condition[] = [
     id: 'obesity',
     letter: 'O',
     name: 'Obesity & Stubborn Weight',
-    sanskritName: 'स्थौल्य एवं मेदोरोग',
+    sanskritName: 'સ્થૌલ્ય તેમજ મેદોરોગ',
     category: 'Endocrine & Metabolic',
     doshaInvolvement: 'Excessive Medas (fat tissue) blocking Vata in the abdomen, stoking false hunger',
     pathophysiology:
@@ -152,7 +152,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['gastric-agni-care', 'abhyanga-swedana', 'vamana', 'virechana'],
     classicalDietAdvice:
       'Favor ancient grains like barley (Jau), aged millets, honey with lukewarm water at sunrise, and dry herbal powder massage (Udwarthanam). Strictly avoid cheese, sweets, and daytime naps.',
-    quoteCharaka: 'मेदसाऽऽवृतमार्गत्वात् पुष्यन्ति न च धातवः — When channels are blocked by fat, tissues starve despite overnutrition.',
+    quoteCharaka: 'મેદસાવૃતમાર્ગત્વાત્ પુષ્યન્તિ ન ચ ધાતવઃ — When channels are blocked by fat, tissues starve despite overnutrition.',
   },
 
   // P - PCOD / PCOS
@@ -160,7 +160,7 @@ export const conditions: Condition[] = [
     id: 'pcod',
     letter: 'P',
     name: 'PCOD, PCOS & Hormonal Imbalance',
-    sanskritName: 'आर्तव क्षय एवं ग्रन्थि रोग',
+    sanskritName: 'આર્તવ ક્ષય તેમજ ગ્રન્થિ રોગ',
     category: 'Women’s Health & Hormones',
     doshaInvolvement: 'Apana Vata dysfunction combined with Kapha-Avarana (channel obstruction)',
     pathophysiology:
@@ -174,7 +174,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['basti-karma', 'virechana', 'gastric-agni-care'],
     classicalDietAdvice:
       'Favor anti-inflammatory spices like turmeric, cinnamon, fenugreek seeds, and sesame. Avoid commercial dairy with added hormones, refined flours, and sugary pastries.',
-    quoteCharaka: 'बस्तिरार्तवदोषेषु परं हितम् — Classical Basti therapy is unmatched for balancing ovarian cycles and clearing uterine channels.',
+    quoteCharaka: 'બસ્તિરાર્તવદોષેષુ પરં હિતમ્ — Classical Basti therapy is unmatched for balancing ovarian cycles and clearing uterine channels.',
   },
 
   // P - PSORIASIS & ECZEMA
@@ -182,7 +182,7 @@ export const conditions: Condition[] = [
     id: 'psoriasis',
     letter: 'P',
     name: 'Psoriasis & Chronic Eczema',
-    sanskritName: 'किटिभ कुष्ठ एवं विचार्चिका',
+    sanskritName: 'કિટિભ કુષ્ઠ તેમજ વિચાર્ચિકા',
     category: 'Dermatological & Autoimmune',
     doshaInvolvement: 'Vata and Kapha dominant in Kitibha; Pitta and Rakta dominant in inflamed eczema',
     pathophysiology:
@@ -196,7 +196,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['virechana', 'raktamokshana', 'gastric-agni-care'],
     classicalDietAdvice:
       'Favor bitter greens (Karela, Methi, Neem leaf decoctions), mung beans, and coconut oil topically. Strictly eliminate curd, fermented foods, seafood, brinjal, and sour citrus fruits.',
-    quoteCharaka: 'रक्तमोक्षणं कुष्ठेषु प्रशस्तम् — Targeted blood-cleansing through leeches and purgation clears deep-seated dermatological plaques.',
+    quoteCharaka: 'રક્તમોક્ષણં કુષ્ઠેષુ પ્રશસ્તમ્ — Targeted blood-cleansing through leeches and purgation clears deep-seated dermatological plaques.',
   },
 
   // S - SCIATICA
@@ -204,7 +204,7 @@ export const conditions: Condition[] = [
     id: 'sciatica',
     letter: 'S',
     name: 'Sciatica & Lumbar Disc Herniation',
-    sanskritName: 'गृध्रसी (कटिशूल)',
+    sanskritName: 'ગૃધ્રસી (કટિશૂલ)',
     category: 'Spine & Musculoskeletal',
     doshaInvolvement: 'Severe Vata or Vata-Kapha vitiation in the Kandaras (lumbar tendons and sciatic nerve)',
     pathophysiology:
@@ -218,7 +218,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['kati-basti', 'basti-karma', 'abhyanga-swedana'],
     classicalDietAdvice:
       'Favor nourishing warm broths cooked with garlic (Lashuna Ksheera Paka), unctuous sesame oil, and Dashamoola tea. Avoid dry roasted snacks, cold salads, and lifting heavy weights.',
-    quoteCharaka: 'गृध्रस्यां कटिबस्तिः स्यात् — Kati Basti combined with medicated unction relieves deep sciatic nerve entrapment.',
+    quoteCharaka: 'ગૃધ્રસ્યાં કટિબસ્તિઃ સ્યાત્ — Kati Basti combined with medicated unction relieves deep sciatic nerve entrapment.',
   },
 
   // S - STRESS & BURNOUT
@@ -226,7 +226,7 @@ export const conditions: Condition[] = [
     id: 'stress',
     letter: 'S',
     name: 'Chronic Stress, Anxiety & Burnout',
-    sanskritName: 'चित्तोद्वेग एवं मनोवह स्रोतोरोध',
+    sanskritName: 'ચિત્તોદ્વેગ તેમજ મનોવહ સ્રોતોરોધ',
     category: 'Neurological & Mental Health',
     doshaInvolvement: 'Raja and Tama mental doshas combined with aggravated Prana and Vyana Vata',
     pathophysiology:
@@ -240,7 +240,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['shirodhara', 'abhyanga-swedana', 'nasya-karma'],
     classicalDietAdvice:
       'Favor warm freshly cooked grounding foods with ghee, sweet juicy fruits, chamomile and Brahmi tea. Practice 10 minutes of alternate nostril breathing (Nadi Shodhana) before meals.',
-    quoteCharaka: 'धीधैर्यात्मादिविज्ञानं मनोदोषौषधं परम् — Cultivating sensory rest, clarity, and classical unction is the true medicine for the overwhelmed mind.',
+    quoteCharaka: 'ધીધૈર્યાત્માદિવિજ્ઞાનં મનોદોષૌષધં પરમ્ — Cultivating sensory rest, clarity, and classical unction is the true medicine for the overwhelmed mind.',
   },
 
   // T - THYROID IMBALANCE
@@ -248,7 +248,7 @@ export const conditions: Condition[] = [
     id: 'thyroid',
     letter: 'T',
     name: 'Thyroid Dysregulation (Hypo & Hyper)',
-    sanskritName: 'गलगण्ड एवं धातु अग्नि मन्दता',
+    sanskritName: 'ગલગણ્ડ તેમજ ધાતુ અગ્નિ મન્દતા',
     category: 'Endocrine & Metabolic',
     doshaInvolvement: 'Kapha-Vata dominance affecting the throat Marma and cellular Agni (Dhatvagni)',
     pathophysiology:
@@ -262,7 +262,7 @@ export const conditions: Condition[] = [
     recommendedTherapySlugs: ['vamana', 'greeva-basti', 'gastric-agni-care', 'nasya-karma'],
     classicalDietAdvice:
       'Favor Kanchanar decoctions, guggulu preparations, roasted coriander seed water, and rock salt. Avoid raw cruciferous vegetables (cabbage, cauliflower, broccoli) unless thoroughly cooked with spices.',
-    quoteCharaka: 'कफमेदोहरैर्युक्तो गलगण्डप्रशान्तये — Formulations that clear sluggish Kapha and fat channels bring harmony to the thyroid axis.',
+    quoteCharaka: 'કફમેદોહરૈર્યુક્તો ગલગણ્ડપ્રશાન્તયે — Formulations that clear sluggish Kapha and fat channels bring harmony to the thyroid axis.',
   },
 ];
 

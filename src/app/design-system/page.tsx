@@ -41,10 +41,10 @@ export default function DesignSystemPage() {
   ];
 
   const doshaOptions = [
-    { value: 'vata', label: 'Vata (Wind & Space)', sanskrit: 'वात' },
-    { value: 'pitta', label: 'Pitta (Fire & Water)', sanskrit: 'पित्त' },
-    { value: 'kapha', label: 'Kapha (Earth & Water)', sanskrit: 'कफ' },
-    { value: 'tridoshic', label: 'Tridoshic (Equilibrium)', sanskrit: 'त्रिदोष' },
+    { value: 'vata', label: 'Vata (Wind & Space)', sanskrit: 'વાત' },
+    { value: 'pitta', label: 'Pitta (Fire & Water)', sanskrit: 'પિત્ત' },
+    { value: 'kapha', label: 'Kapha (Earth & Water)', sanskrit: 'કફ' },
+    { value: 'tridoshic', label: 'Tridoshic (Equilibrium)', sanskrit: 'ત્રિદોષ' },
   ];
 
   return (
@@ -56,11 +56,11 @@ export default function DesignSystemPage() {
             <span className="w-1.5 h-1.5 rounded-full bg-turmeric" />
             <span className="font-mono uppercase tracking-widest text-[11px]">Living Specification v1.0</span>
             <span>•</span>
-            <span className="font-serif italic">आरोग्यम् व्याकरणम्</span>
+            <span className="font-serif italic">વાંકલ વ્યાકરણ</span>
           </div>
 
           <h1 className="text-display-hero text-deep-forest font-normal tracking-tight">
-            Aarogyam Design System
+            Vankal Design System
           </h1>
 
           <p className="text-body-lg text-ink/75 max-w-3xl mt-4 leading-relaxed">
@@ -93,7 +93,7 @@ export default function DesignSystemPage() {
         <section id="colors" className="mb-20">
           <SectionHeading
             eyebrow="Color Palette"
-            sanskritEyebrow="वर्ण योजना"
+            sanskritEyebrow="વર્ણ યોજના"
             title="Rooted Earth & Botanical Pigments"
             subtitle="Strictly zero neon and zero artificial violet gradients. Every color is inspired by raw Ayurvedic materia medica: sun-dried turmeric root, hand-milled clay, Himalayan pine, and aged herbal decoctions."
             align="asymmetric"
@@ -144,7 +144,7 @@ export default function DesignSystemPage() {
         <section id="typography" className="mb-20">
           <SectionHeading
             eyebrow="Fluid Typography"
-            sanskritEyebrow="लिपि विज्ञान"
+            sanskritEyebrow="લિપિ વિજ્ઞાન"
             title="Expressive Clamp-based Typography"
             subtitle="Scales gracefully across mobile (360px) to ultra-wide desktop (1440px+). Headings employ Fraunces with variable optical sizing, evoking timeless apothecary manuals and palm-leaf manuscripts."
             align="left"
@@ -163,7 +163,7 @@ export default function DesignSystemPage() {
                 The Living Science of Balance
               </h1>
               <p className="font-serif italic text-forest/80 text-xl mt-2">
-                &ldquo;आयुः कामयमानेन धर्मार्थसुखसाधनम्। आयुर्वेदोपदेशेषु विधेयः परमादरः॥&rdquo;
+                &ldquo;આયુઃ કામયમાનેન ધર્માર્થસુખસાધનમ્| આયુર્વેદોપદેશેષુ વિધેયઃ પરમાદરઃ||&rdquo;
               </p>
             </div>
 
@@ -226,7 +226,7 @@ export default function DesignSystemPage() {
                   <span>Clinical Indication Matrix</span>
                 </div>
                 <p className="text-body-base text-ink/75 leading-relaxed">
-                  Every formulation prescribed at Aarogyam is prepared using cold-pressed medicinal oils and triple-tested decoctions. We adhere strictly to the Pharmacopoeial Standards of India and Charaka Samhita guidelines.
+                  Every formulation prescribed at Vankal is prepared using cold-pressed medicinal oils and triple-tested decoctions. We adhere strictly to the Pharmacopoeial Standards of India and Charaka Samhita guidelines.
                 </p>
               </div>
             </div>
@@ -239,7 +239,7 @@ export default function DesignSystemPage() {
         <section id="buttons" className="mb-20">
           <SectionHeading
             eyebrow="Interactive Elements"
-            sanskritEyebrow="क्रिया विधि"
+            sanskritEyebrow="ક્રિયા વિધિ"
             title="Buttons & Animated Underlines"
             subtitle="No hyperactive micro-bounces or neon glows. Interactions provide tranquil tactile reassurance with deliberate cubic-bezier easing."
             align="asymmetric"
@@ -316,7 +316,7 @@ export default function DesignSystemPage() {
         <section id="badges" className="mb-20">
           <SectionHeading
             eyebrow="Taxonomy & Metadata"
-            sanskritEyebrow="लक्षण पट्टिका"
+            sanskritEyebrow="લક્ષણ પટ્ટિકા"
             title="Badges, Dosha Tags & Clinical Markers"
             subtitle="Gentle organic markers for constitutional categorization, certification, and clinical status without shouting."
             align="left"
@@ -329,16 +329,16 @@ export default function DesignSystemPage() {
               </h4>
               <div className="flex flex-wrap items-center gap-2.5">
                 <Badge variant="sage" dot>
-                  Vata Pacifying (वात शामक)
+                  Vata Pacifying (વાત શામક)
                 </Badge>
                 <Badge variant="turmeric" dot>
-                  Pitta Cooling (पित्त शामक)
+                  Pitta Cooling (પિત્ત શામક)
                 </Badge>
                 <Badge variant="clay" dot>
-                  Kapha Mobilizing (कफ नाशक)
+                  Kapha Mobilizing (કફ નાશક)
                 </Badge>
                 <Badge variant="forest" dot>
-                  Tridoshic Harmony (त्रिदोष समत्व)
+                  Tridoshic Harmony (ત્રિદોષ સમત્વ)
                 </Badge>
                 <Badge variant="paper">
                   NABH Accredited Facility
@@ -377,7 +377,7 @@ export default function DesignSystemPage() {
         <section id="forms" className="mb-20">
           <SectionHeading
             eyebrow="Clinical Form Controls"
-            sanskritEyebrow="प्रपत्र घटक"
+            sanskritEyebrow="પ્રપત્ર ઘટક"
             title="Clean, Reassuring Form Elements"
             subtitle="Designed for patient intake, appointment scheduling, and pulse diagnosis notes. High legibility, crisp 1px borders, and zero blur gimmickry."
             align="asymmetric"
@@ -388,7 +388,7 @@ export default function DesignSystemPage() {
               {/* Full Name */}
               <Input
                 label="Patient Full Name"
-                sanskritLabel="रोगी नाम"
+                sanskritLabel="રોગી નામ"
                 placeholder="e.g. Meera Singhania"
                 icon={<User className="w-4 h-4" />}
                 helperText="As printed on government health ID or Aadhaar"
@@ -433,7 +433,7 @@ export default function DesignSystemPage() {
               <div className="md:col-span-2">
                 <Textarea
                   label="Chief Health Concerns & Digestion (Agni) Notes"
-                  sanskritLabel="लक्षण एवं अग्नि विवरण"
+                  sanskritLabel="લક્ષણ એવં અગ્નિ વિવરણ"
                   placeholder="Please describe symptoms, sleep pattern, digestion quality, and any existing allopathic medications..."
                   rows={4}
                   helperText="All health disclosures are protected under strict Vaidya-patient medical confidentiality."
@@ -460,7 +460,7 @@ export default function DesignSystemPage() {
         <section id="arch-images" className="mb-20">
           <SectionHeading
             eyebrow="Architectural Shapes"
-            sanskritEyebrow="तोरण रूप"
+            sanskritEyebrow="તોરણ રૂપ"
             title="Arch-Shaped Image Masks & Asymmetry"
             subtitle="Classical Indian temple and haveli arches (Torana) combined with crisp clinical framing. Replaces generic rounded-2xl cards with organic, grounded silhouettes."
             align="asymmetric"
@@ -478,7 +478,7 @@ export default function DesignSystemPage() {
                 aspectRatio="portrait"
                 archStyle="top-arch"
                 caption="Shirodhara with Brahmi Thailam"
-                sanskritCaption="शिरोधारा विधान"
+                sanskritCaption="શિરોધારા વિધાન"
               />
             </div>
 
@@ -493,7 +493,7 @@ export default function DesignSystemPage() {
                 aspectRatio="portrait"
                 archStyle="full-arch"
                 caption="Synchronized Abhyanga Massage"
-                sanskritCaption="अभ्यङ्ग एवं स्वेदन"
+                sanskritCaption="અભ્યઙ્ગ એવં સ્વેદન"
               />
             </div>
 
@@ -508,7 +508,7 @@ export default function DesignSystemPage() {
                 aspectRatio="portrait"
                 archStyle="organic"
                 caption="Sun-Dried Herbal Apothecary"
-                sanskritCaption="औषध शाला"
+                sanskritCaption="ઔષધ શાલા"
               />
             </div>
           </div>
@@ -520,7 +520,7 @@ export default function DesignSystemPage() {
         <section id="motion" className="mb-20">
           <SectionHeading
             eyebrow="Motion Language"
-            sanskritEyebrow="गति तत्व"
+            sanskritEyebrow="ગતિ તત્વ"
             title="Serene Deceleration & Restraint"
             subtitle="Detailed in MOTION.md. Every motion honors the calm cadence of healing: cubic-bezier(0.22, 1, 0.36, 1), 600ms–1200ms durations, and zero bounce."
             align="left"
@@ -551,7 +551,7 @@ export default function DesignSystemPage() {
               <div>
                 <div className="flex items-center justify-between text-xs mb-2">
                   <span className="font-semibold text-deep-forest">
-                    Aarogyam Calm Easing: cubic-bezier(0.22, 1, 0.36, 1) • 900ms
+                    Vankal Calm Easing: cubic-bezier(0.22, 1, 0.36, 1) • 900ms
                   </span>
                   <span className="font-mono text-sage">Restorative • Recommended</span>
                 </div>
@@ -603,9 +603,9 @@ export default function DesignSystemPage() {
         {/* Footer Note in Design System */}
         <div className="text-center py-12 border-t border-forest/15 text-xs text-ink/60">
           <p className="font-serif italic text-forest text-sm mb-1">
-            &ldquo;शान्तं प्रशान्तं निर्दोषम्&rdquo; — Serene, thoroughly peaceful, and devoid of flaw.
+            &ldquo;શાન્તં પ્રશાન્તં નિર્દોષમ્&rdquo; — Serene, thoroughly peaceful, and devoid of flaw.
           </p>
-          <p>Aarogyam Ayurveda Design System • End of Specification</p>
+          <p>Vankal Ayurveda Design System • End of Specification</p>
         </div>
       </Container>
     </div>

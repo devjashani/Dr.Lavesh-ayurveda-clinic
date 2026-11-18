@@ -3,14 +3,18 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { IMAGES } from '@/lib/config/images';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
 import { ShieldCheck, Award, Clock, Calendar, CheckCircle2 } from 'lucide-react';
-import { Reveal, RevealText, RevealImage, Magnetic, CountUp } from '@/components/motion';
+import { Reveal, RevealText, RevealImage, Magnetic } from '@/components/motion';
 
 export function DoctorSection() {
+  const { t } = useLanguage();
+
   return (
     <section className="py-20 sm:py-28 bg-paper border-b border-forest/15 relative overflow-hidden">
       <Container size="default">
@@ -19,47 +23,31 @@ export function DoctorSection() {
           <div className="lg:col-span-5 relative flex justify-center">
             <RevealImage
               shape="arch"
-              src="/images/doctors/dr-lavesh-bohra.jpg"
-              alt="Dr. Lavesh Bohra, Senior Ayurvedic Physician"
+              src={IMAGES.doctorPortrait}
+              alt={t.doctor.imageAlt}
               className="w-full max-w-[380px] sm:max-w-[420px] aspect-[4/5] rounded-t-[160px] rounded-b-[4px] bg-cream border border-forest/20 shadow-[0_12px_36px_rgba(20,41,28,0.08)]"
               imageClassName="object-cover object-top"
-              sizes="(max-width: 768px) 100vw, 420px"
+              sizes="(max-width: 768px) 90vw, 480px"
+              priority={false}
+              placeholder="blur"
+              blurDataURL={IMAGES.doctorPortraitBlur}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent pointer-events-none" />
 
               <div className="absolute bottom-4 left-5 right-5 text-cream flex items-baseline justify-between z-10">
                 <div>
                   <span className="text-[10px] uppercase font-mono tracking-widest text-turmeric block">
-                    AYUSH Registration No.
+                    Registration Status
                   </span>
                   <span className="font-mono text-xs font-semibold">
-                    AYUSH-RJ-1999-4081
+                    Registration No.: to be added
                   </span>
                 </div>
                 <span className="font-serif italic text-xs text-paper/80">
-                  वरिष्ठ वैद्य
+                  નોંધાયેલા વૈદ્ય
                 </span>
               </div>
             </RevealImage>
-
-            {/* Floating Experience Badge */}
-            <div className="absolute -bottom-5 -right-2 sm:-right-6 z-20">
-              <Reveal delay={0.3} direction="right">
-                <div className="bg-deep-forest text-cream p-4 rounded-[4px] border border-forest/30 shadow-lg text-left max-w-[200px]">
-                  <CountUp
-                    target={24}
-                    suffix="+"
-                    delay={0.3}
-                    duration={1.8}
-                    className="font-display text-3xl font-light text-turmeric block leading-none"
-                    label="Years of Continuous Clinical Pulse Practice"
-                  />
-                  <span className="text-[11px] font-sans text-paper/80 mt-1 block">
-                    Years of Continuous Clinical Pulse Practice
-                  </span>
-                </div>
-              </Reveal>
-            </div>
           </div>
 
           {/* Right Column: Physician Biography & Credentials */}
@@ -68,7 +56,7 @@ export function DoctorSection() {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
                 <span className="text-eyebrow font-semibold text-forest tracking-widest">
-                  Chief Ayurvedic Physician & Founder
+                  Registered Ayurvedic Practitioner
                 </span>
               </div>
             </Reveal>
@@ -79,7 +67,7 @@ export function DoctorSection() {
               </RevealText>
               <Reveal delay={0.24} direction="up">
                 <p className="font-serif italic text-forest/80 text-lg mt-0.5">
-                  BAMS (NIA Jaipur), MD (Ayurveda Kayachikitsa), PhD (Panchakarma)
+                  BAMS (2026), SMIAS, Gujarat Ayurved University
                 </p>
               </Reveal>
             </div>
@@ -87,11 +75,11 @@ export function DoctorSection() {
             <Reveal delay={0.28} direction="up" blur={true}>
               <div className="space-y-4">
                 <p className="text-body-base text-ink/80 leading-relaxed">
-                  Descended from a multi-generational lineage of Rajasthan Vaidyas, Dr. Bohra brings over two decades of uncompromising clinical rigor to Aarogyam. He trained under celebrated traditional pulse masters in Varanasi and Kerala before establishing the inpatient Panchakarma hospital in Civil Lines, Jaipur.
+                  Dr. Lavesh Bohra is a Registered Ayurvedic Practitioner who completed his BAMS (2026) from SMIAS, Gujarat Ayurved University. His clinical practice focuses on individual Ayurvedic consultations and personalized lifestyle care, guiding individuals through tailored diet, daily routines, and seasonal health management.
                 </p>
 
                 <p className="text-body-base text-ink/80 leading-relaxed">
-                  His diagnostic approach combines classical <em>Ashtavidha Pariksha</em> (eight-fold Ayurvedic examination) with modern investigative biochemistry, ensuring every chronic care plan is both anciently sound and scientifically measurable.
+                  Consultations are thorough and individualized, dedicated to understanding your unique constitution (<em>Prakriti</em>) and root-cause balance through classical Ayurvedic examination and actionable daily guidance.
                 </p>
               </div>
             </Reveal>
@@ -105,8 +93,8 @@ export function DoctorSection() {
                       Consultation Hours
                     </span>
                     <p className="text-deep-forest font-medium mt-0.5">
-                      Mon – Sat: 9:00 AM – 1:30 PM<br />
-                      Evening: 4:30 PM – 7:30 PM
+                      Mon – Sat: By prior appointment<br />
+                      In-Person & Online Sessions
                     </p>
                   </div>
 
@@ -116,7 +104,7 @@ export function DoctorSection() {
                     </span>
                     <p className="text-deep-forest font-medium mt-0.5">
                       <strong className="text-base text-deep-forest">₹1,200</strong>
-                      <span className="text-[11px] text-ink/75 block">Includes 45-min pulse reading & diet chart</span>
+                      <span className="text-[11px] text-ink/75 block">Includes intake, Prakriti assessment & lifestyle plan</span>
                     </p>
                   </div>
                 </div>
@@ -129,7 +117,7 @@ export function DoctorSection() {
                       size="md"
                       showArrow
                     >
-                      Book with Dr. Bohra
+                      Book Consultation
                     </Button>
                   </Magnetic>
                   <Magnetic strength={6}>
@@ -138,7 +126,7 @@ export function DoctorSection() {
                       variant="secondary"
                       size="md"
                     >
-                      View Full Profile & Case Papers
+                      View Full Profile
                     </Button>
                   </Magnetic>
                 </div>

@@ -82,12 +82,12 @@ export function TreatmentsDirectory({ treatments }: TreatmentsDirectoryProps) {
             Classical Samhita Therapies
           </h1>
 
-          <p className="font-devanagari text-turmeric text-lg sm:text-xl mt-2 tracking-wide">
-            कार्यं धातुसाम्यमिहोच्यते — The aim of medicine is restoring constitutional harmony
+          <p className="font-gujarati text-turmeric text-lg sm:text-xl mt-2 tracking-wide">
+            કાર્યં ધાતુસામ્યમિહોચ્યતે — The aim of medicine is restoring constitutional harmony
           </p>
 
           <p className="text-body-lg text-ink/80 mt-4 max-w-3xl leading-relaxed">
-            Every therapy at Aarogyam is prescribed strictly following pulse examination (
+            Every therapy at Vankal is prescribed strictly following pulse examination (
             <em>Nadi Pariksha</em>) and eight-fold clinical diagnosis (<em>Ashtavidha Pariksha</em>).
             We do not operate as a commercial spa menu. Each protocol below is an authentic
             medical intervention formulated from the canonical treatises of Charaka, Sushruta, and

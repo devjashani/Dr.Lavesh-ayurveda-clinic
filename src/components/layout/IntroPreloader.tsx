@@ -16,7 +16,7 @@ export function IntroPreloader() {
     if (typeof window === 'undefined') return;
 
     try {
-      const alreadyShown = sessionStorage.getItem('aarogyam_intro_shown');
+      const alreadyShown = sessionStorage.getItem('vankal_intro_shown');
       if (alreadyShown || prefersReduced) {
         return;
       }
@@ -29,9 +29,9 @@ export function IntroPreloader() {
 
       // Finish and remove from DOM at 1.8s max
       const removeTimer = setTimeout(() => {
-        sessionStorage.setItem('aarogyam_intro_shown', '1');
+        sessionStorage.setItem('vankal_intro_shown', '1');
         setShouldRender(false);
-        window.dispatchEvent(new CustomEvent('aarogyam-intro-done'));
+        window.dispatchEvent(new CustomEvent('vankal-intro-done'));
       }, 1800);
 
       return () => {
@@ -55,13 +55,13 @@ export function IntroPreloader() {
         animate={
           isLifting
             ? {
-                clipPath: 'inset(0% 0% 100% 0% round 0 0 60% 60%)',
-                opacity: 0.95,
-              }
+              clipPath: 'inset(0% 0% 100% 0% round 0 0 60% 60%)',
+              opacity: 0.95,
+            }
             : {
-                clipPath: 'inset(0% 0% 0% 0% round 0 0 0 0)',
-                opacity: 1,
-              }
+              clipPath: 'inset(0% 0% 0% 0% round 0 0 0 0)',
+              opacity: 1,
+            }
         }
         transition={{
           duration: 0.65,
@@ -145,7 +145,7 @@ export function IntroPreloader() {
             </svg>
           </div>
 
-          {/* 2. "Aarogyam" and "आरोग्यम्" Wordmark */}
+          {/* 2. "VANKAL AYURVEDA" and "વાંકલ" Wordmark */}
           <motion.div
             initial={{ opacity: 0, y: 10, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -153,15 +153,15 @@ export function IntroPreloader() {
             className="text-center"
           >
             <h1 className="font-display text-3xl sm:text-4xl text-deep-forest tracking-tight font-normal">
-              Aarogyam
+              VANKAL AYURVEDA
             </h1>
             <motion.p
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 0.8, y: 0 }}
               transition={{ duration: 0.35, delay: 0.55, ease: MOTION_TOKENS.ease }}
-              className="font-devanagari italic text-xs sm:text-sm text-forest/80 tracking-widest mt-0.5"
+              className="font-serif italic text-xs sm:text-sm text-forest/80 tracking-widest mt-0.5"
             >
-              आरोग्यम् · आयुर्वेद चिकित्सालय
+              વાંકલ
             </motion.p>
           </motion.div>
 

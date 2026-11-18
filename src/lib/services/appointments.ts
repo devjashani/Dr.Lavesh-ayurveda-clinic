@@ -1,5 +1,5 @@
 /**
- * Aarogyam Ayurveda — Appointments Service Layer
+ * Vankal Ayurveda — Appointments Service Layer
  * 
  * Designed to be Supabase-ready. Currently provides an in-memory & localStorage
  * mock implementation with robust double-booking prevention.
@@ -42,12 +42,12 @@ export type CreateAppointmentInput = Omit<
 const INITIAL_MOCK_BOOKINGS: { dateOffset: number; slot: string; doctorId: string }[] = [
   { dateOffset: 1, slot: '10:30 AM', doctorId: 'dr-lavesh-bohra' },
   { dateOffset: 1, slot: '11:15 AM', doctorId: 'dr-lavesh-bohra' },
-  { dateOffset: 1, slot: '05:15 PM', doctorId: 'dr-ananya-sharma' },
+  { dateOffset: 1, slot: '05:15 PM', doctorId: 'dr-lavesh-bohra' },
   { dateOffset: 2, slot: '09:45 AM', doctorId: 'dr-lavesh-bohra' },
-  { dateOffset: 2, slot: '06:00 PM', doctorId: 'mukesh-gurjar' },
+  { dateOffset: 2, slot: '06:00 PM', doctorId: 'dr-lavesh-bohra' },
 ];
 
-const STORAGE_KEY = 'aarogyam_appointments_store';
+const STORAGE_KEY = 'vankal_appointments_store';
 
 function getDateString(offsetDays: number): string {
   const d = new Date();
@@ -63,12 +63,12 @@ function getStoredAppointments(): Appointment[] {
       // Seed initial mock bookings
       const seeded: Appointment[] = INITIAL_MOCK_BOOKINGS.map((b, idx) => ({
         id: `apt-mock-${idx}`,
-        tokenNumber: `AAR-2026-0${100 + idx}`,
+        tokenNumber: `VAN-2026-0${100 + idx}`,
         serviceId: 'nadi-pariksha',
         serviceName: 'Nadi Pariksha & Pulse Consultation',
         serviceCategory: 'Diagnostic',
         doctorId: b.doctorId,
-        doctorName: b.doctorId === 'dr-lavesh-bohra' ? 'Dr. Lavesh Bohra' : 'Dr. Ananya Sharma',
+        doctorName: 'Dr. Lavesh Bohra',
         mode: 'in-clinic',
         date: getDateString(b.dateOffset),
         slot: b.slot,

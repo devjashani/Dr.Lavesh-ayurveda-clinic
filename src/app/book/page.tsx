@@ -3,22 +3,22 @@ import type { Metadata } from 'next';
 import { BookClient } from './BookClient';
 
 export const metadata: Metadata = {
-  title: 'Book Consultation & Nadi Pariksha | Aarogyam Ayurveda Jaipur',
+  title: 'Book Consultation | Dr. Lavesh Bohra | Vankal Ayurveda',
   description:
-    'Reserve an in-person pulse diagnosis (Nadi Pariksha) appointment or online video consultation with Dr. Lavesh Bohra, MD (Ayurveda) at Aarogyam Ayurveda, Civil Lines, Jaipur.',
+    'Reserve an in-person appointment or online video consultation with Dr. Lavesh Bohra, BAMS (2026), Registered Ayurvedic Practitioner at Vankal Ayurveda.',
   keywords: [
-    'Book Ayurveda appointment Jaipur',
-    'Nadi Pariksha booking',
+    'Book Ayurveda appointment',
+    'Ayurveda consultation booking',
     'Dr Lavesh Bohra consultation',
-    'Ayurveda clinic Civil Lines Jaipur',
-    'Panchakarma booking',
+    'Ayurvedic lifestyle consultation',
+    'Vankal Ayurveda',
   ],
   openGraph: {
-    title: 'Book Consultation & Nadi Pariksha | Aarogyam Ayurveda',
+    title: 'Book Consultation | Vankal Ayurveda',
     description:
-      'Reserve an in-person pulse diagnosis appointment or video consultation at Aarogyam Ayurveda Jaipur.',
-    url: 'https://aarogyamayurveda.com/book',
-    siteName: 'Aarogyam Classical Ayurveda Clinic',
+      'Reserve an in-person appointment or video consultation at Vankal Ayurveda.',
+    url: 'https://vankalayurveda.com/book',
+    siteName: 'Vankal Ayurveda',
     locale: 'en_IN',
     type: 'website',
   },
@@ -29,7 +29,7 @@ export default function BookPage() {
     <Suspense
       fallback={
         <div className="py-24 text-center font-mono text-xs text-forest/70">
-          Loading Aarogyam Appointment Desk...
+          Loading Vankal Appointment Desk...
         </div>
       }
     >

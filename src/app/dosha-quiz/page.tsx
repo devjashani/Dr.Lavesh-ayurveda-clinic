@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { DoshaQuizClient } from './DoshaQuizClient';
 
 export const metadata: Metadata = {
-  title: 'Dosha Constitution Quiz (Prakriti Pariksha) | Aarogyam Ayurveda',
+  title: 'Dosha Constitution Quiz (Prakriti Pariksha) | Vankal Ayurveda',
   description:
     'Discover your unique Ayurvedic mind-body constitution (Vata, Pitta, Kapha) with our classical 10-point Prakriti self-assessment based on Charaka Samhita. Get customized diet, herb, and Panchakarma guidance.',
   keywords: [
@@ -12,14 +12,14 @@ export const metadata: Metadata = {
     'Vata Pitta Kapha quiz',
     'Ayurvedic body type test',
     'Charaka Samhita Prakriti',
-    'Aarogyam Ayurveda Jaipur',
+    'Vankal Ayurveda Jaipur',
   ],
   openGraph: {
-    title: 'Dosha Constitution Quiz (Prakriti Pariksha) | Aarogyam',
+    title: 'Dosha Constitution Quiz (Prakriti Pariksha) | Vankal',
     description:
       'Discover your unique Ayurvedic mind-body constitution (Vata, Pitta, Kapha) with our classical 10-point assessment.',
-    url: 'https://aarogyamayurveda.com/dosha-quiz',
-    siteName: 'Aarogyam Classical Ayurveda Clinic',
+    url: 'https://vankalayurveda.com/dosha-quiz',
+    siteName: 'Vankal Ayurveda',
     locale: 'en_IN',
     type: 'website',
   },

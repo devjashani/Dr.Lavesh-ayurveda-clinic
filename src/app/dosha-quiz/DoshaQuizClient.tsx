@@ -110,7 +110,7 @@ export function DoshaQuizClient() {
           },
           timestamp: Date.now(),
         };
-        localStorage.setItem('aarogyam_dosha_result', JSON.stringify(payload));
+        localStorage.setItem('vankal_dosha_result', JSON.stringify(payload));
       } catch (err) {
         console.warn('Could not save to localStorage:', err);
       }
@@ -189,7 +189,7 @@ export function DoshaQuizClient() {
   // Share via WhatsApp
   const handleShareWhatsApp = () => {
     const text = encodeURIComponent(
-      `I completed the Aarogyam Classical Dosha Quiz and discovered my constitutional Prakriti is ${dominantProfile.type} (${vataPercent}% Vata · ${pittaPercent}% Pitta · ${kaphaPercent}% Kapha). Discover your classical Ayurvedic constitution: https://aarogyamayurveda.com/dosha-quiz`
+      `I completed the Vankal Classical Dosha Quiz and discovered my constitutional Prakriti is ${dominantProfile.type} (${vataPercent}% Vata · ${pittaPercent}% Pitta · ${kaphaPercent}% Kapha). Discover your classical Ayurvedic constitution: https://vankalayurveda.com/dosha-quiz`
     );
     window.open(`https://wa.me/?text=${text}`, '_blank');
   };
@@ -375,12 +375,12 @@ export function DoshaQuizClient() {
             {/* Header Banner */}
             <div className="text-center space-y-3">
               <span className="text-xs font-mono uppercase tracking-widest text-turmeric font-semibold block">
-                Prakriti Assessment Result · प्रकृति विश्लेषण
+                Prakriti Assessment Result · પ્રકૃતિ વિશ્લેષણ
               </span>
               <h1 className="text-display-h1 text-deep-forest font-normal tracking-tight">
                 Your Constitutional Blueprint
               </h1>
-              <p className="font-devanagari text-turmeric text-2xl sm:text-3xl font-normal">
+              <p className="font-gujarati text-turmeric text-2xl sm:text-3xl font-normal">
                 {dominantProfile.sanskritName}
               </p>
               <p className="text-body-base text-ink/75 max-w-xl mx-auto">
@@ -401,7 +401,7 @@ export function DoshaQuizClient() {
                   <div className="flex items-center justify-between text-xs font-mono">
                     <span className="font-semibold text-deep-forest flex items-center gap-1.5">
                       <Wind className="w-3.5 h-3.5 text-sage" />
-                      Vata (वात)
+                      Vata (વાત)
                     </span>
                     <span className="font-bold text-deep-forest text-sm">{vataPercent}%</span>
                   </div>
@@ -423,7 +423,7 @@ export function DoshaQuizClient() {
                   <div className="flex items-center justify-between text-xs font-mono">
                     <span className="font-semibold text-deep-forest flex items-center gap-1.5">
                       <Flame className="w-3.5 h-3.5 text-turmeric" />
-                      Pitta (पित्त)
+                      Pitta (પિત્ત)
                     </span>
                     <span className="font-bold text-deep-forest text-sm">{pittaPercent}%</span>
                   </div>
@@ -445,7 +445,7 @@ export function DoshaQuizClient() {
                   <div className="flex items-center justify-between text-xs font-mono">
                     <span className="font-semibold text-deep-forest flex items-center gap-1.5">
                       <Droplets className="w-3.5 h-3.5 text-forest" />
-                      Kapha (कफ)
+                      Kapha (કફ)
                     </span>
                     <span className="font-bold text-deep-forest text-sm">{kaphaPercent}%</span>
                   </div>
@@ -483,7 +483,7 @@ export function DoshaQuizClient() {
                 <div className="pt-3 border-t border-forest/10">
                   <h4 className="text-xs font-mono uppercase tracking-wider text-forest font-semibold mb-2.5 flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-forest" />
-                    Natural Strengths (प्रकृति गुण)
+                    Natural Strengths (પ્રકૃતિ ગુણ)
                   </h4>
                   <ul className="space-y-1.5">
                     {dominantProfile.strengths.map((str, i) => (
@@ -499,7 +499,7 @@ export function DoshaQuizClient() {
               {/* Right: Vulnerabilities & Herbs */}
               <div className="bg-cream/80 border border-forest/15 rounded-[4px] p-6 sm:p-7 space-y-4">
                 <h3 className="text-display-h3 text-deep-forest font-normal">
-                  Potential Imbalances (विकृति सम्भावना)
+                  Potential Imbalances (વિકૃતિ સંભાવના)
                 </h3>
                 <ul className="space-y-1.5">
                   {dominantProfile.vulnerabilities.map((vuln, i) => (
@@ -513,7 +513,7 @@ export function DoshaQuizClient() {
                 <div className="pt-3 border-t border-forest/10">
                   <h4 className="text-xs font-mono uppercase tracking-wider text-forest font-semibold mb-2 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-turmeric" />
-                    Key Herbal Allies (औषध द्रव्य)
+                    Key Herbal Allies (ઔષધ દ્રવ્ય)
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {dominantProfile.classicalHerbs.map((herb, i) => (
@@ -548,7 +548,7 @@ export function DoshaQuizClient() {
                 <div className="p-5 bg-paper rounded border border-forest/15 space-y-3">
                   <h4 className="text-xs font-mono uppercase tracking-wider text-forest font-semibold flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-forest" />
-                    Foods to Favor (पथ्य आहार)
+                    Foods to Favor (પથ્ય આહાર)
                   </h4>
                   <ul className="space-y-2">
                     {dominantProfile.foodsToFavor.map((food, i) => (
@@ -564,7 +564,7 @@ export function DoshaQuizClient() {
                 <div className="p-5 bg-paper rounded border border-clay/20 space-y-3">
                   <h4 className="text-xs font-mono uppercase tracking-wider text-clay font-semibold flex items-center gap-1.5">
                     <XCircle className="w-4 h-4 text-clay" />
-                    Foods to Moderate / Avoid (अपथ्य आहार)
+                    Foods to Moderate / Avoid (અપથ્ય આહાર)
                   </h4>
                   <ul className="space-y-2">
                     {dominantProfile.foodsToReduce.map((food, i) => (

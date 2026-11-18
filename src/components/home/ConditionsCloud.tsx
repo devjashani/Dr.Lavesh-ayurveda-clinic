@@ -14,18 +14,18 @@ interface ConditionTag {
 }
 
 const conditionsList: ConditionTag[] = [
-  { name: 'Rheumatoid Arthritis', sanskrit: 'आमवात', category: 'Joints & Autoimmune' },
-  { name: 'PCOS & Hormonal Irregularity', sanskrit: 'आर्तव क्षय', category: 'Women’s Health' },
-  { name: 'Chronic Insomnia', sanskrit: 'अनिद्रा', category: 'Neurological & Sleep' },
-  { name: 'Psoriasis & Severe Eczema', sanskrit: 'कुष्ठ रोग', category: 'Dermatology' },
-  { name: 'Migraine & Cervical Spondylosis', sanskrit: 'अर्धावभेदक', category: 'Neurological' },
-  { name: 'Ulcerative Colitis & Chronic IBS', sanskrit: 'ग्रहणी दोष', category: 'Gut & Digestion' },
-  { name: 'Fatty Liver & Metabolic Sluggishness', sanskrit: 'यकृत् विकार', category: 'Metabolism' },
-  { name: 'Allergic Sinusitis & Rhinitis', sanskrit: 'दुष्ट प्रतिश्याय', category: 'Respiratory & ENT' },
-  { name: 'Lumbar Disc Prolapse & Sciatica', sanskrit: 'गृध्रसी', category: 'Spine & Joints' },
-  { name: 'Ankylosing Spondylitis', sanskrit: 'अस्थिमज्जगत वात', category: 'Autoimmune' },
-  { name: 'Type-2 Diabetes Metabolic Support', sanskrit: 'प्रमेह', category: 'Metabolism' },
-  { name: 'Premature Hair Fall & Scalp Psoriasis', sanskrit: 'खालित्य', category: 'Dermatology' },
+  { name: 'Rheumatoid Arthritis', sanskrit: 'આમવાત', category: 'Joints & Autoimmune' },
+  { name: 'PCOS & Hormonal Irregularity', sanskrit: 'આર્તવ ક્ષય', category: 'Women’s Health' },
+  { name: 'Chronic Insomnia', sanskrit: 'અનિદ્રા', category: 'Neurological & Sleep' },
+  { name: 'Psoriasis & Severe Eczema', sanskrit: 'કુષ્ઠ રોગ', category: 'Dermatology' },
+  { name: 'Migraine & Cervical Spondylosis', sanskrit: 'અર્ધાવભેદક', category: 'Neurological' },
+  { name: 'Ulcerative Colitis & Chronic IBS', sanskrit: 'ગ્રહણી દોષ', category: 'Gut & Digestion' },
+  { name: 'Fatty Liver & Metabolic Sluggishness', sanskrit: 'યકૃત્ વિકાર', category: 'Metabolism' },
+  { name: 'Allergic Sinusitis & Rhinitis', sanskrit: 'દુષ્ટ પ્રતિશ્યાય', category: 'Respiratory & ENT' },
+  { name: 'Lumbar Disc Prolapse & Sciatica', sanskrit: 'ગૃધ્રસી', category: 'Spine & Joints' },
+  { name: 'Ankylosing Spondylitis', sanskrit: 'અસ્થિમજ્જાગત વાત', category: 'Autoimmune' },
+  { name: 'Type-2 Diabetes Metabolic Support', sanskrit: 'પ્રમેહ', category: 'Metabolism' },
+  { name: 'Premature Hair Fall & Scalp Psoriasis', sanskrit: 'ખાલિત્ય', category: 'Dermatology' },
 ];
 
 export function ConditionsCloud() {
@@ -34,10 +34,10 @@ export function ConditionsCloud() {
       <Container size="default">
         <Reveal delay={0} direction="up">
           <SectionHeading
-            eyebrow="Clinical Specialization"
-            sanskritEyebrow="व्याधि निदान"
-            title="Chronic Conditions We Treat"
-            subtitle="We specialize in difficult-to-treat, recurrent metabolic, inflammatory, and degenerative disorders where long-term allopathic suppression has reached its limitations."
+            eyebrow="Clinical Areas"
+            sanskritEyebrow="વ્યાધિ વિમર્શ"
+            title="Areas of Ayurvedic Consultation"
+            subtitle="We provide individualized Ayurvedic consultations and personalized lifestyle guidance for digestive, metabolic, joint, and stress-related concerns."
             align="center"
           />
         </Reveal>

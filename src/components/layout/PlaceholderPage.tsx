@@ -83,7 +83,7 @@ export function PlaceholderPage({
               <span>Module Architectural Blueprint (Step 1 Foundation)</span>
             </div>
             <p className="leading-relaxed">
-              This module route is registered and connected to the Aarogyam global navigation, responsive viewport system, and Lenis smooth scroll engine. Full patient interactions, booking logic, and clinical records are authored in subsequent milestones.
+              This module route is registered and connected to the Vankal global navigation, responsive viewport system, and Lenis smooth scroll engine. Full patient interactions, booking logic, and clinical records are authored in subsequent milestones.
             </p>
           </div>
         )}

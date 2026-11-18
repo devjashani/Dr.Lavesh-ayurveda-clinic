@@ -1,5 +1,5 @@
-🌿 *AAROGYAM AYURVEDA — APPOINTMENT CONFIRMATION* 🌿
-Hospital Reg: AYUSH-RJ-2018-0482
+🌿 *VANKAL AYURVEDA — APPOINTMENT CONFIRMATION* 🌿
+Registration No.: to be added
 
 Namaste *{{patient_name}}* ji,
 
@@ -13,10 +13,9 @@ Your clinical consultation is confirmed. Here are your booking details:
 📍 *Mode:* {{consultation_mode}}
 
 {{#if is_in_clinic}}
-📍 *Location:* Aarogyam Ayurveda, 14 Jacob Road, Civil Lines, Jaipur (1.8 km from Jaipur Junction).
-Google Maps: https://maps.google.com/?q=26.9075,75.7892
+📍 *Location:* Vankal Ayurveda (Address: to be added)
 {{else}}
-💻 *Encrypted Video Link:* https://meet.aarogyamayurveda.com/room/{{token_number}}
+💻 *Online Consultation:* Your joining details and link will be shared via WhatsApp prior to the appointment.
 {{/if}}
 
 ⚠️ *Important Preparation for Pulse Diagnosis:*
@@ -24,9 +23,8 @@ Google Maps: https://maps.google.com/?q=26.9075,75.7892
 • Avoid tea, coffee, smoking, or intense exercise before your pulse reading.
 • Please carry your previous laboratory and radiological reports.
 
-For help, queries, or rescheduling, reply directly to this WhatsApp message or call our reception at +91 141 238 9400.
+For help, queries, or rescheduling, reply directly to this WhatsApp message or contact our team (Phone: to be added).
 
-_“रोगमुक्तं शरीरं स्यात् प्रसन्नं मन एव च”_
+_“રોગમુક્તં શરીરં સ્યાત્ પ્રસન્નં મન એવ ચ”_
 Wishing you radiant health and vitality.
-Aarogyam Ayurveda Desk
-
+Vankal Ayurveda Desk

@@ -12,14 +12,13 @@ import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export const navLinks = [
-  { href: '/', label: 'Home', sanskrit: 'गृह' },
-  { href: '/about', label: 'About', sanskrit: 'परिचय' },
-  { href: '/treatments', label: 'Treatments', sanskrit: 'चिकित्सा' },
-  { href: '/conditions', label: 'Conditions', sanskrit: 'व्याधि' },
-  { href: '/doctors', label: 'Doctors', sanskrit: 'वैद्य' },
-  { href: '/dosha-quiz', label: 'Dosha Quiz', sanskrit: 'प्रकृति' },
-  { href: '/blog', label: 'Wisdom', sanskrit: 'ज्ञान' },
-  { href: '/contact', label: 'Contact', sanskrit: 'संपर्क' },
+  { href: '/', label: 'Home', sanskrit: 'મુખ્ય' },
+  { href: '/about', label: 'About', sanskrit: 'વિશે' },
+  { href: '/treatments', label: 'Treatments', sanskrit: 'સારવાર' },
+  { href: '/conditions', label: 'Conditions', sanskrit: 'રોગ' },
+  { href: '/doctors', label: 'Doctor', sanskrit: 'વૈદ્ય' },
+  { href: '/dosha-quiz', label: 'Dosha Quiz', sanskrit: 'ક્વિઝ' },
+  { href: '/contact', label: 'Contact', sanskrit: 'સંપર્ક' },
 ];
 
 export function Navbar() {
@@ -86,12 +85,14 @@ export function Navbar() {
             : 'bg-transparent border-b border-transparent py-5'
         )}
       >
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between gap-4">
-          {/* Logo */}
-          <Logo />
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 xl:px-6 2xl:px-10 flex items-center justify-between gap-4 xl:gap-6 2xl:gap-10 h-11 sm:h-12">
+          {/* 1. Logo Block */}
+          <div className="shrink-0 flex items-center h-11">
+            <Logo />
+          </div>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden xl:flex items-center gap-6 2xl:gap-8">
+          {/* 2. Desktop Navigation Links Container */}
+          <nav className="hidden xl:flex items-center min-w-0 gap-x-6 2xl:gap-x-8 shrink-0 h-11">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -99,20 +100,25 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'relative py-1.5 text-sm tracking-wide transition-colors duration-200 group inline-flex items-center flex-col',
+                    'relative px-1.5 py-2 text-[15px] 2xl:text-[16px] tracking-wide transition-colors duration-200 group inline-flex items-center flex-col whitespace-nowrap shrink-0 min-h-[44px] justify-center',
                     isActive
                       ? 'text-deep-forest font-semibold'
                       : 'text-ink/80 hover:text-deep-forest'
                   )}
                 >
-                  <span className={language === 'HI' ? 'font-serif text-sm' : ''}>
-                    {language === 'HI' ? link.sanskrit : link.label}
+                  <span
+                    className={cn(
+                      'whitespace-nowrap transition-colors',
+                      language === 'GU' ? 'font-serif leading-[1.6]' : 'font-sans leading-[1.6]'
+                    )}
+                  >
+                    {language === 'GU' ? link.sanskrit : link.label}
                   </span>
 
                   {/* Underline draws left to right on hover */}
                   <span
                     className={cn(
-                      'absolute bottom-0 left-0 w-full h-[1.5px] origin-left transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none',
+                      'absolute bottom-1 left-0 w-full h-[1.5px] origin-left transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none',
                       isActive
                         ? 'bg-turmeric scale-x-100'
                         : 'bg-deep-forest scale-x-0 group-hover:scale-x-100'
@@ -123,7 +129,7 @@ export function Navbar() {
                   {isActive && (
                     <motion.span
                       layoutId="activeNavDot"
-                      className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-turmeric shadow-xs"
+                      className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-turmeric shadow-xs pointer-events-none"
                       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     />
                   )}
@@ -132,15 +138,16 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Right Action Items */}
-          <div className="hidden lg:flex items-center gap-4">
+          {/* 3. Right Action Block (Language Toggle + Book Button) */}
+          <div className="hidden xl:flex items-center gap-3 2xl:gap-4 shrink-0 h-11">
             {/* Language Toggle */}
-            <div className="flex items-center bg-cream/70 rounded-[4px] p-0.5 border border-forest/15 text-xs font-medium">
+            <div className="flex items-center bg-cream/70 rounded-[4px] p-0.5 border border-forest/15 text-xs font-medium shrink-0 h-9">
               <button
                 type="button"
                 onClick={() => setLanguage('EN')}
+                aria-label="Switch to English"
                 className={cn(
-                  'px-2 py-1 rounded-[3px] transition-all duration-200 cursor-pointer',
+                  'px-2.5 py-1 rounded-[3px] transition-all duration-200 cursor-pointer whitespace-nowrap h-8 flex items-center',
                   language === 'EN'
                     ? 'bg-deep-forest text-cream font-semibold shadow-xs'
                     : 'text-ink/70 hover:text-deep-forest'
@@ -150,28 +157,35 @@ export function Navbar() {
               </button>
               <button
                 type="button"
-                onClick={() => setLanguage('HI')}
+                onClick={() => setLanguage('GU')}
+                aria-label="Switch to Gujarati"
                 className={cn(
-                  'px-2 py-1 rounded-[3px] font-serif transition-all duration-200 cursor-pointer',
-                  language === 'HI'
+                  'px-2.5 py-1 rounded-[3px] transition-all duration-200 cursor-pointer whitespace-nowrap h-8 flex items-center',
+                  language === 'GU'
                     ? 'bg-deep-forest text-cream font-semibold shadow-xs'
                     : 'text-ink/70 hover:text-deep-forest'
                 )}
               >
-                हिं
+                ગુજ
               </button>
             </div>
 
             {/* Book Consultation Button */}
-            <Button href="/book" variant="primary" size="sm" showArrow className="min-h-[44px]">
+            <Button
+              href="/book"
+              variant="primary"
+              size="sm"
+              showArrow
+              className="h-11 px-6 py-3 whitespace-nowrap shrink-0"
+            >
               {t.nav.bookConsultation}
             </Button>
           </div>
 
           {/* Mobile Menu Trigger */}
-          <div className="flex xl:hidden items-center gap-3">
-            <Button href="/book" variant="primary" size="sm" className="hidden sm:inline-flex md:text-xs min-h-[44px]">
-              {language === 'HI' ? 'परामर्श' : 'Book'}
+          <div className="flex xl:hidden items-center gap-2.5 sm:gap-3 shrink-0">
+            <Button href="/book" variant="primary" size="sm" className="hidden sm:inline-flex md:text-xs min-h-[44px] whitespace-nowrap shrink-0">
+              {language === 'GU' ? 'પરામર્શ' : 'Book'}
             </Button>
 
             <button
@@ -200,37 +214,23 @@ export function Navbar() {
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-40 bg-paper flex flex-col justify-between pt-24 pb-8 px-6 sm:px-10 overflow-y-auto"
           >
-            {/* Header info / language */}
+            {/* Header info & Close Button */}
             <div className="flex items-center justify-between pb-4 border-b border-forest/15">
               <span className="text-xs uppercase tracking-widest text-forest font-semibold">
-                Menu & Directory
+                {t.nav.menu}
               </span>
-              <div className="flex items-center bg-cream rounded p-0.5 border border-forest/15 text-xs">
-                <button
-                  type="button"
-                  onClick={() => setLanguage('EN')}
-                  className={cn(
-                    'px-2.5 py-1 rounded transition-colors',
-                    language === 'EN' ? 'bg-deep-forest text-cream font-semibold' : 'text-ink/70'
-                  )}
-                >
-                  EN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLanguage('HI')}
-                  className={cn(
-                    'px-2.5 py-1 rounded font-serif transition-colors',
-                    language === 'HI' ? 'bg-deep-forest text-cream font-semibold' : 'text-ink/70'
-                  )}
-                >
-                  हिन्दी
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-2 text-deep-forest hover:bg-forest/10 rounded-[4px] transition-colors focus:outline-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Close Navigation Menu"
+              >
+                <X className="w-6 h-6 stroke-[1.5]" />
+              </button>
             </div>
 
-            {/* Nav list */}
-            <nav className="flex flex-col gap-3 py-6">
+            {/* Nav list with min-48px tap targets */}
+            <nav className="flex flex-col gap-1 py-4 my-auto">
               {navLinks.map((link, index) => {
                 const isActive = pathname === link.href;
                 return (
@@ -239,26 +239,29 @@ export function Navbar() {
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      duration: 0.5,
-                      delay: 0.05 * index,
+                      duration: 0.45,
+                      delay: 0.035 * index,
                       ease: [0.22, 1, 0.36, 1],
                     }}
                   >
                     <Link
                       href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
-                        'flex items-baseline justify-between py-2 border-b border-forest/10 group',
-                        isActive ? 'text-deep-forest' : 'text-ink/80 hover:text-deep-forest'
+                        'flex items-center justify-between min-h-[48px] py-3 px-2.5 rounded-[4px] border-b border-forest/10 group transition-colors',
+                        isActive
+                          ? 'text-deep-forest bg-forest/5 font-semibold'
+                          : 'text-ink/80 hover:text-deep-forest hover:bg-forest/5'
                       )}
                     >
-                      <div className="flex items-baseline gap-3">
+                      <div className="flex items-center gap-3.5">
                         <span className="text-xs font-mono text-sage">0{index + 1}</span>
-                        <span className="font-display text-2xl font-normal tracking-tight group-hover:translate-x-1 transition-transform">
-                          {language === 'HI' ? link.sanskrit : link.label}
+                        <span className="font-display text-xl sm:text-2xl font-normal tracking-tight group-hover:translate-x-1 transition-transform">
+                          {language === 'GU' ? link.sanskrit : link.label}
                         </span>
                       </div>
                       <span className="font-serif text-sm italic text-forest/60">
-                        {language === 'HI' ? link.label : link.sanskrit}
+                        {language === 'GU' ? link.label : link.sanskrit}
                       </span>
                     </Link>
                   </motion.div>
@@ -266,19 +269,54 @@ export function Navbar() {
               })}
             </nav>
 
-            {/* Bottom Actions */}
-            <div className="space-y-4 pt-4">
-              <BotanicalDivider variant="leaf" tone="sage" />
-              <div className="grid grid-cols-2 gap-3">
-                <Button href="/book" variant="primary" size="lg" className="w-full">
-                  Book Consultation
-                </Button>
-                <Button href="/portal" variant="secondary" size="lg" className="w-full">
-                  Patient Portal
-                </Button>
+            {/* Bottom Actions: Language Toggle & Book Button */}
+            <div className="space-y-4 pt-4 border-t border-forest/15 mt-auto">
+              <div className="flex items-center justify-between">
+                <span className="text-xs uppercase tracking-wider text-forest/80 font-medium">
+                  {language === 'GU' ? 'ભાષા પસંદ કરો' : 'Select Language'}
+                </span>
+                <div className="flex items-center bg-cream rounded-[4px] p-0.5 border border-forest/15 text-xs font-medium">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage('EN')}
+                    aria-label="Switch to English"
+                    className={cn(
+                      'px-3.5 py-1.5 rounded-[3px] min-h-[38px] transition-colors cursor-pointer',
+                      language === 'EN'
+                        ? 'bg-deep-forest text-cream font-semibold shadow-xs'
+                        : 'text-ink/70 hover:text-deep-forest'
+                    )}
+                  >
+                    English
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage('GU')}
+                    aria-label="Switch to Gujarati"
+                    className={cn(
+                      'px-3.5 py-1.5 rounded-[3px] min-h-[38px] transition-colors cursor-pointer',
+                      language === 'GU'
+                        ? 'bg-deep-forest text-cream font-semibold shadow-xs'
+                        : 'text-ink/70 hover:text-deep-forest'
+                    )}
+                  >
+                    ગુજરાતી
+                  </button>
+                </div>
               </div>
-              <p className="text-center text-xs text-ink/50 pt-2">
-                Aarogyam Ayurvedic Chikitsalaya • Civil Lines, Jaipur
+
+              <Button
+                href="/book"
+                variant="primary"
+                size="lg"
+                showArrow
+                className="w-full min-h-[50px] text-base whitespace-nowrap"
+              >
+                {t.nav.bookConsultation}
+              </Button>
+
+              <p className="text-center text-xs text-ink/50 pt-1">
+                VANKAL AYURVEDA • વાંકલ આયુર્વેદ
               </p>
             </div>
           </motion.div>

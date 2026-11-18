@@ -19,6 +19,8 @@ export interface RevealImageProps {
   fill?: boolean;
   sizes?: string;
   parallax?: boolean;
+  placeholder?: 'blur' | 'empty';
+  blurDataURL?: string;
   children?: React.ReactNode;
 }
 
@@ -31,7 +33,7 @@ export interface RevealImageProps {
  */
 export function RevealImage({
   src,
-  alt = 'Aarogyam Ayurveda',
+  alt = 'Vankal Ayurveda',
   shape = 'rect',
   className,
   imageClassName,
@@ -42,6 +44,8 @@ export function RevealImage({
   fill = true,
   sizes = '(max-width: 768px) 100vw, 50vw',
   parallax = true,
+  placeholder,
+  blurDataURL,
   children,
 }: RevealImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -97,6 +101,8 @@ export function RevealImage({
             fill={fill}
             sizes={sizes}
             priority={priority}
+            placeholder={placeholder}
+            blurDataURL={blurDataURL}
             className={cn('object-cover', imageClassName)}
           />
         )}
@@ -156,6 +162,8 @@ export function RevealImage({
               fill={fill}
               sizes={sizes}
               priority={priority}
+              placeholder={placeholder}
+              blurDataURL={blurDataURL}
               className={cn('object-cover', imageClassName)}
             />
           )}

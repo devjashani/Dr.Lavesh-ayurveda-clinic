@@ -9,13 +9,13 @@ import { TestimonialsClient } from './TestimonialsClient';
 import { AlertCircle, ShieldCheck, HeartHandshake, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Patient Clinical Outcomes & Testimonials | Aarogyam Ayurveda',
+  title: 'Clinical Outcomes & Documentation | Vankal Ayurveda',
   description:
-    'Read verified patient case reflections on Panchakarma, sciatica, rheumatoid arthritis, PCOD, and psoriasis at Aarogyam Ayurveda, Jaipur.',
+    'Clinical documentation and patient outcomes at Vankal Ayurveda supervised by Dr. Lavesh Bohra.',
   openGraph: {
-    title: 'Patient Clinical Outcomes & Testimonials | Aarogyam Ayurveda',
+    title: 'Clinical Outcomes & Documentation | Vankal Ayurveda',
     description:
-      'Verified case recoveries with documented lab markers and functional improvements supervised by Dr. Lavesh Bohra and Dr. Ananya Sharma.',
+      'Verified clinical case records and outcomes at Vankal Ayurveda.',
   },
 };
 
@@ -26,17 +26,17 @@ export default function TestimonialsPage() {
       <Container className="mb-10">
         <div className="max-w-3xl">
           <Badge variant="sage" className="mb-4">
-            रोगी अनुभूतयः · Verified Patient Clinical Outcomes
+            ચિકિત્સા અનુભવો · Clinical Documentation
           </Badge>
           <h1 className="font-display text-display-h1 text-deep-forest tracking-tight leading-[1.08] mb-6">
-            Real Patient Journeys. <br />
+            Clinical Documentation. <br />
             <span className="italic font-normal text-turmeric">
-              Documented Clinical Recoveries.
+              Individualized Care.
             </span>
           </h1>
           <p className="font-body text-base md:text-lg text-ink/75 leading-relaxed">
-            We measure clinical success not in vague promises, but in restored joint mobility, normalized
-            inflammatory blood markers, reduced synthetic medication dependence, and rejuvenated vitality.
+            We prioritize transparent, verifiable clinical documentation, emphasizing thoughtful
+            Prakriti analysis, digestive balance (Agni), and personalized lifestyle routines.
           </p>
         </div>
       </Container>
@@ -52,8 +52,7 @@ export default function TestimonialsPage() {
             Ayurvedic therapeutic outcomes vary significantly based on an individual’s unique biological
             constitution (Prakriti), disease chronicity (Kala), tissue pathology (Dhatu Dushti), metabolic fire
             (Agni), and strict compliance with prescribed dietary restrictions (Pathya). These testimonials
-            reflect individual verified patient experiences and should not be construed as universal or
-            guaranteed cure claims for any specific illness.
+            reflect individual experiences and should not be construed as universal promises or medical assurances for any illness.
           </div>
         </div>
       </Container>

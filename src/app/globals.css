@@ -14,7 +14,8 @@
   --font-display: var(--font-fraunces), "Fraunces", Georgia, serif;
   --font-serif: var(--font-fraunces), "Fraunces", Georgia, serif;
   --font-sans: var(--font-dm-sans), "DM Sans", system-ui, -apple-system, sans-serif;
-  --font-devanagari: var(--font-tiro-devanagari), "Tiro Devanagari Hindi", serif;
+  --font-gujarati: var(--font-noto-serif-gujarati), var(--font-fraunces), serif;
+  --font-gujarati-sans: var(--font-noto-sans-gujarati), var(--font-dm-sans), sans-serif;
 
   --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -70,6 +71,55 @@ html {
   scroll-behavior: auto; /* Handled smoothly by Lenis */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Gujarati Typography when GU language is active with generous line-height */
+html[lang="gu"],
+[data-lang="gu"] {
+  --font-display: var(--font-noto-serif-gujarati), var(--font-fraunces), serif;
+  --font-serif: var(--font-noto-serif-gujarati), var(--font-fraunces), serif;
+  --font-sans: var(--font-noto-sans-gujarati), var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-noto-sans-gujarati), var(--font-dm-sans), system-ui, sans-serif;
+  line-height: 1.8;
+}
+
+html[lang="gu"] h1,
+html[lang="gu"] h2,
+html[lang="gu"] h3,
+html[lang="gu"] h4,
+html[lang="gu"] .font-display,
+html[lang="gu"] .font-serif,
+[data-lang="gu"] h1,
+[data-lang="gu"] h2,
+[data-lang="gu"] h3,
+[data-lang="gu"] h4,
+[data-lang="gu"] .font-display,
+[data-lang="gu"] .font-serif {
+  font-family: var(--font-noto-serif-gujarati), var(--font-fraunces), Georgia, serif;
+  line-height: 1.35;
+}
+
+html[lang="gu"] p,
+html[lang="gu"] li,
+html[lang="gu"] a,
+html[lang="gu"] button,
+html[lang="gu"] input,
+html[lang="gu"] select,
+html[lang="gu"] textarea,
+[data-lang="gu"] p,
+[data-lang="gu"] li,
+[data-lang="gu"] a,
+[data-lang="gu"] button,
+[data-lang="gu"] input,
+[data-lang="gu"] select,
+[data-lang="gu"] textarea {
+  line-height: 1.75;
+}
+
+.font-gujarati,
+.font-sanskrit {
+  font-family: var(--font-noto-serif-gujarati), var(--font-fraunces), serif;
+  line-height: 1.5;
 }
 
 body {

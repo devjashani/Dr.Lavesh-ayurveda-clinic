@@ -23,7 +23,7 @@ const steps: ProcessStep[] = [
   {
     number: '01',
     title: 'Initial Vaidya Consultation',
-    sanskrit: 'रोगि परीक्षा (Patient Intake)',
+    sanskrit: 'રોગી પરીક્ષા (Patient Intake)',
     duration: '30–45 Minutes',
     description:
       'We begin with an in-depth conversation exploring your full health history, past allopathic reports, sleep architecture, bowel patterns, and emotional temperament.',
@@ -37,7 +37,7 @@ const steps: ProcessStep[] = [
   {
     number: '02',
     title: 'Nadi Pariksha (Pulse Reading)',
-    sanskrit: 'नाडी परीक्षा (Radial Pulse Diagnosis)',
+    sanskrit: 'નાડી પરીક્ષા (Radial Pulse Diagnosis)',
     duration: 'Morning Recommended',
     description:
       'Dr. Bohra places three fingers on your radial artery to listen to the subtle vibrational frequencies of Vata, Pitta, and Kapha across seven deep tissue layers (Saptadhatus).',
@@ -51,7 +51,7 @@ const steps: ProcessStep[] = [
   {
     number: '03',
     title: 'Personalized Chikitsa & Diet Plan',
-    sanskrit: 'चिकित्सा एवं पथ्यापथ्य योजना',
+    sanskrit: 'ચિકિત્સા અને પથ્યાપથ્ય યોજના',
     duration: 'Same-day Prescription',
     description:
       'You receive an exact medical blueprint: personalized Panchakarma schedule, custom herbal decoctions (Kashayams), and a strict list of compatible foods (Pathya) vs foods to eliminate (Apathya).',
@@ -64,15 +64,15 @@ const steps: ProcessStep[] = [
   },
   {
     number: '04',
-    title: 'Monitored Follow-up & Rasayana',
-    sanskrit: 'पुनरावलोकन एवं रसायन',
+    title: 'Monitored Follow-up & Lifestyle Guidance',
+    sanskrit: 'પુનરાવલોકન અને દિનચર્યા',
     duration: 'Ongoing Care',
     description:
-      'Healing in Ayurveda is a monitored transition. As your symptoms abate, we transition you to Rasayana (longevity & cellular rejuvenation) so remission is permanent and drug-free.',
+      'Healing in Ayurveda is a monitored journey. As your symptoms abate, we support you with lifestyle and routine adjustments to maintain ongoing balance and long-term vitality.',
     details: [
-      'Bi-weekly pulse checks to track Dosha normalization',
-      'Gradual tapering of therapeutic herbs',
-      'Long-term immunity and metabolic stabilization',
+      'Periodic reviews to track Dosha normalization',
+      'Adjustment of dietary and seasonal routines',
+      'Long-term digestive and metabolic support',
     ],
     icon: <RefreshCw className="w-5 h-5 text-forest" />,
   },
@@ -165,7 +165,7 @@ export function ProcessTimeline() {
         <Reveal delay={0} direction="up">
           <SectionHeading
             eyebrow="Clinical Protocol"
-            sanskritEyebrow="चिकित्सा क्रम"
+            sanskritEyebrow="ચિકિત્સા ક્રમ"
             title="The Four Stages of Ayurvedic Restoration"
             subtitle="Our systematic methodology bridges classical 8-fold diagnostics (Ashtavidha Pariksha) with continuous clinical monitoring to ensure lasting reversal."
             align="asymmetric"

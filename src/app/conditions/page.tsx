@@ -4,25 +4,25 @@ import { conditions, treatments } from '@/lib/data';
 import { ConditionsDirectory } from './ConditionsDirectory';
 
 export const metadata: Metadata = {
-  title: 'Health Conditions We Treat · Classical Ayurvedic Pathology | Aarogyam Jaipur',
+  title: 'Health Conditions & Ayurvedic Consultations | Vankal Ayurveda',
   description:
-    'A–Z clinical directory of conditions managed through classical Ayurveda: Arthritis, Sciatica, PCOD, Thyroid, Psoriasis, Migraine, Insomnia, and IBS. Prescribed via Nadi Pariksha by Dr. Lavesh Bohra, Civil Lines, Jaipur.',
+    'Directory of conditions addressed through classical Ayurveda: Arthritis, Sciatica, PCOD, Thyroid, Psoriasis, Migraine, Insomnia, and IBS. Prescribed via classical consultation by Dr. Lavesh Bohra.',
   keywords: [
     'Ayurveda for arthritis',
-    'Ayurvedic sciatica treatment Jaipur',
-    'PCOD Ayurveda cure root cause',
-    'Psoriasis Ayurvedic treatment',
-    'Migraine Ayurveda Jaipur',
+    'Ayurvedic sciatica management',
+    'PCOD Ayurveda care root cause',
+    'Psoriasis Ayurvedic care',
+    'Migraine Ayurveda',
     'Thyroid Ayurveda management',
-    'Insomnia Shirodhara Jaipur',
+    'Insomnia Ayurveda care',
     'Dr Lavesh Bohra clinical conditions',
   ],
   openGraph: {
-    title: 'Health Conditions We Treat · Classical Ayurvedic Pathology | Aarogyam',
+    title: 'Health Conditions We Treat · Classical Ayurvedic Pathology | Vankal',
     description:
       'A–Z directory of chronic conditions treated through authentic Samhita protocols and Nadi Pariksha.',
-    url: 'https://aarogyamayurveda.com/conditions',
-    siteName: 'Aarogyam Classical Ayurveda Clinic',
+    url: 'https://vankalayurveda.com/conditions',
+    siteName: 'Vankal Ayurveda',
     locale: 'en_IN',
     type: 'website',
   },

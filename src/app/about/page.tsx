@@ -1,112 +1,58 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import type { Metadata } from 'next';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
-import { StatBlock } from '@/components/motion';
 import {
   ShieldCheck,
-  Award,
-  Sparkles,
-  ArrowRight,
-  Clock,
-  Compass,
   CheckCircle2,
-  Building2,
-  FileCheck2,
-  Scroll,
+  GraduationCap,
+  Building,
+  HeartHandshake,
+  Compass,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About Aarogyam Ayurveda · Lineage, Philosophy & Facility Tour',
+  title: 'About Vankal Ayurveda · Philosophy & Individual Care',
   description:
-    'Discover the living lineage of Aarogyam Ayurveda in Civil Lines, Jaipur. Four generations of Rajasthan Vaidyas bridging canonical Charaka Samhita wisdom with modern NABL-verified safety.',
-  keywords: [
-    'About Aarogyam Ayurveda',
-    'Ayurveda lineage Jaipur',
-    'Dr Lavesh Bohra background',
-    'Panchakarma facility Civil Lines',
-    'Classical Ayurveda hospital Rajasthan',
-  ],
+    'Learn about Vankal Ayurveda. Individual Ayurvedic consultations and personalized lifestyle care guided by Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University.',
   openGraph: {
-    title: 'About Aarogyam Ayurveda · Vedic Roots, Clinical Safety',
+    title: 'About Vankal Ayurveda · Classical Wisdom, Individual Care',
     description:
-      'Four generations of Rajasthan Vaidyas bridging canonical Charaka Samhita wisdom with modern clinical safety.',
-    url: 'https://aarogyamayurveda.com/about',
-    siteName: 'Aarogyam Classical Ayurveda Clinic',
+      'Grounded in Charaka Samhita wisdom. Individual Ayurvedic consultations, personalized nutrition, and lifestyle care.',
+    url: 'https://vankalayurveda.com/about',
+    siteName: 'Vankal Ayurveda',
     locale: 'en_IN',
     type: 'website',
   },
 };
 
-const TIMELINE_MILESTONES = [
+const VERIFIED_CREDENTIALS = [
   {
-    year: '1948',
-    title: 'Mewar Court Vaidya Tradition',
-    sanskrit: 'राजवैद्य परम्परा',
-    description:
-      'Rajvaidya Pt. Vishwanath Bohra serves as a respected classical physician in the royal court of Mewar, compounding single-origin medicated oils and rasayanas from wild Aravalli botanicals.',
+    title: 'Attending Practitioner',
+    code: 'Dr. Lavesh Bohra',
+    description: 'Registered Ayurvedic Practitioner providing individualized clinical consultations.',
+    icon: <HeartHandshake className="w-6 h-6 text-turmeric" />,
   },
   {
-    year: '1974',
-    title: 'Establishment of the Jaipur Aushadhashala',
-    sanskrit: 'औषधशाला प्रतिष्ठापनम्',
-    description:
-      'The family establishes a dedicated classical compounding apothecary in Jaipur, standardizing Snehapaka protocols and classical decoctions strictly adhering to Sharangdhara Samhita guidelines.',
+    title: 'Medical Degree',
+    code: 'BAMS (2026)',
+    description: 'Bachelor of Ayurvedic Medicine & Surgery from SMIAS, Gujarat Ayurved University.',
+    icon: <GraduationCap className="w-6 h-6 text-turmeric" />,
   },
   {
-    year: '1999',
-    title: 'Modern Clinical Integration by Dr. Lavesh Bohra',
-    sanskrit: 'कायचिकित्सा अनुसन्धानम्',
-    description:
-      'Dr. Lavesh Bohra graduates from the National Institute of Ayurveda (NIA) and formalizes the Aarogyam clinical framework, integrating objective lab diagnostics with classical Nadi Pariksha.',
+    title: 'Regulatory Status',
+    code: 'Registration No.: to be added',
+    description: 'Registered Ayurvedic Practitioner adhering to classical Ayurvedic ethics.',
+    icon: <ShieldCheck className="w-6 h-6 text-turmeric" />,
   },
   {
-    year: '2012',
-    title: 'Haveli Panchakarma Sanctuary Opens in Civil Lines',
-    sanskrit: 'आरोग्यम् पञ्चकर्म निकेतनम्',
-    description:
-      'A historic colonial-era Jaipur haveli is restored with natural lime-plaster walls, private copper Droni suites, and specialized acoustic shielding for meditative Shirodhara therapy.',
-  },
-  {
-    year: '2018',
-    title: 'AYUSH Accreditation & Research Registry',
-    sanskrit: 'आयुष मान्यता एवं अभिलेख',
-    description:
-      'The clinic receives formal AYUSH hospital registration (AYUSH-RJ-2018-0482) and initiates retrospective cohort studies on Basti Karma efficacy in lumbar disc pathologies.',
-  },
-  {
-    year: '2026',
-    title: 'Living Classical Healthcare for 34 Nations',
-    sanskrit: 'वैश्विक आयुर्वेद सेवा',
-    description:
-      'Over 18,500 patients from 34 countries have completed authenticated Panchakarma bio-cleansing and Nadi Pariksha regimens at our Civil Lines sanctuary.',
-  },
-];
-
-const CERTIFICATIONS = [
-  {
-    title: 'Ministry of AYUSH Registered',
-    code: 'AYUSH-RJ-2018-0482',
-    description: 'Officially registered classical Ayurveda hospital adhering to national standards of clinical governance.',
-  },
-  {
-    title: 'NABL-Accredited Herbal Testing',
-    code: 'Heavy Metals & Microbial Purity',
-    description: 'Every batch of in-house oil, ghrita, and decoction is tested for lead, cadmium, mercury, and arsenic safety.',
-  },
-  {
-    title: 'NCISM Certified Faculty',
-    code: 'BAMS, MD, MS Degrees Verified',
-    description: 'All resident vaidyas hold university postgraduate degrees from NIA Jaipur, BHU Varanasi, and GAU Jamnagar.',
-  },
-  {
-    title: 'NABH Safety & Hygiene Protocols',
-    code: 'Clean Clinical Standards',
-    description: 'Sterile linen handling, single-patient disposable equipment, and hospital-grade sanitization in all therapy suites.',
+    title: 'Practice Focus',
+    code: 'Consultation & Lifestyle Care',
+    description: 'Individualized dietary roadmaps (Ahara), daily routines (Dinacharya), and seasonal care (Ritucharya).',
+    icon: <Compass className="w-6 h-6 text-turmeric" />,
   },
 ];
 
@@ -120,131 +66,83 @@ export default function AboutPage() {
             Home
           </Link>
           <span className="mx-2">/</span>
-          <span className="text-forest font-semibold">About Aarogyam</span>
+          <span className="text-deep-forest font-medium">About</span>
         </nav>
 
-        {/* HERO SECTION: The Story of the Clinic */}
+        {/* HERO SECTION: The Story of Vankal Ayurveda */}
         <section className="mb-20 pb-16 border-b border-forest/15">
           <div className="flex items-center gap-2 mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
             <span className="text-eyebrow font-semibold text-forest tracking-widest">
-              Our Lineage & Heritage · चतुष्पीढ़ी वैद्य परम्परा
+              Our Clinical Philosophy · આયુર્વેદ સિદ્ધાંત
             </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-8 space-y-4">
               <h1 className="text-display-h1 text-deep-forest font-normal tracking-tight">
-                Vedic Roots. Clinical Safety. Living Lineage.
+                Classical Roots. Individual Care. Living Discipline.
               </h1>
 
-              <p className="font-devanagari text-turmeric text-2xl sm:text-3xl font-normal">
-                आरोग्यं मूलमुत्तमम् — Health is the supreme foundation of all life endeavors
+              <p className="font-gujarati text-turmeric text-2xl sm:text-3xl font-normal">
+                આરોગ્યં મૂલમુત્તમમ્ — Health is the supreme foundation of all life endeavors
               </p>
 
               <div className="space-y-4 text-body-base text-ink/80 leading-relaxed pt-3 font-sans">
                 <p>
-                  Aarogyam Ayurveda was established not as a modern wellness brand, but as the natural
-                  continuation of four generations of classical Vaidya scholarship in Rajasthan. Founded by
-                  Rajvaidya Pt. Vishwanath Bohra and today led by his grandson, <strong>Dr. Lavesh Bohra, MD (Ayurveda)</strong>,
-                  our clinic stands as a rare bridge between the profound philosophical depths of the
-                  <em> Charaka Samhita</em> and modern clinical rigor.
+                  Vankal Ayurveda is dedicated to practicing Ayurveda as a thoughtful, personalized
+                  science of life. Led by <strong>Dr. Lavesh Bohra, BAMS (2026, SMIAS, Gujarat Ayurved University)</strong>,
+                  our practice stands for thorough diagnostic inquiry rooted in the principles of
+                  the <em>Charaka Samhita</em>.
                 </p>
                 <p>
-                  In an era where Ayurveda is frequently diluted into cosmetic spa packages, scented candle
-                  treatments, or commercial herbal marketing, Aarogyam remains uncompromising in its allegiance
-                  to canonical medicine. We treat diseases at their biological root through precision radial
-                  pulse diagnosis (<em>Nadi Pariksha</em>), authenticated Panchakarma bio-cleansing, and single-batch
-                  classical herbal pharmacology.
+                  In a landscape where health is often hurried or reduced to superficial routines,
+                  Vankal focuses on what truly matters: understanding the whole person. We examine
+                  your unique biological constitution (<em>Prakriti</em>), assess metabolic balance
+                  (<em>Agni</em>), and tailor actionable daily and seasonal habits to restore your
+                  body’s innate equilibrium.
                 </p>
               </div>
             </div>
 
-            {/* Quick Lineage Trust Box */}
+            {/* Quick Tenets Box */}
             <div className="lg:col-span-4 bg-cream border-2 border-forest/20 rounded-[4px] p-6 space-y-4 shadow-xs">
               <span className="text-xs font-mono uppercase tracking-wider text-turmeric font-semibold block">
-                Foundational Tenets
+                Foundational Principles
               </span>
 
               <div className="space-y-3 text-xs text-ink/80">
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-forest shrink-0 mt-0.5" />
-                  <span><strong>Zero Commercial Spa Protocols:</strong> Every therapy is a classical medical intervention.</span>
+                  <span><strong>Classical Grounding:</strong> Grounded in authentic Samhita medical texts.</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-forest shrink-0 mt-0.5" />
-                  <span><strong>Individualized Pulse Diagnosis:</strong> Therapies prescribed exclusively after Nadi Pariksha.</span>
+                  <span><strong>Individualized Consultation:</strong> Every recommendation is tailored to your unique Prakriti.</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-forest shrink-0 mt-0.5" />
-                  <span><strong>Single-Origin Classical Herbs:</strong> In-house compounding with zero chemical adulterants.</span>
+                  <span><strong>Ahara & Vihara Focus:</strong> Nutrition, daily routine, and seasonal discipline as primary medicine.</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-forest shrink-0 mt-0.5" />
-                  <span><strong>Full Inpatient Care:</strong> Private Haveli suites for comprehensive residential cleansing.</span>
+                  <span><strong>Transparent Guidance:</strong> Honest clinical advice with zero unverified miracle claims.</span>
                 </div>
               </div>
 
               <div className="pt-3 border-t border-forest/10 flex items-center justify-between text-xs font-mono text-sage">
-                <span>Civil Lines, Jaipur</span>
-                <span>Est. 1999</span>
+                <span>Location: to be added</span>
+                <span>Registered Practitioner</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* CLINICAL STATS SECTION */}
-        <section className="mb-20 py-8 sm:py-10 bg-cream/70 rounded-[4px] border border-forest/15 shadow-2xs">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
-            <StatBlock
-              value={18500}
-              suffix="+"
-              label="Patients Restored"
-              sanskrit="रोगमुक्त जन"
-              sub="Documented chronic disease remissions since 1999"
-              delay={0}
-              duration={2.2}
-              showDivider={true}
-            />
-            <StatBlock
-              value={78}
-              suffix="+"
-              label="Years of Lineage"
-              sanskrit="वैद्य परम्परा"
-              sub="Four generations of continuous Charaka practice"
-              delay={0.15}
-              duration={2.2}
-              showDivider={true}
-            />
-            <StatBlock
-              value={34}
-              suffix=""
-              label="Nations Welcomed"
-              sanskrit="वैश्विक सेवा"
-              sub="International patients receiving residential Panchakarma"
-              delay={0.3}
-              duration={2.2}
-              showDivider={true}
-            />
-            <StatBlock
-              value={4.96}
-              suffix=" / 5"
-              decimals={2}
-              label="Audited Clinical Rating"
-              sanskrit="संतुष्टि प्रमाण"
-              sub="From 1,420+ independently verified reviews"
-              delay={0.45}
-              duration={2.2}
-              showDivider={false}
-            />
-          </div>
-        </section>
-
-        {/* SECTION 2: VISION, MISSION, & ETHICS AS THREE LARGE TYPOGRAPHIC STATEMENTS */}
+        {/* SECTION 2: THREE GUIDING CONVICTIONS */}
         <section className="mb-24 space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
             <span className="text-xs font-mono uppercase tracking-widest text-forest font-semibold block">
-              Our Compass · सिद्धान्त त्रयी
+              Our Compass · સિદ્ધાંત ત્રયી
             </span>
             <h2 className="text-display-h2 text-deep-forest font-normal">
               Three Guiding Convictions
@@ -256,15 +154,15 @@ export default function AboutPage() {
             <div className="p-8 sm:p-10 bg-cream/90 border border-forest/20 rounded-[4px] flex flex-col justify-between space-y-6 shadow-xs group hover:border-forest/50 transition-colors">
               <div className="space-y-3">
                 <span className="text-xs font-mono uppercase tracking-widest text-turmeric font-semibold block">
-                  01 · The Vision (दृष्टि)
+                  01 · The Vision (દૃષ્ટિ)
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-serif text-deep-forest font-normal leading-snug">
-                  To restore Ayurveda as a sovereign, precision medical science.
+                  To honor Ayurveda as a personalized science of health.
                 </h3>
               </div>
               <p className="text-body-sm text-ink/75 leading-relaxed pt-4 border-t border-forest/10">
-                To elevate classical Samhita healthcare beyond symptomatic wellness, proving through
-                measurable biochemical outcomes that authentic Panchakarma is an unmatched cellular restorative.
+                To move beyond superficial commercialization, proving that individualized lifestyle,
+                circadian discipline, and classical nutrition build enduring well-being.
               </p>
             </div>
 
@@ -272,15 +170,15 @@ export default function AboutPage() {
             <div className="p-8 sm:p-10 bg-forest text-cream rounded-[4px] flex flex-col justify-between space-y-6 shadow-xs group">
               <div className="space-y-3">
                 <span className="text-xs font-mono uppercase tracking-widest text-turmeric font-semibold block">
-                  02 · The Mission (ध्येय)
+                  02 · The Mission (ધ્યેય)
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-serif text-cream font-normal leading-snug">
-                  Treat the root, honour the Prakriti, never compromise on safety.
+                  Understand the root, honor the Prakriti, guide with care.
                 </h3>
               </div>
               <p className="text-body-sm text-cream/80 leading-relaxed pt-4 border-t border-cream/15">
-                Every patient receives personalized attention rooted in eighth-fold diagnosis (*Ashtavidha Pariksha*),
-                guided by physicians who hold formal university post-graduate degrees and generational clinical lineage.
+                Every individual receives attentive, unhurried guidance rooted in classical assessment,
+                with practical advice suited to modern daily life.
               </p>
             </div>
 
@@ -288,239 +186,71 @@ export default function AboutPage() {
             <div className="p-8 sm:p-10 bg-cream/90 border border-forest/20 rounded-[4px] flex flex-col justify-between space-y-6 shadow-xs group hover:border-forest/50 transition-colors">
               <div className="space-y-3">
                 <span className="text-xs font-mono uppercase tracking-widest text-clay font-semibold block">
-                  03 · The Ethics (आचार रसायन)
+                  03 · The Ethics (આચાર રસાયન)
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-serif text-deep-forest font-normal leading-snug">
-                  Transparent clinical truth over commercial promises.
+                  Honest guidance over commercial promises.
                 </h3>
               </div>
               <p className="text-body-sm text-ink/75 leading-relaxed pt-4 border-t border-forest/10">
-                We make no unverified miracle claims. When an acute surgical intervention or allopathic referral
-                is warranted, we advocate for the patient first. We maintain complete transparency in formulations and fees.
+                We make no unsubstantiated claims or commercial promises. When modern medical care
+                or emergency intervention is required, we advocate for the individual first.
               </p>
             </div>
           </div>
         </section>
 
-        {/* SECTION 3: CLINIC TOUR AS AN ASYMMETRIC GALLERY */}
-        <section className="mb-24 space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-turmeric font-semibold block mb-1">
-                The Healing Sanctuary · सिविल लाइन्स निकेतनम्
-              </span>
-              <h2 className="text-display-h2 text-deep-forest font-normal">
-                Inside Our Jaipur Haveli
-              </h2>
-            </div>
-            <p className="text-xs font-mono text-sage max-w-sm">
-              Restored heritage architecture featuring acoustic isolation, natural lime walls, and authentic brass Dronis.
-            </p>
-          </div>
-
-          {/* Asymmetric Gallery Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
-            {/* Gallery Item 1: Large Featured (7 cols) */}
-            <div className="md:col-span-7 relative aspect-16/10 rounded-[4px] overflow-hidden border border-forest/20 bg-forest/10 shadow-xs group">
-              <Image
-                src="/images/treatments/panchakarma.jpg"
-                alt="Central Panchakarma Courtyard"
-                fill
-                sizes="(max-width: 768px) 100vw, 60vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-cream">
-                <span className="text-[10px] font-mono text-turmeric uppercase tracking-wider block">
-                  Sanctuary Architecture
-                </span>
-                <h4 className="text-lg font-serif font-normal">
-                  The Central Courtyard & Inpatient Haveli Wing
-                </h4>
-                <p className="text-xs text-cream/75 mt-0.5 line-clamp-1">
-                  Air-cooled with central fountain mist and planted with Tulsi, Neem, and sacred Kadamba trees.
-                </p>
-              </div>
-            </div>
-
-            {/* Gallery Item 2: Vertical (5 cols) */}
-            <div className="md:col-span-5 relative aspect-4/3 md:aspect-auto rounded-[4px] overflow-hidden border border-forest/20 bg-forest/10 shadow-xs group">
-              <Image
-                src="/images/treatments/shirodhara.jpg"
-                alt="Acoustically Isolated Shirodhara Suite"
-                fill
-                sizes="(max-width: 768px) 100vw, 40vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-cream">
-                <span className="text-[10px] font-mono text-turmeric uppercase tracking-wider block">
-                  Sensory Healing
-                </span>
-                <h4 className="text-lg font-serif font-normal">
-                  Sound-Attenuated Shirodhara Suites
-                </h4>
-                <p className="text-xs text-cream/75 mt-0.5 line-clamp-1">
-                  Private suites equipped with suspended copper vessels and handmade teakwood Dronis.
-                </p>
-              </div>
-            </div>
-
-            {/* Gallery Item 3: Equal Width (4 cols) */}
-            <div className="md:col-span-4 relative aspect-16/10 rounded-[4px] overflow-hidden border border-forest/20 bg-forest/10 shadow-xs group">
-              <Image
-                src="/images/treatments/apothecary.jpg"
-                alt="In-house Classical Compounding Apothecary"
-                fill
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-cream">
-                <span className="text-[10px] font-mono text-turmeric uppercase tracking-wider block">
-                  Aushadhashala
-                </span>
-                <h4 className="text-base font-serif font-normal">
-                  In-House Compounding Apothecary
-                </h4>
-              </div>
-            </div>
-
-            {/* Gallery Item 4: Equal Width (4 cols) */}
-            <div className="md:col-span-4 relative aspect-16/10 rounded-[4px] overflow-hidden border border-forest/20 bg-forest/10 shadow-xs group">
-              <Image
-                src="/images/treatments/abhyanga.jpg"
-                alt="Private Abhyanga Steam Chambers"
-                fill
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-cream">
-                <span className="text-[10px] font-mono text-turmeric uppercase tracking-wider block">
-                  Swedana Room
-                </span>
-                <h4 className="text-base font-serif font-normal">
-                  Artisanal Wooden Steam Chambers
-                </h4>
-              </div>
-            </div>
-
-            {/* Gallery Item 5: Equal Width (4 cols) */}
-            <div className="md:col-span-4 relative aspect-16/10 rounded-[4px] overflow-hidden border border-forest/20 bg-forest/10 shadow-xs group">
-              <Image
-                src="/images/treatments/herbs.jpg"
-                alt="Botanical Herb Curation Bench"
-                fill
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-cream">
-                <span className="text-[10px] font-mono text-turmeric uppercase tracking-wider block">
-                  Pharmacognosy
-                </span>
-                <h4 className="text-base font-serif font-normal">
-                  Raw Botanical Authentication Bench
-                </h4>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION 4: TIMELINE OF THE CLINIC'S JOURNEY */}
-        <section className="mb-24 space-y-10">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-mono uppercase tracking-widest text-turmeric font-semibold block">
-              Historical Milestones · यात्रा एवं कालक्रम
-            </span>
-            <h2 className="text-display-h2 text-deep-forest font-normal">
-              78 Years of Unbroken Healing
-            </h2>
-          </div>
-
-          <div className="relative pl-6 sm:pl-10 space-y-10 before:absolute before:left-3 sm:before:left-5 before:top-4 before:bottom-4 before:w-[2px] before:bg-forest/20">
-            {TIMELINE_MILESTONES.map((item, idx) => (
-              <div key={idx} className="relative group">
-                {/* Node */}
-                <div className="absolute -left-6 sm:-left-10 top-0 w-6 h-6 sm:w-10 sm:h-10 rounded-full bg-paper border-2 border-forest flex items-center justify-center font-mono text-xs font-bold text-forest group-hover:bg-forest group-hover:text-cream transition-colors shadow-2xs">
-                  {item.year.slice(2)}
-                </div>
-
-                <div className="bg-cream/80 border border-forest/15 rounded-[4px] p-6 sm:p-7 space-y-2 group-hover:border-forest/40 transition-colors">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="font-mono text-xs text-turmeric font-bold tracking-wider">
-                      {item.year}
-                    </span>
-                    <span className="font-devanagari text-xs text-forest/70">
-                      {item.sanskrit}
-                    </span>
-                  </div>
-
-                  <h3 className="text-xl sm:text-2xl font-serif text-deep-forest font-normal">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-body-sm text-ink/80 leading-relaxed pt-1">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* SECTION 5: CERTIFICATIONS & REGISTRATIONS */}
+        {/* SECTION 3: PRACTITIONER CREDENTIALS */}
         <section className="mb-20 space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
             <span className="text-xs font-mono uppercase tracking-widest text-forest font-semibold block">
-              Governance & Accreditations · प्रमाणीकरण
+              Professional Credentials · પ્રમાણ
             </span>
             <h2 className="text-display-h2 text-deep-forest font-normal">
-              Certified Clinical Excellence
+              Practitioner & Clinical Background
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {CERTIFICATIONS.map((cert, i) => (
+            {VERIFIED_CREDENTIALS.map((item, i) => (
               <div
                 key={i}
                 className="p-6 bg-cream/70 border border-forest/15 rounded-[4px] space-y-3 shadow-2xs"
               >
-                <ShieldCheck className="w-6 h-6 text-turmeric" />
+                {item.icon}
                 <h4 className="font-serif font-medium text-deep-forest text-base">
-                  {cert.title}
+                  {item.title}
                 </h4>
                 <span className="inline-block text-[10px] font-mono px-2 py-0.5 rounded bg-paper border border-forest/15 text-forest font-semibold">
-                  {cert.code}
+                  {item.code}
                 </span>
                 <p className="text-xs text-ink/75 leading-relaxed">
-                  {cert.description}
+                  {item.description}
                 </p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* BOTTOM CTA: Book a Visit */}
+        {/* BOTTOM CTA: Book Consultation */}
         <div className="bg-forest text-cream rounded-[4px] p-8 sm:p-12 relative overflow-hidden">
           <div className="relative z-10 max-w-2xl space-y-4">
             <span className="text-xs font-mono uppercase tracking-widest text-turmeric font-semibold block">
-              Visit Our Jaipur Sanctuary
+              Personalized Consultation
             </span>
             <h3 className="text-display-h2 font-normal text-cream tracking-tight">
-              Begin Your Healing Journey with Classical Pulse Diagnosis
+              Begin Your Journey with Classical Ayurvedic Care
             </h3>
             <p className="text-body-base text-cream/80 leading-relaxed">
-              Experience the authentic atmosphere of our Civil Lines clinic. Meet Dr. Lavesh Bohra
-              for an individualized Nadi Pariksha and personalized clinical roadmap.
+              Schedule an individual consultation with Dr. Lavesh Bohra for personalized dietary
+              and lifestyle guidance tailored to your constitutional needs.
             </p>
             <div className="pt-2 flex flex-wrap gap-4">
               <Button href="/book" variant="turmeric" size="lg" icon={<ShieldCheck className="w-4 h-4" />}>
-                Book Nadi Pariksha Consultation
+                Book Consultation
               </Button>
-              <Button href="/treatments" variant="secondary" size="lg" className="bg-transparent text-cream border-cream/30 hover:bg-cream/10">
-                Explore Classical Therapies
+              <Button href="/doctors" variant="secondary" size="lg" className="bg-transparent text-cream border-cream/30 hover:bg-cream/10">
+                About the Doctor
               </Button>
             </div>
           </div>

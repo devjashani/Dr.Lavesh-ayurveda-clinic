@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 /**
- * Aarogyam Ayurveda — Central Motion System
+ * Vankal Ayurveda — Central Motion System
  * 
  * Shared tokens and design rules for consistent, calm, and performant animations:
  * - Ease: cubic-bezier(0.22, 1, 0.36, 1)

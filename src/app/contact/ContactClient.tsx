@@ -171,7 +171,7 @@ export function ContactClient() {
                       selectedMode === 'in-clinic' ? 'text-paper/80' : 'text-ink/60'
                     }`}
                   >
-                    Civil Lines, Jaipur (Nadi Pariksha)
+                    In-Person Pulse & Lifestyle Session
                   </div>
                 </button>
 
@@ -387,46 +387,39 @@ export function ContactClient() {
 
           <div className="text-xs font-body text-ink/80 space-y-1">
             <p className="font-medium text-deep-forest text-sm">
-              Aarogyam Ayurveda Hospital & Panchakarma Center
+              Vankal Ayurveda
             </p>
-            <p>14, Jacob Road, Civil Lines</p>
-            <p>Jaipur, Rajasthan — 302006, India</p>
+            <p className="text-ink/60">Address: to be added</p>
           </div>
 
           {/* Styled Visual Map Placeholder */}
           <div className="relative w-full h-40 bg-gradient-to-br from-cream via-paper to-mist rounded-[3px] border border-forest/15 overflow-hidden flex flex-col items-center justify-center p-4 text-center">
             <Navigation className="w-6 h-6 text-forest mb-1 animate-pulse" />
             <span className="font-display text-xs text-deep-forest font-medium">
-              Civil Lines, Jaipur
+              Clinic Location
             </span>
             <span className="font-mono text-[10px] text-ink/60 mt-0.5">
-              26.9075° N, 75.7892° E
+              Address: to be added
             </span>
             <div className="mt-2 text-[10px] font-mono bg-paper/90 px-2 py-0.5 rounded border border-forest/10 text-forest">
-              1.8 km from Jaipur Junction · 11 km from Airport
+              Details will be updated upon finalization
             </div>
           </div>
 
-          {/* Quick Contact Buttons */}
-          <div className="pt-2 grid grid-cols-2 gap-2 text-xs">
-            <Button
-              href="https://wa.me/919414012345?text=Namaste%2C%20I%20would%20like%20to%20inquire%20about%20a%20consultation%20with%20Aarogyam%20Ayurveda."
-              variant="primary"
-              external
-              className="justify-center bg-turmeric text-deep-forest hover:bg-turmeric/90 text-[11px] py-2"
-            >
-              <MessageCircle className="w-3.5 h-3.5 mr-1" />
-              WhatsApp
-            </Button>
-            <Button
-              href="tel:+911412389400"
-              variant="secondary"
-              external
-              className="justify-center text-[11px] py-2"
-            >
-              <Phone className="w-3.5 h-3.5 mr-1" />
-              Call Clinic
-            </Button>
+          {/* Contact Details Card */}
+          <div className="pt-2 space-y-2 text-xs">
+            <div className="p-2.5 rounded-[3px] bg-cream/70 border border-forest/10 flex items-center justify-between">
+              <span className="font-mono text-[11px] text-forest">WhatsApp:</span>
+              <span className="font-mono text-ink/70">to be added</span>
+            </div>
+            <div className="p-2.5 rounded-[3px] bg-cream/70 border border-forest/10 flex items-center justify-between">
+              <span className="font-mono text-[11px] text-forest">Phone:</span>
+              <span className="font-mono text-ink/70">to be added</span>
+            </div>
+            <div className="p-2.5 rounded-[3px] bg-cream/70 border border-forest/10 flex items-center justify-between">
+              <span className="font-mono text-[11px] text-forest">Email:</span>
+              <span className="font-mono text-ink/70">to be added</span>
+            </div>
           </div>
         </div>
       </div>

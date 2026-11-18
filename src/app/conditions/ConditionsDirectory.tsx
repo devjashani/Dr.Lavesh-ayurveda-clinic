@@ -98,8 +98,8 @@ export function ConditionsDirectory({
             Conditions We Support
           </h1>
 
-          <p className="font-devanagari text-turmeric text-lg sm:text-xl mt-2 tracking-wide font-normal">
-            रोगमादौ परीक्षेत ततोऽनन्तरमौषधम् — First diagnose the root pathology, then prescribe the medicine
+          <p className="font-gujarati text-turmeric text-lg sm:text-xl mt-2 tracking-wide font-normal">
+            રોગમાદૌ પરીક્ષેત તતોઽનન્તરમૌષધમ્ — First diagnose the root pathology, then prescribe the medicine
           </p>
 
           <p className="text-body-lg text-ink/80 mt-4 max-w-3xl leading-relaxed">
@@ -320,7 +320,7 @@ export function ConditionsDirectory({
                             <div>
                               <h4 className="text-xs font-mono uppercase tracking-wider text-forest font-semibold mb-3 flex items-center gap-1.5">
                                 <CheckCircle2 className="w-3.5 h-3.5 text-turmeric" />
-                                Characteristic Symptoms (लक्षण)
+                                Characteristic Symptoms (લક્ષણ)
                               </h4>
                               <ul className="space-y-2">
                                 {condition.clinicalSigns.map((sign, i) => (

@@ -213,14 +213,14 @@ export function HeroSection() {
               <div className="absolute bottom-4 left-5 right-5 text-cream flex items-baseline justify-between">
                 <div>
                   <span className="text-[10px] uppercase font-mono tracking-widest text-turmeric block">
-                    Classical Sanctuary
+                    Classical Consultation
                   </span>
                   <span className="font-display text-base font-normal">
-                    Jaipur Chikitsalaya
+                    Vankal Ayurveda
                   </span>
                 </div>
                 <span className="font-serif italic text-xs text-paper/80">
-                  शान्ति मार्ग
+                  શાંતિ માર્ગ
                 </span>
               </div>
             </motion.div>
@@ -258,7 +258,7 @@ export function HeroSection() {
                   </h2>
                 </div>
                 <span className="text-[10px] font-mono text-forest/80 font-semibold">
-                  Jaipur Clinic
+                  {language === 'GU' ? 'આયુર્વેદિક પરામર્શ' : 'Ayurvedic Consultation'}
                 </span>
               </div>
 
@@ -268,12 +268,12 @@ export function HeroSection() {
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div role="status" className="font-display font-medium text-deep-forest text-sm">
-                    {language === 'HI' ? 'परामर्श अनुरोध प्राप्त हुआ' : 'Slot Request Received'}
+                    {t.hero.requestReceived}
                   </div>
                   <p className="text-xs text-ink/75 leading-relaxed">
-                    {language === 'HI'
-                      ? `हमारा चिकित्सालय डेस्क नाड़ी परीक्षा समय की पुष्टि के लिए ${formData.phone} पर संपर्क करेगा।`
-                      : `Our desk will call ${formData.phone} within 30 minutes to confirm your Nadi Pariksha timing.`}
+                    {language === 'GU'
+                      ? `અમારો પરામર્શ ડેસ્ક સમયની પુષ્ટિ માટે ${formData.phone} પર સંપર્ક કરશે.`
+                      : `We will call ${formData.phone} to confirm your consultation timing.`}
                   </p>
                 </div>
               ) : (

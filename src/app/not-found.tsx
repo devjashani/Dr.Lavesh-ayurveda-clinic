@@ -12,13 +12,13 @@ export default function NotFound() {
         {/* Sanskrit Inscription */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cream border border-forest/15 text-xs text-forest mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-turmeric" />
-          <span className="font-serif italic">सर्वे सन्तु निरामयाः (May all be free from illness)</span>
+          <span className="font-serif italic">સર્વે સન્તુ નિરામયાઃ (May all be free from illness)</span>
         </div>
 
         {/* 404 Code with Classical Numerals */}
         <div className="relative mb-2">
           <span className="font-display text-8xl sm:text-9xl font-light text-forest/10 select-none block tracking-widest">
-            ४०४
+            ૪૦૪
           </span>
           <span className="absolute inset-0 flex items-center justify-center font-display text-4xl sm:text-5xl font-medium text-deep-forest">
             Path in Restoration
@@ -43,10 +43,10 @@ export default function NotFound() {
         </div>
 
         <div className="mt-12 text-xs text-ink/50">
-          Need immediate assistance? Call our clinic care line:{' '}
-          <a href="tel:+911412458890" className="text-deep-forest underline hover:text-forest">
-            +91 (141) 245-8890
-          </a>
+          Need assistance? Visit our{' '}
+          <Link href="/contact" className="text-deep-forest underline hover:text-forest">
+            Contact & Inquiries page
+          </Link>
         </div>
       </Container>
     </div>

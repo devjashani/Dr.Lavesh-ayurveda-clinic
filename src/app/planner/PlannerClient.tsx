@@ -242,8 +242,8 @@ export function PlannerClient() {
             Personalized Therapy Package Planner
           </h1>
 
-          <p className="font-devanagari text-turmeric text-lg sm:text-xl mt-2 tracking-wide font-normal">
-            चिकित्सा क्रम नियोजनम् — Classical sequencing of authentic Ayurvedic therapies
+          <p className="font-gujarati text-turmeric text-lg sm:text-xl mt-2 tracking-wide font-normal">
+            ચિકિત્સા ક્રમ નિયોજનમ્ — Classical sequencing of authentic Ayurvedic therapies
           </p>
 
           <p className="text-body-lg text-ink/80 mt-4 max-w-3xl leading-relaxed">
@@ -466,7 +466,7 @@ export function PlannerClient() {
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono uppercase tracking-wider text-forest font-semibold flex items-center gap-1.5">
                     <Layers className="w-3.5 h-3.5 text-turmeric" />
-                    Classical Sequence (क्रम विधानम्)
+                    Classical Sequence (ક્રમ વિધાનમ્)
                   </span>
                   <span className="text-[10px] font-mono text-ink/50">
                     Charaka Taxonomy

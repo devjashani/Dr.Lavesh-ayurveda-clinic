@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!treatment) {
     return {
-      title: 'Therapy Not Found | Aarogyam Ayurveda',
+      title: 'Therapy Not Found | Vankal Ayurveda',
       description: 'The requested classical Ayurvedic therapy could not be located.',
     };
   }
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ...treatment.indications.slice(0, 5),
     ],
     openGraph: {
-      title: `${treatment.name} | Aarogyam Ayurveda Clinic`,
+      title: `${treatment.name} | Vankal Ayurveda Clinic`,
       description: treatment.shortDescription,
       images: [
         {
@@ -207,7 +207,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                 className="object-cover"
               />
               <div className="absolute bottom-4 left-4 bg-paper/90 backdrop-blur-xs px-3 py-1.5 rounded-[3px] border border-forest/20 text-xs font-mono text-deep-forest">
-                Aarogyam Panchakarma Wing · Civil Lines, Jaipur
+                Vankal Ayurveda · Classical Protocol
               </div>
             </div>
 
@@ -249,7 +249,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
                 <h2 className="text-display-h2 text-deep-forest font-normal">
-                  Clinical Indications (रोग लक्षण)
+                  Clinical Indications (રોગ લક્ષણ)
                 </h2>
               </div>
               <p className="text-body-sm text-ink/70">
@@ -276,7 +276,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
                   <h2 className="text-display-h2 text-deep-forest font-normal">
-                    The Procedure (विधि एवं प्रक्रिया)
+                    The Procedure (વિધિ તેમજ પ્રક્રિયા)
                   </h2>
                 </div>
                 <span className="text-xs font-mono text-sage tracking-wider uppercase hidden sm:inline">
@@ -355,7 +355,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
               <div className="flex items-center gap-2.5 text-clay">
                 <AlertTriangle className="w-5 h-5 shrink-0" />
                 <h3 className="text-display-h3 font-normal text-clay tracking-tight">
-                  Who Should Avoid This Therapy (अनर्ह · Contraindications)
+                  Who Should Avoid This Therapy (અનર્હ · Contraindications)
                 </h3>
               </div>
               <p className="text-body-sm text-ink/80 leading-relaxed">
@@ -406,7 +406,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
               <div className="font-semibold text-deep-forest mb-1 uppercase tracking-wider">
                 Clinical Governance & Disclaimer:
               </div>
-              All therapeutic protocols at Aarogyam Ayurveda are personalized classical procedures
+              All therapeutic protocols at Vankal Ayurveda are personalized classical procedures
               prescribed in accordance with the Drugs and Cosmetics Act (Ayurveda, Siddha, and Unani
               regulations) and standard AYUSH clinical guidelines. Results vary based on individual
               Prakriti (biological constitution), stage of pathology (Kriya Kala), and adherence to
@@ -464,7 +464,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
 
                 <Button
                   href={`https://wa.me/919829012345?text=${encodeURIComponent(
-                    `Hello Dr. Bohra's team at Aarogyam Ayurveda, I would like to inquire about the ${treatment.name} therapy.`
+                    `Hello Dr. Bohra's team at Vankal Ayurveda, I would like to inquire about the ${treatment.name} therapy.`
                   )}`}
                   variant="secondary"
                   size="md"
@@ -501,13 +501,13 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                 <span className="text-[11px] font-mono text-ink/60 block mb-1">
                   Prefer direct phone consultation?
                 </span>
-                <a
-                  href="tel:+911412223456"
+                <Link
+                  href="/contact"
                   className="text-xs font-semibold text-deep-forest hover:text-forest inline-flex items-center gap-1.5 underline"
                 >
                   <Phone className="w-3.5 h-3.5 text-turmeric" />
-                  +91 141 222 3456 (Civil Lines Desk)
-                </a>
+                  Contact & Inquiries Desk
+                </Link>
               </div>
             </div>
           </aside>

@@ -5,13 +5,13 @@ import { motion, useMotionValue, useAnimationFrame } from 'framer-motion';
 import { usePrefersReducedMotion } from '@/lib/motion';
 
 const items = [
-  'Authentic Panchakarma',
-  'Nadi Pariksha (Pulse Diagnosis)',
-  'Pure Herbal Formulations',
-  'Personalized Diet Plans',
-  'Charaka Samhita Protocols',
-  'AYUSH Registered Clinic',
-  'Zero Chemical Suppressants',
+  'Individual Ayurvedic Consultations',
+  'Personalized Lifestyle Care',
+  'Dietary Guidance (Ahara)',
+  'Daily Routine (Dinacharya)',
+  'Seasonal Care (Ritucharya)',
+  'Prakriti Assessment',
+  'Charaka Samhita Principles',
 ];
 
 export function TrustMarquee() {

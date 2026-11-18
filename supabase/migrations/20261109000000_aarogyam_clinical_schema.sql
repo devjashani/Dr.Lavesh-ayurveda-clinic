@@ -202,7 +202,7 @@ VALUES
 (
   'dr-lavesh-bohra',
   'Dr. Lavesh Bohra',
-  'वरिष्ठ वैद्य (Senior Vaidya)',
+  'વરિષ્ઠ વૈદ્ય (Senior Vaidya)',
   'Chief Ayurvedic Physician & Panchakarma Specialist',
   'AYUSH-RJ-1999-4081',
   24,
@@ -217,7 +217,7 @@ VALUES
 (
   'dr-ananya-sharma',
   'Dr. Ananya Sharma',
-  'स्त्री रोग विशेषज्ञ (Women''s Health Specialist)',
+  'સ્ત્રી રોગ વિશેષજ્ઞ (Women''s Health Specialist)',
   'Senior Gynaecological Vaidya & Hormonal Care Specialist',
   'AYUSH-RJ-2009-6122',
   16,
@@ -268,7 +268,7 @@ VALUES
   'AYUSH-RJ-1999-4081',
   CURRENT_DATE,
   'Lumbar Spondylolisthesis with Sciatica (L4-S1)',
-  'कटिशूल एवं गृध्रसी वातव्याधि',
+  'કટિશૂલ એવં ગૃધ્રસી વાતવ્યાધિ',
   'Kathina Manduka Gati at deep Vata level with localized Kapha obstruction.',
   '[
     {"name": "Trayodashang Guggulu", "dosage": "2 tablets (500mg)", "timing": "Twice daily after meals with lukewarm water", "duration": "21 days"},

@@ -37,6 +37,20 @@ export function TestimonialsClient({ testimonials }: TestimonialsClientProps) {
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
+  if (testimonials.length === 0) {
+    return (
+      <Container className="mb-20">
+        <div className="text-center py-16 bg-paper border border-forest/15 rounded-[4px] p-8 max-w-xl mx-auto space-y-3">
+          <ShieldCheck className="w-10 h-10 text-forest/40 mx-auto" />
+          <h3 className="font-display text-xl text-deep-forest">Verified Clinical Documentation</h3>
+          <p className="text-body-sm text-ink/75 leading-relaxed">
+            In accordance with authentic medical ethics, patient clinical records and outcomes will be published here as verified documentation is compiled. We do not feature marketing or unverified testimonials.
+          </p>
+        </div>
+      </Container>
+    );
+  }
+
   const filtered = testimonials.filter((t) => {
     if (selectedFilter === 'All') return true;
     if (selectedFilter === 'Arthritis & Spine')

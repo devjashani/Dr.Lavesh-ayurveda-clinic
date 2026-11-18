@@ -12,7 +12,7 @@ import { Reveal, RevealText, Magnetic } from '@/components/motion';
 export function FinalCta() {
   return (
     <section
-      data-dark-section="true"
+      suppressHydrationWarning
       className="py-20 sm:py-28 bg-deep-forest text-cream relative overflow-hidden"
     >
       {/* Ambient background glows */}
@@ -33,11 +33,11 @@ export function FinalCta() {
         <Reveal delay={0.16} direction="up" blur={true}>
           <div className="space-y-4 mt-4">
             <p className="font-serif italic text-paper/80 text-xl">
-              &ldquo;शरीरमाद्यं खलु धर्मसाधनम्&rdquo; — The body is the foremost vessel for purposeful life.
+              &ldquo;શરીરમાદ્યં ખલુ ધર્મસાધનમ્&rdquo; — The body is the foremost vessel for purposeful life.
             </p>
 
             <p className="text-body-base text-paper/75 max-w-xl mx-auto leading-relaxed">
-              Whether you are facing chronic joint inflammation, stubborn metabolic fatigue, or seek classical Panchakarma detoxification in Jaipur, our Vaidyas are ready to welcome you.
+              Whether you are seeking personalized dietary roadmaps, daily routine guidance, or individual Ayurvedic consultations, Dr. Lavesh Bohra is ready to guide you.
             </p>
           </div>
         </Reveal>
@@ -62,15 +62,14 @@ export function FinalCta() {
 
           <Magnetic strength={8}>
             <Button
-              href="https://wa.me/911412458890?text=Namaste%20Aarogyam%20Ayurveda%2C%20I%20would%20like%20to%20inquire%20about%20a%20consultation."
-              external
+              href="/contact"
               variant="secondary"
               size="lg"
               className="text-cream border-cream/40 hover:bg-cream hover:text-deep-forest"
               icon={<MessageCircle className="w-4 h-4" />}
               iconPosition="left"
             >
-              Direct Vaidya WhatsApp
+              Contact & Inquiries
             </Button>
           </Magnetic>
         </div>
@@ -80,17 +79,17 @@ export function FinalCta() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12 pt-8 border-t border-forest/40 text-xs text-paper/70">
             <div className="flex items-center justify-center gap-2">
               <ShieldCheck className="w-4 h-4 text-turmeric shrink-0" />
-              <span>Reg. No. AYUSH-RJ-2018-0482</span>
+              <span>Registration No.: to be added</span>
             </div>
 
             <div className="flex items-center justify-center gap-2">
               <MapPin className="w-4 h-4 text-turmeric shrink-0" />
-              <span>Civil Lines, Jaipur (Inpatient & OPD)</span>
+              <span>Address: to be added</span>
             </div>
 
             <div className="flex items-center justify-center gap-2">
               <Phone className="w-4 h-4 text-turmeric shrink-0" />
-              <span>Care Helpline: +91 (141) 245-8890</span>
+              <span>Phone: to be added</span>
             </div>
           </div>
         </Reveal>

@@ -11,8 +11,8 @@ export const faqs: FAQItem[] = [
   {
     id: 'faq-fv-2',
     category: 'First visit',
-    question: 'What happens during the initial consultation with Dr. Bohra or Dr. Sharma?',
-    answer: 'The initial consultation lasts approximately 40 to 50 minutes. We conduct an eight-fold classical examination (Ashtavidha Pariksha) which includes radial pulse evaluation (Nadi), tongue diagnosis (Jihwa), voice and speech timbre (Shabda), skin texture and temperature (Sparsha), visual eye clarity (Druk), and physical gait. We also review your existing modern medical investigations (blood panels, MRIs, ultrasounds) to formulate an integrated diagnosis before prescribing medicines, diet (Pathya), and lifestyle routines.',
+    question: 'What happens during the initial consultation with Dr. Lavesh Bohra?',
+    answer: 'The initial consultation lasts approximately 40 to 50 minutes. We conduct an eight-fold classical examination (Ashtavidha Pariksha) which includes radial pulse evaluation (Nadi), tongue diagnosis (Jihwa), voice and speech timbre (Shabda), skin texture and temperature (Sparsha), visual eye clarity (Druk), and physical gait. We also review your existing medical investigations (blood panels, imaging) to formulate a personalized dietary and lifestyle routine.',
   },
   {
     id: 'faq-fv-3',
@@ -32,7 +32,7 @@ export const faqs: FAQItem[] = [
     id: 'faq-oc-1',
     category: 'Online consultation',
     question: 'How does an Ayurvedic consultation work via video call without physical pulse diagnosis?',
-    answer: 'While radial pulse palpation is uniquely valuable, classical Ayurveda also emphasizes Prashna Pariksha (deep clinical questioning), Darshana (visual observation of tongue, facial skin, eyes, and nails via high-definition video), and modern investigative corroboration. Dr. Bohra and Dr. Sharma spend 35 minutes reviewing your symptoms, medical history, metabolic tendencies, and dietary patterns to arrive at an accurate Prakriti-Vikriti assessment.',
+    answer: 'While radial pulse palpation is uniquely valuable, classical Ayurveda also emphasizes Prashna Pariksha (clinical questioning), Darshana (visual observation of tongue, facial skin, eyes, and nails via video), and current investigative corroboration. Dr. Lavesh Bohra spends 35 to 45 minutes reviewing your symptoms, medical history, metabolic tendencies, and dietary patterns to arrive at an individualized Prakriti-Vikriti assessment and lifestyle plan.',
   },
   {
     id: 'faq-oc-2',
@@ -43,8 +43,8 @@ export const faqs: FAQItem[] = [
   {
     id: 'faq-oc-3',
     category: 'Online consultation',
-    question: 'Can I switch from an online consultation to an in-clinic Panchakarma treatment later?',
-    answer: 'Yes, absolutely. Many of our outstation and international patients begin with an online consultation to stabilize acute symptoms and initiate deepana-pachana (digestive kindle). When ready, they schedule a 7, 14, or 21-day residential stay at our Civil Lines, Jaipur facility for intensive hands-on Panchakarma.',
+    question: 'Can I follow up an online consultation with an in-person visit later?',
+    answer: 'Yes, absolutely. Many patients begin with an online consultation to address immediate dietary and routine adjustments. When ready or traveling, they schedule an in-person pulse diagnosis consultation for deeper evaluation.',
   },
 
   // Panchakarma
@@ -64,7 +64,7 @@ export const faqs: FAQItem[] = [
     id: 'faq-pk-3',
     category: 'Panchakarma',
     question: 'What strict restrictions (Pariharya Vishaya) must I follow during Panchakarma?',
-    answer: 'During active Panchakarma, the digestive fire and physiology are in a sensitive transitional state. Patients are advised to abstain from: direct exposure to cold air conditioning and midday sun, sexual activity, daytime sleeping, intense physical exercise, travel, consuming cold or leftover food, and emotional agitation. Rest and mental stillness are considered essential active ingredients of the cure.',
+    answer: 'During active Panchakarma, the digestive fire and physiology are in a sensitive transitional state. Patients are advised to abstain from: direct exposure to cold air conditioning and midday sun, sexual activity, daytime sleeping, intense physical exercise, travel, consuming cold or leftover food, and emotional agitation. Rest and mental stillness are considered essential active components of the therapeutic process.',
   },
   {
     id: 'faq-pk-4',
@@ -77,14 +77,14 @@ export const faqs: FAQItem[] = [
   {
     id: 'faq-pay-1',
     category: 'Payments',
-    question: 'Are Ayurvedic consultations and Panchakarma therapies covered by health insurance?',
-    answer: 'Yes. Under Ministry of AYUSH guidelines and IRDAI regulations, inpatient Panchakarma treatments and day-care procedures performed at recognized AYUSH clinical institutions are eligible for cashless claims or reimbursement by leading Indian private and public health insurance providers. Our hospital billing desk assists with discharge summaries, daily therapy logs, and standardized medical claim paperwork.',
+    question: 'Are Ayurvedic consultations covered by health insurance?',
+    answer: 'Under applicable Ministry of AYUSH guidelines and insurance policies, recognized Ayurvedic consultations may be eligible for reimbursement. We provide stamped itemized receipts and consultation summaries for your insurance claims.',
   },
   {
     id: 'faq-pay-2',
     category: 'Payments',
     question: 'What are the consultation fees and how can I pay?',
-    answer: 'In-person initial consultation with Dr. Lavesh Bohra is ₹1,200 (follow-ups within 21 days: ₹600). Consultation with Dr. Ananya Sharma is ₹950 (follow-ups: ₹500). Mukesh Gurjar lead therapist evaluation is ₹600. We accept all major UPI applications (Google Pay, PhonePe, Paytm), credit and debit cards, net banking, and cash at our front desk.',
+    answer: 'Consultation with Dr. Lavesh Bohra is ₹1,200. We accept all major UPI applications (Google Pay, PhonePe, Paytm), credit and debit cards, net banking, and cash.',
   },
   {
     id: 'faq-pay-3',
@@ -98,7 +98,7 @@ export const faqs: FAQItem[] = [
     id: 'faq-med-1',
     category: 'Medicines & diet',
     question: 'How do you ensure your herbal formulations are free of heavy metal contamination?',
-    answer: 'Patient safety is non-negotiable. All classical formulations, ghritas, tailas, and asava-arishtas dispensed at Aarogyam are sourced from GMP-certified botanical pharmacies. Every production batch is certified through Inductively Coupled Plasma Mass Spectrometry (ICP-MS) to guarantee heavy metal levels (Lead, Mercury, Arsenic, Cadmium) fall far below stringent WHO and AYUSH safety thresholds.',
+    answer: 'Patient safety is non-negotiable. All classical formulations, ghritas, tailas, and asava-arishtas dispensed at Vankal are sourced from GMP-certified botanical pharmacies. Every production batch is certified through Inductively Coupled Plasma Mass Spectrometry (ICP-MS) to verify that heavy metal levels (Lead, Mercury, Arsenic, Cadmium) fall far below stringent WHO and AYUSH safety thresholds.',
   },
   {
     id: 'faq-med-2',

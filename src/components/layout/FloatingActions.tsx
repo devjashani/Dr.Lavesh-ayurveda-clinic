@@ -108,13 +108,11 @@ export function FloatingActions() {
           )}
         </AnimatePresence>
 
-        {/* Floating WhatsApp Action */}
+        {/* Floating Contact Action */}
         <div className="pointer-events-auto flex items-center group">
-          <a
-            href="https://wa.me/911412458890?text=Namaste%20Aarogyam%20Ayurveda%2C%20I%20would%20like%20to%20inquire%20about%20a%20consultation."
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Chat with Vaidya Desk on WhatsApp"
+          <Link
+            href="/contact"
+            aria-label="Contact Vankal Ayurveda"
             className="relative h-12 sm:h-14 rounded-full bg-deep-forest text-cream flex items-center shadow-[0_8px_24px_rgba(20,41,28,0.25)] hover:border-turmeric/60 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] border border-forest/30 pl-3.5 pr-3.5 sm:pl-4 sm:pr-4 group overflow-hidden"
           >
             {/* Gentle pulse ring */}
@@ -125,11 +123,11 @@ export function FloatingActions() {
 
             <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-turmeric stroke-[1.75] shrink-0 transition-transform duration-300 group-hover:scale-110" />
 
-            {/* Expands on hover to show 'Chat with us' */}
+            {/* Expands on hover to show 'Contact us' */}
             <span className="max-w-0 opacity-0 overflow-hidden group-hover:max-w-[120px] group-hover:opacity-100 group-hover:ml-2.5 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] whitespace-nowrap text-xs sm:text-sm font-medium tracking-wide text-cream select-none">
-              Chat with us
+              Contact us
             </span>
-          </a>
+          </Link>
         </div>
       </aside>
 
@@ -138,13 +136,13 @@ export function FloatingActions() {
         aria-label="Mobile quick actions"
         className="fixed sm:hidden bottom-0 left-0 right-0 z-40 bg-paper/95 backdrop-blur-md border-t border-forest/20 px-4 py-2.5 flex items-center gap-3 shadow-[0_-4px_16px_rgba(20,41,28,0.06)]"
       >
-        <a
-          href="tel:+911412458890"
+        <Link
+          href="/contact"
           className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-3 rounded-[4px] border border-forest/30 text-deep-forest font-medium text-xs bg-cream active:bg-paper transition-colors"
         >
           <Phone className="w-3.5 h-3.5 text-forest" />
-          <span>Call Clinic</span>
-        </a>
+          <span>Contact</span>
+        </Link>
 
         <Link
           href="/book"

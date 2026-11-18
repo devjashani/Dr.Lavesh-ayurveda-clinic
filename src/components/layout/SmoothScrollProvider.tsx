@@ -33,36 +33,8 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
     gsap.ticker.add(tickerCallback);
 
-    // Section Transitions: Smooth background color interpolation with ScrollTrigger
-    // Scoped strictly via gsap.context on containerRef and targeting only explicit sections with [data-dark-section]
-    const ctx = gsap.context(() => {
-      if (!containerRef.current) return;
-      const darkSections = containerRef.current.querySelectorAll<HTMLElement>('section[data-dark-section]');
-
-      darkSections.forEach((section) => {
-        gsap.fromTo(
-          section,
-          {
-            backgroundColor: '#1C3725',
-          },
-          {
-            backgroundColor: '#14291C',
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              end: 'top 20%',
-              scrub: 0.8,
-              invalidateOnRefresh: true,
-            },
-          }
-        );
-      });
-    }, containerRef);
-
     return () => {
       gsap.ticker.remove(tickerCallback);
-      ctx.revert();
       lenis.destroy();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };

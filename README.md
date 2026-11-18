@@ -1,4 +1,4 @@
-# Aarogyam Ayurveda (आरोग्यम् आयुर्वेद)
+# VANKAL AYURVEDA (વાંકલ આયુર્વેદ)
 ### Classical Vaidya Chikitsalaya & Modern Clinical Sanctuary
 
 > **Design Direction:** *"Calm clinical meets classical Ayurveda"* — Grounded in traditional Samhitas (Charaka, Sushruta, Ashtanga Hridaya) with precision contemporary clinical rigor. Strictly zero neon, zero violet gradients, zero generic glassmorphism cards, and zero emoji as icons.
@@ -51,7 +51,7 @@ Every color token is anchored in authentic Ayurvedic materia medica and classica
 - `Container`: Fluid responsive container with customizable widths (`narrow`, `default`, `wide`).
 
 ### Global Layout & Shell (`src/components/layout/`)
-- `Navbar`: Classical leaf/mudra mark, wordmark, bilingual toggle (`EN | हिं`), scroll auto-hide and solid paper background reveal, full-screen mobile menu with staggered reveal.
+- `Navbar`: Classical leaf/mudra mark, wordmark, bilingual toggle (`EN | ગુજ`), scroll auto-hide and solid paper background reveal, full-screen mobile menu with staggered reveal.
 - `Footer`: 4 columns (Brand + mission, Therapies, Quick links, Clinic info & hours), AYUSH registration line, social links, newsletter, medical disclaimer, and big faded watermark.
 - `ScrollProgress`: 2px hairline tracker in `--color-turmeric` at the top viewport edge.
 - `FloatingActions`: WhatsApp consultation button with calm pulse ring + mobile sticky bottom bar (`Call` and `Book`).

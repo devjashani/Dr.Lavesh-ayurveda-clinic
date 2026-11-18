@@ -1,6 +1,6 @@
-# Central Motion System — Aarogyam Ayurveda
+# Central Motion System — Vankal Ayurveda
 
-A centralized, performant, and dignified motion design system for **Aarogyam Ayurveda**. All animations follow a unified clinical aesthetic (*"Calm clinical meets classical Ayurveda"*). Random one-off animations are strictly forbidden in favor of shared tokens, standard primitives, and guaranteed accessibility compliance.
+A centralized, performant, and dignified motion design system for **Vankal Ayurveda**. All animations follow a unified clinical aesthetic (*"Calm clinical meets classical Ayurveda"*). Random one-off animations are strictly forbidden in favor of shared tokens, standard primitives, and guaranteed accessibility compliance.
 
 ---
 
@@ -165,14 +165,14 @@ import { Button } from '@/components/ui/Button';
 ## 4. First-Load Intro & Micro-Interaction Language
 
 ### 1. First-Load Intro (Preloader)
-- **Session Cache:** Executed once per session via `sessionStorage.getItem('aarogyam_intro_shown')`.
+- **Session Cache:** Executed once per session via `sessionStorage.getItem('vankal_intro_shown')`.
 - **Duration:** 1.8s maximum duration with zero LCP penalty (all page DOM is pre-rendered underneath).
 - **Choreography:**
   - `0.0s – 0.5s`: Botanical leaf/mudra mark draws via SVG pathLength (`strokeDashoffset`).
-  - `0.4s – 0.8s`: "Aarogyam" fades up with "आरोग्यम्" in small italic beneath.
+  - `0.4s – 0.8s`: "VANKAL AYURVEDA" fades up with "વાંકલ" in small italic beneath.
   - `0.7s – 1.1s`: Thin turmeric line expands from center.
   - `1.15s – 1.8s`: Overlay curtain lifts upward via curved clip-path `inset(0% 0% 100% 0% round 0 0 60% 60%)`, revealing the hero headline and arch image in seamless continuity.
-  - `1.8s`: Component unmounts cleanly and fires `aarogyam-intro-done`.
+  - `1.8s`: Component unmounts cleanly and fires `vankal-intro-done`.
 
 ### 2. Micro-Interaction Language
 - **Nav Links:** Hairline underline draws from left to right on hover (`scaleX: 0 -> 1` with `origin-left`); active route features a centered turmeric dot (`layoutId="activeNavDot"`).

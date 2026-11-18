@@ -25,8 +25,8 @@ const doshas: DoshaInfo[] = [
   {
     id: 'vata',
     name: 'Vata',
-    sanskrit: 'वात दोष',
-    elements: 'Air + Space (वायु + आकाश)',
+    sanskrit: 'વાત દોષ',
+    elements: 'Air + Space (વાયુ + આકાશ)',
     qualities: 'Mobile, Light, Cold, Dry, Subtle',
     signsOfImbalance: 'Insomnia, anxiety, constipation, joint cracking, dry skin',
     pacification: 'Warm sesame oil, grounding khichdi, regular circadian rhythm',
@@ -35,8 +35,8 @@ const doshas: DoshaInfo[] = [
   {
     id: 'pitta',
     name: 'Pitta',
-    sanskrit: 'पित्त दोष',
-    elements: 'Fire + Water (अग्नि + जल)',
+    sanskrit: 'પિત્ત દોષ',
+    elements: 'Fire + Water (અગ્નિ + જળ)',
     qualities: 'Hot, Sharp, Light, Acidic, Pungent',
     signsOfImbalance: 'Acid reflux, skin rashes, migraine, inflammatory flares, irritability',
     pacification: 'Cooling ghee, bitter greens, moonlit walks, sweet fruits',
@@ -45,8 +45,8 @@ const doshas: DoshaInfo[] = [
   {
     id: 'kapha',
     name: 'Kapha',
-    sanskrit: 'कफ दोष',
-    elements: 'Water + Earth (जल + पृथ्वी)',
+    sanskrit: 'કફ દોષ',
+    elements: 'Water + Earth (જળ + પૃથ્વી)',
     qualities: 'Heavy, Slow, Cool, Dense, Static',
     signsOfImbalance: 'Weight gain, sluggish digestion, morning congestion, lethargy',
     pacification: 'Warming ginger & black pepper, rigorous exercise, dry steam (Swedana)',
@@ -196,7 +196,7 @@ export function DoshaTeaser() {
 
   return (
     <section
-      data-dark-section="true"
+      suppressHydrationWarning
       className="py-20 sm:py-28 bg-deep-forest text-cream relative overflow-hidden border-b border-forest/30"
     >
       {/* Ambient background glows */}

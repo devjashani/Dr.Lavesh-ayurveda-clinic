@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
 import './globals.css';
-import { fraunces, dmSans, tiroDevanagari } from './fonts';
+import { fraunces, dmSans, notoSerifGujarati, notoSansGujarati } from './fonts';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { ScrollProgress } from '@/components/layout/ScrollProgress';
@@ -13,28 +13,27 @@ import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 import { JsonLd } from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://aarogyamayurveda.com'),
+  metadataBase: new URL('https://vankalayurveda.com'),
   title: {
-    default: 'Aarogyam Ayurveda — Classical Vaidya Chikitsalaya & Panchakarma',
-    template: '%s | Aarogyam Ayurveda',
+    default: 'VANKAL AYURVEDA — Classical Ayurveda & Lifestyle Care',
+    template: '%s | VANKAL AYURVEDA',
   },
   description:
-    'Authentic classical Ayurvedic clinic and residential Panchakarma retreat in Civil Lines, Jaipur. Precision clinical pulse diagnosis (Nadi Pariksha), personalized herbal formulations, and restorative therapies rooted in Charaka Samhita. Hospital Reg: AYUSH-RJ-2018-0482.',
+    'Individual Ayurvedic consultations and personalized lifestyle care guided by Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University. Grounded in classical Charaka Samhita principles.',
   keywords: [
-    'Ayurveda Clinic Jaipur',
-    'Panchakarma Center Jaipur',
-    'Classical Ayurveda',
-    'Nadi Pariksha',
+    'Ayurveda Consultation',
     'Dr Lavesh Bohra',
-    'Shirodhara',
-    'Kati Basti',
+    'Classical Ayurveda',
+    'Prakriti Assessment',
+    'Ayurvedic Diet Ahara',
+    'Dinacharya',
+    'Ritucharya',
     'Charaka Samhita',
-    'Ayurvedic Doctors Civil Lines',
-    'AYUSH Registered Chikitsalaya',
+    'VANKAL AYURVEDA',
   ],
-  authors: [{ name: 'Dr. Lavesh Bohra, MD (Kayachikitsa), PhD' }],
-  creator: 'Aarogyam Ayurvedic Chikitsalaya',
-  publisher: 'Aarogyam Ayurveda',
+  authors: [{ name: 'Dr. Lavesh Bohra, BAMS (2026)' }],
+  creator: 'VANKAL AYURVEDA',
+  publisher: 'VANKAL AYURVEDA',
   formatDetection: {
     email: false,
     address: false,
@@ -43,26 +42,26 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    alternateLocale: 'hi_IN',
-    url: 'https://aarogyamayurveda.com',
-    siteName: 'Aarogyam Ayurveda Chikitsalaya',
-    title: 'Aarogyam Ayurveda — Classical Vaidya Chikitsalaya & Panchakarma',
+    alternateLocale: 'gu_IN',
+    url: 'https://vankalayurveda.com',
+    siteName: 'VANKAL AYURVEDA',
+    title: 'VANKAL AYURVEDA — Classical Ayurveda & Lifestyle Care',
     description:
-      'Precision pulse diagnosis, classical Panchakarma bio-cleansing, and genuine Samhita herbal formulations in Jaipur. Hospital Reg: AYUSH-RJ-2018-0482.',
+      'Individual Ayurvedic consultations and personalized lifestyle care guided by Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Aarogyam Ayurvedic Chikitsalaya & Panchakarma Retreat',
+        alt: 'VANKAL AYURVEDA',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aarogyam Ayurveda — Classical Vaidya Chikitsalaya & Panchakarma',
+    title: 'VANKAL AYURVEDA — Classical Ayurveda & Lifestyle Care',
     description:
-      'Authentic classical Ayurvedic pulse diagnosis, residential Panchakarma, and Samhita care in Civil Lines, Jaipur.',
+      'Individual Ayurvedic consultations and personalized lifestyle care guided by Dr. Lavesh Bohra, BAMS (2026).',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -96,12 +95,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${dmSans.variable} ${tiroDevanagari.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${fraunces.variable} ${dmSans.variable} ${notoSerifGujarati.variable} ${notoSansGujarati.variable} h-full antialiased`}
     >
       <head>
         <JsonLd />
       </head>
-      <body className="min-h-full flex flex-col bg-paper text-ink font-sans selection:bg-sage/30 selection:text-deep-forest relative">
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col bg-paper text-ink font-sans selection:bg-sage/30 selection:text-deep-forest relative"
+      >
         {/* First-load Session Intro Preloader */}
         <IntroPreloader />
 

@@ -7,7 +7,7 @@ import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
 import { ShieldCheck, Lock, FileText, CheckCircle2 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy & Patient Data Protection | Aarogyam Ayurveda',
+  title: 'Privacy Policy & Patient Data Protection | Vankal Ayurveda',
   description:
     'Our commitment to safeguarding patient health data, digital medical records, and diagnostic privacy under Indian telemedicine guidelines.',
 };
@@ -18,7 +18,7 @@ export default function PrivacyPage() {
       <Container className="mb-10">
         <div className="max-w-3xl">
           <Badge variant="sage" className="mb-4">
-            गोपनीयता नीति · Patient Confidentiality
+            ગોપનીયતા નીતિ · Patient Confidentiality
           </Badge>
           <h1 className="font-display text-display-h1 text-deep-forest tracking-tight leading-[1.08] mb-4">
             Privacy Policy & Clinical Data Protection
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
               1. Information We Collect
             </h2>
             <p>
-              When you schedule a consultation, engage with our online Dosha assessment, or undergo Panchakarma therapy at Aarogyam Ayurveda, we collect the following categories of information:
+              When you schedule a consultation, engage with our online Dosha assessment, or undergo Panchakarma therapy at Vankal Ayurveda, we collect the following categories of information:
             </p>
             <ul className="list-disc pl-5 space-y-1 text-ink/75">
               <li>Personal identity details: Full legal name, date of birth, biological sex, contact address, and telephone number.</li>
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-1 text-ink/75">
               <li>All digital medical records and video consultation channels are encrypted in transit (TLS 1.3) and at rest (AES-256).</li>
-              <li>Physical clinical files at our Civil Lines, Jaipur hospital are stored in restricted-access archives accessible only by attending Vaidyas and certified paramedical staff.</li>
+              <li>Physical clinical records and files are stored in restricted-access archives accessible only by attending Vaidyas and clinical staff.</li>
               <li>We maintain digital records for a mandatory statutory retention period of 5 years following your last active consultation, after which data may be securely purged upon written patient request.</li>
             </ul>
           </section>
@@ -95,7 +95,7 @@ export default function PrivacyPage() {
               4. Patient Rights & Record Access
             </h2>
             <p>
-              As a patient of Aarogyam Ayurveda, you retain the fundamental right to:
+              As a patient of Vankal Ayurveda, you retain the fundamental right to:
             </p>
             <ul className="list-disc pl-5 space-y-1 text-ink/75">
               <li>Request a certified digital copy of your consultation summaries, pulse assessments, and prescriptions at any time via your registered email.</li>
@@ -113,10 +113,10 @@ export default function PrivacyPage() {
               For questions regarding medical privacy, data correction, or regulatory compliance, please contact:
             </p>
             <div className="p-3 bg-cream rounded-[3px] border border-forest/10 font-mono text-xs space-y-1">
-              <div>Medical Records & Privacy Officer</div>
-              <div>Aarogyam Ayurveda Hospital, 14 Jacob Road, Civil Lines, Jaipur 302006</div>
-              <div>Email: <a href="mailto:privacy@aarogyamayurveda.com" className="text-forest underline">privacy@aarogyamayurveda.com</a></div>
-              <div>Phone: +91 141 238 9400</div>
+              <div>Medical Records & Privacy</div>
+              <div>Vankal Ayurveda · Address: to be added</div>
+              <div>Email: to be added</div>
+              <div>Phone: to be added</div>
             </div>
           </section>
         </div>

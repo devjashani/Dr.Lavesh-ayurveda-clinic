@@ -31,12 +31,12 @@ const CATEGORIES: {
   sanskrit: string;
   icon: any;
 }[] = [
-  { key: 'All', label: 'All Questions', sanskrit: 'सर्वप्रश्नाः', icon: HelpCircle },
-  { key: 'First visit', label: 'First Visit & Nadi', sanskrit: 'प्रथम परामर्श', icon: Stethoscope },
-  { key: 'Online consultation', label: 'Online Video Consult', sanskrit: 'दूरस्थ परामर्श', icon: Video },
-  { key: 'Panchakarma', label: 'Panchakarma Care', sanskrit: 'पञ्चकर्म शोधन', icon: Sparkles },
-  { key: 'Payments', label: 'Payments & AYUSH Insurance', sanskrit: 'शुल्क एवं बीमा', icon: CreditCard },
-  { key: 'Medicines & diet', label: 'Medicines & Pathya Diet', sanskrit: 'औषध एवं पथ्य', icon: Leaf },
+  { key: 'All', label: 'All Questions', sanskrit: 'સર્વપ્રશ્નો', icon: HelpCircle },
+  { key: 'First visit', label: 'First Visit & Nadi', sanskrit: 'પ્રથમ પરામર્શ', icon: Stethoscope },
+  { key: 'Online consultation', label: 'Online Video Consult', sanskrit: 'દૂરસ્થ પરામર્શ', icon: Video },
+  { key: 'Panchakarma', label: 'Panchakarma Care', sanskrit: 'પંચકર્મ શોધન', icon: Sparkles },
+  { key: 'Payments', label: 'Payments & AYUSH Insurance', sanskrit: 'શુલ્ક તેમજ વીમો', icon: CreditCard },
+  { key: 'Medicines & diet', label: 'Medicines & Pathya Diet', sanskrit: 'ઔષધ તેમજ પથ્ય', icon: Leaf },
 ];
 
 export function FaqClient({ faqs }: FaqClientProps) {
@@ -222,28 +222,21 @@ export function FaqClient({ faqs }: FaqClientProps) {
               </h3>
               <p className="font-body text-xs sm:text-sm text-paper/80 leading-relaxed">
                 Our resident care coordinators are available Monday through Saturday to answer questions
-                regarding diagnosis, traveling to Jaipur, or dietary preparations.
+                regarding diagnosis, dietary preparations, or consultation steps.
               </p>
             </div>
             <div className="md:col-span-4 flex flex-col gap-2.5">
               <Button
-                href="https://wa.me/919414012345?text=Namaste%2C%20I%20have%20a%20question%20regarding%20Aarogyam%20treatments."
+                href="/contact"
                 variant="primary"
-                external
                 className="w-full justify-center bg-turmeric text-deep-forest hover:bg-turmeric/90 text-xs"
               >
                 <MessageCircle className="w-4 h-4 mr-1.5" />
-                WhatsApp Help Desk
+                Contact Consultation Desk
               </Button>
-              <Button
-                href="tel:+911412389400"
-                variant="secondary"
-                external
-                className="w-full justify-center border-paper/40 text-paper hover:bg-paper/10 text-xs"
-              >
-                <Phone className="w-4 h-4 mr-1.5" />
-                Call +91 141 238 9400
-              </Button>
+              <div className="text-[11px] font-mono text-paper/70 text-center">
+                Phone & WhatsApp: to be added
+              </div>
             </div>
           </div>
         </div>

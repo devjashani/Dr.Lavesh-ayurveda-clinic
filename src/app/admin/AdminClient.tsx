@@ -14,7 +14,6 @@ import {
   DoctorScheduleConfig,
 } from '@/lib/data/mockSoftwareDb';
 import { treatments } from '@/lib/data/treatments';
-import { blogs } from '@/lib/data/blogs';
 import {
   LayoutDashboard,
   Calendar,
@@ -80,7 +79,6 @@ type ActiveTab =
   | 'schedule'
   | 'prescriptions'
   | 'treatments'
-  | 'blog'
   | 'settings';
 
 export function AdminClient() {
@@ -257,13 +255,13 @@ export function AdminClient() {
   const handleTriggerWhatsApp = (apt: DbAppointment) => {
     const cleanPhone = apt.patientPhone.replace(/\D/g, '');
     const msg = encodeURIComponent(
-      `Hari Om ${apt.patientName}, your appointment at Aarogyam Ayurveda is confirmed.\n\n` +
-        `• Token: ${apt.tokenNumber}\n` +
-        `• Vaidya: ${apt.doctorName}\n` +
-        `• Service: ${apt.serviceName}\n` +
-        `• Date: ${apt.date} at ${apt.slot}\n` +
-        `• Mode: ${apt.mode === 'in-clinic' ? 'In-Clinic (Civil Lines, Jaipur)' : 'Online Video'}\n\n` +
-        `Please arrive 10 minutes early. Contact: +91 141 239 8800.`
+      `Hari Om ${apt.patientName}, your appointment at Vankal Ayurveda is confirmed.\n\n` +
+      `• Token: ${apt.tokenNumber}\n` +
+      `• Vaidya: ${apt.doctorName}\n` +
+      `• Service: ${apt.serviceName}\n` +
+      `• Date: ${apt.date} at ${apt.slot}\n` +
+      `• Mode: ${apt.mode === 'in-clinic' ? 'In-Clinic Consultation' : 'Online Video'}\n\n` +
+      `Please arrive 10 minutes early. Contact: to be added.`
     );
     window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
   };
@@ -412,7 +410,6 @@ export function AdminClient() {
     { id: 'schedule', label: 'Schedule & Slots', icon: Clock, badge: null },
     { id: 'prescriptions', label: 'Prescription Builder', icon: FileText, badge: 'Rx' },
     { id: 'treatments', label: 'Therapies & Suites', icon: Sparkles, badge: treatments.length },
-    { id: 'blog', label: 'Wisdom Blog', icon: BookOpen, badge: blogs.length },
     { id: 'settings', label: 'Clinic Settings', icon: Settings, badge: null },
   ] as const;
 
@@ -423,11 +420,11 @@ export function AdminClient() {
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5 font-medium tracking-wide">
             <ShieldCheck className="w-3.5 h-3.5 text-sage" />
-            चिकित्सालय ईएमआर · Aarogyam Clinical EMR System
+            ચિકિત્સાલય ઈએમઆર · Vankal Clinical EMR System
           </span>
           <span className="hidden sm:inline text-cream/40">•</span>
           <span className="hidden sm:inline text-cream/75">
-            Registration: <strong>AYUSH-RJ-2018-0482</strong> (Jaipur, Rajasthan)
+            Registration: <strong>to be added</strong>
           </span>
         </div>
         <div className="flex items-center gap-4 text-cream/80 text-[10px] sm:text-[11px]">
@@ -463,19 +460,18 @@ export function AdminClient() {
 
         {/* Sidebar Navigation */}
         <aside
-          className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-[#14291C] text-cream flex flex-col border-r border-forest/40 transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+          className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-[#14291C] text-cream flex flex-col border-r border-forest/40 transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
         >
           {/* Sidebar Header */}
           <div className="p-4 border-b border-forest/40 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5 group">
               <div className="w-8 h-8 rounded-lg bg-forest/80 border border-sage/30 flex items-center justify-center text-turmeric font-serif font-bold text-lg shadow-inner">
-                आ
+                આ
               </div>
               <div>
                 <div className="font-serif font-semibold text-sm tracking-tight text-cream">
-                  Aarogyam EMR
+                  Vankal EMR
                 </div>
                 <div className="text-[10px] text-sage tracking-wider uppercase">
                   Staff & Vaidya Console
@@ -510,15 +506,15 @@ export function AdminClient() {
                   {role === 'Doctor'
                     ? 'Dr. Lavesh Bohra'
                     : role === 'Admin'
-                    ? 'Administrator'
-                    : 'Priya Sharma (Desk)'}
+                      ? 'Administrator'
+                      : 'Priya Sharma (Desk)'}
                 </div>
                 <div className="text-[10px] text-cream/60 truncate">
                   {role === 'Doctor'
                     ? 'Chief Vaidya · MD (Ayu)'
                     : role === 'Admin'
-                    ? 'All Permissions Active'
-                    : 'OPD Receptionist'}
+                      ? 'All Permissions Active'
+                      : 'OPD Receptionist'}
                 </div>
               </div>
             </div>
@@ -531,7 +527,7 @@ export function AdminClient() {
               const isActive = activeTab === item.id;
               // Role restriction check for display
               const isRestrictedForReceptionist =
-                role === 'Receptionist' && (item.id === 'settings' || item.id === 'blog');
+                role === 'Receptionist' && item.id === 'settings';
 
               return (
                 <button
@@ -541,29 +537,26 @@ export function AdminClient() {
                     setSidebarOpen(false);
                   }}
                   disabled={isRestrictedForReceptionist}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all ${
-                    isActive
-                      ? 'bg-sage/20 text-cream border-l-2 border-turmeric shadow-xs'
-                      : isRestrictedForReceptionist
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all ${isActive
+                    ? 'bg-sage/20 text-cream border-l-2 border-turmeric shadow-xs'
+                    : isRestrictedForReceptionist
                       ? 'opacity-40 cursor-not-allowed text-cream/40'
                       : 'text-cream/75 hover:bg-forest/40 hover:text-cream'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-2.5">
                     <Icon
-                      className={`w-4 h-4 ${
-                        isActive ? 'text-turmeric' : 'text-cream/60 group-hover:text-cream'
-                      }`}
+                      className={`w-4 h-4 ${isActive ? 'text-turmeric' : 'text-cream/60 group-hover:text-cream'
+                        }`}
                     />
                     <span>{item.label}</span>
                   </div>
                   {item.badge !== null && (
                     <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
-                        isActive
-                          ? 'bg-turmeric text-deep-forest font-semibold'
-                          : 'bg-forest/60 text-cream/70'
-                      }`}
+                      className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono ${isActive
+                        ? 'bg-turmeric text-deep-forest font-semibold'
+                        : 'bg-forest/60 text-cream/70'
+                        }`}
                     >
                       {item.badge}
                     </span>
@@ -621,11 +614,10 @@ export function AdminClient() {
                   <button
                     key={r}
                     onClick={() => setRole(r)}
-                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                      role === r
-                        ? 'bg-deep-forest text-cream shadow-2xs font-semibold'
-                        : 'text-ink/70 hover:text-ink'
-                    }`}
+                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${role === r
+                      ? 'bg-deep-forest text-cream shadow-2xs font-semibold'
+                      : 'text-ink/70 hover:text-ink'
+                      }`}
                   >
                     {r}
                   </button>
@@ -774,22 +766,20 @@ export function AdminClient() {
                   <div className="flex items-center gap-2 bg-[#EAE2CE]/70 p-1 rounded-lg border border-[#DCD3BC] text-xs">
                     <button
                       onClick={() => setChartMetric('volume')}
-                      className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
-                        chartMetric === 'volume'
-                          ? 'bg-deep-forest text-cream shadow-2xs font-semibold'
-                          : 'text-ink/70 hover:text-ink'
-                      }`}
+                      className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${chartMetric === 'volume'
+                        ? 'bg-deep-forest text-cream shadow-2xs font-semibold'
+                        : 'text-ink/70 hover:text-ink'
+                        }`}
                     >
                       Appointment Volume
                     </button>
                     {role !== 'Receptionist' && (
                       <button
                         onClick={() => setChartMetric('revenue')}
-                        className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
-                          chartMetric === 'revenue'
-                            ? 'bg-deep-forest text-cream shadow-2xs font-semibold'
-                            : 'text-ink/70 hover:text-ink'
-                        }`}
+                        className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${chartMetric === 'revenue'
+                          ? 'bg-deep-forest text-cream shadow-2xs font-semibold'
+                          : 'text-ink/70 hover:text-ink'
+                          }`}
                       >
                         Revenue (₹)
                       </button>
@@ -942,11 +932,10 @@ export function AdminClient() {
                               {apt.tokenNumber}
                             </span>
                             <span
-                              className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                                apt.mode === 'in-clinic'
-                                  ? 'bg-sage/20 text-forest'
-                                  : 'bg-blue-100 text-blue-800'
-                              }`}
+                              className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${apt.mode === 'in-clinic'
+                                ? 'bg-sage/20 text-forest'
+                                : 'bg-blue-100 text-blue-800'
+                                }`}
                             >
                               {apt.mode === 'in-clinic' ? 'In-Clinic' : 'Online Video'}
                             </span>
@@ -963,15 +952,14 @@ export function AdminClient() {
 
                       <div className="flex items-center gap-2 self-end sm:self-center">
                         <span
-                          className={`text-[11px] px-2 py-0.5 rounded-full font-medium font-mono ${
-                            apt.status === 'Confirmed'
-                              ? 'bg-emerald-100 text-emerald-800'
-                              : apt.status === 'Completed'
+                          className={`text-[11px] px-2 py-0.5 rounded-full font-medium font-mono ${apt.status === 'Confirmed'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : apt.status === 'Completed'
                               ? 'bg-gray-100 text-gray-700'
                               : apt.status === 'Pending'
-                              ? 'bg-amber-100 text-amber-800'
-                              : 'bg-rose-100 text-rose-800'
-                          }`}
+                                ? 'bg-amber-100 text-amber-800'
+                                : 'bg-rose-100 text-rose-800'
+                            }`}
                         >
                           {apt.status}
                         </span>
@@ -1046,7 +1034,6 @@ export function AdminClient() {
                   >
                     <option value="All">All Vaidyas</option>
                     <option value="dr-lavesh-bohra">Dr. Lavesh Bohra</option>
-                    <option value="dr-ananya-sharma">Dr. Ananya Sharma</option>
                   </select>
 
                   {/* Date Filter */}
@@ -1055,11 +1042,10 @@ export function AdminClient() {
                       <button
                         key={d}
                         onClick={() => setAptDateFilter(d)}
-                        className={`px-2 py-1 rounded text-[11px] font-medium transition-all ${
-                          aptDateFilter === d
-                            ? 'bg-deep-forest text-cream shadow-2xs font-semibold'
-                            : 'text-ink/70 hover:text-ink'
-                        }`}
+                        className={`px-2 py-1 rounded text-[11px] font-medium transition-all ${aptDateFilter === d
+                          ? 'bg-deep-forest text-cream shadow-2xs font-semibold'
+                          : 'text-ink/70 hover:text-ink'
+                          }`}
                       >
                         {d}
                       </button>
@@ -1192,15 +1178,14 @@ export function AdminClient() {
                                     e.target.value as DbAppointment['status']
                                   )
                                 }
-                                className={`text-[11px] font-medium font-mono px-2 py-1 rounded-md border focus:outline-none cursor-pointer ${
-                                  apt.status === 'Confirmed'
-                                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                                    : apt.status === 'Completed'
+                                className={`text-[11px] font-medium font-mono px-2 py-1 rounded-md border focus:outline-none cursor-pointer ${apt.status === 'Confirmed'
+                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                                  : apt.status === 'Completed'
                                     ? 'bg-gray-100 text-gray-700 border-gray-300'
                                     : apt.status === 'Pending'
-                                    ? 'bg-amber-50 text-amber-800 border-amber-200'
-                                    : 'bg-rose-50 text-rose-800 border-rose-200'
-                                }`}
+                                      ? 'bg-amber-50 text-amber-800 border-amber-200'
+                                      : 'bg-rose-50 text-rose-800 border-rose-200'
+                                  }`}
                               >
                                 <option value="Pending">Pending</option>
                                 <option value="Confirmed">Confirmed</option>
@@ -1535,8 +1520,7 @@ export function AdminClient() {
                     onChange={(e) => setSelectedDoctorSlug(e.target.value)}
                     className="px-3 py-1.5 rounded-lg bg-[#FBF9F4] border border-[#DCD3BC] text-xs font-semibold text-deep-forest focus:outline-none"
                   >
-                    <option value="dr-lavesh-bohra">Dr. Lavesh Bohra (Chief Vaidya)</option>
-                    <option value="dr-ananya-sharma">Dr. Ananya Sharma (Prasuti & Stri)</option>
+                    <option value="dr-lavesh-bohra">Dr. Lavesh Bohra</option>
                   </select>
                 </div>
               </div>
@@ -1734,14 +1718,11 @@ export function AdminClient() {
                     className="w-full p-2 rounded-lg bg-paper border border-[#DCD3BC] text-xs font-medium text-deep-forest focus:outline-none"
                   >
                     <option value="dr-lavesh-bohra">
-                      Dr. Lavesh Bohra, BAMS, MD (Kayachikitsa), PhD · AYUSH-RJ-1999-4081
-                    </option>
-                    <option value="dr-ananya-sharma">
-                      Dr. Ananya Sharma, BAMS, MS (Prasuti & Stri) · AYUSH-RJ-2012-7712
+                      Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University · Registration No.: to be added
                     </option>
                   </select>
                   <div className="text-[11px] text-ink/60 font-mono flex items-center justify-between pt-1">
-                    <span>Hospital Reg: AYUSH-RJ-2018-0482</span>
+                    <span>Registration No.: to be added</span>
                     <span>Date: {todayStr}</span>
                   </div>
                 </div>
@@ -1851,7 +1832,7 @@ export function AdminClient() {
                       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                         <div>
                           <label className="text-[10px] text-ink/55 font-mono block mb-1">
-                            Dosage (मात्रा):
+                            Dosage (માત્રા):
                           </label>
                           <input
                             type="text"
@@ -1869,7 +1850,7 @@ export function AdminClient() {
                         </div>
                         <div>
                           <label className="text-[10px] text-ink/55 font-mono block mb-1">
-                            Timing (सेवन काल):
+                            Timing (સેવન કાલ):
                           </label>
                           <select
                             value={item.timing}
@@ -1883,15 +1864,15 @@ export function AdminClient() {
                             }}
                             className="w-full p-1.5 rounded bg-paper border border-[#DCD3BC] text-xs"
                           >
-                            <option value="Before Meals">Before Meals (प्राग्भक्त)</option>
-                            <option value="After Meals">After Meals (पश्चाद्भक्त)</option>
-                            <option value="Sunrise on Empty Stomach">Sunrise Empty Stomach (उषःपान)</option>
-                            <option value="At Bedtime">At Bedtime (निशि)</option>
+                            <option value="Before Meals">Before Meals (પ્રાગ્ભક્ત)</option>
+                            <option value="After Meals">After Meals (પશ્ચાદ્ભક્ત)</option>
+                            <option value="Sunrise on Empty Stomach">Sunrise Empty Stomach (ઉષઃપાન)</option>
+                            <option value="At Bedtime">At Bedtime (નિશિ)</option>
                           </select>
                         </div>
                         <div>
                           <label className="text-[10px] text-ink/55 font-mono block mb-1">
-                            Anupana (अनुपान):
+                            Anupana (અનુપાન):
                           </label>
                           <input
                             type="text"
@@ -1982,24 +1963,24 @@ export function AdminClient() {
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-3">
                             <div className="w-12 h-12 rounded-xl bg-forest text-turmeric font-serif text-2xl font-bold flex items-center justify-center">
-                              आ
+                              આ
                             </div>
                             <div>
                               <h2 className="font-serif text-xl sm:text-2xl font-bold text-deep-forest tracking-tight">
-                                AAROGYAM AYURVEDIC CHIKITSALAYA
+                                VANKAL AYURVEDA
                               </h2>
                               <p className="text-[11px] text-ink/75 font-serif italic">
-                                Classical Vaidya Chikitsalaya · Panchakarma Retreat & Research
+                                Classical Ayurvedic Consultation & Lifestyle Care
                               </p>
                               <p className="text-[10px] text-ink/60 font-mono">
-                                Reg No: AYUSH-RJ-2018-0482 · GMP Certified Dispensary
+                                Registration No.: to be added
                               </p>
                             </div>
                           </div>
                           <div className="text-right text-[11px] text-ink/70 font-mono hidden sm:block">
-                            <div>Civil Lines, Jaipur 302006</div>
-                            <div>+91 141 239 8800</div>
-                            <div>contact@aarogyamayurveda.com</div>
+                            <div>Address: to be added</div>
+                            <div>Phone: to be added</div>
+                            <div>Email: to be added</div>
                           </div>
                         </div>
                       </div>
@@ -2028,9 +2009,7 @@ export function AdminClient() {
                         <div>
                           <span className="text-[10px] text-ink/50 block">Attending Vaidya</span>
                           <span className="font-bold text-deep-forest">
-                            {rxDoctorSlug === 'dr-lavesh-bohra'
-                              ? 'Dr. Lavesh Bohra'
-                              : 'Dr. Ananya Sharma'}
+                            Dr. Lavesh Bohra
                           </span>
                         </div>
                       </div>
@@ -2048,9 +2027,9 @@ export function AdminClient() {
                             <tr>
                               <th className="p-2">#</th>
                               <th className="p-2">Medicine Formulation</th>
-                              <th className="p-2">Dosage (मात्रा)</th>
-                              <th className="p-2">Timing (काल)</th>
-                              <th className="p-2">Anupana (अनुपान)</th>
+                              <th className="p-2">Dosage (માત્રા)</th>
+                              <th className="p-2">Timing (કાલ)</th>
+                              <th className="p-2">Anupana (અનુપાન)</th>
                               <th className="p-2 text-right">Days</th>
                             </tr>
                           </thead>
@@ -2098,12 +2077,10 @@ export function AdminClient() {
                         </div>
                         <div className="text-right">
                           <div className="font-serif font-bold text-deep-forest">
-                            {rxDoctorSlug === 'dr-lavesh-bohra'
-                              ? 'Dr. Lavesh Bohra, MD (Kayachikitsa)'
-                              : 'Dr. Ananya Sharma, MS (Prasuti)'}
+                            Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University
                           </div>
                           <div className="text-[10px] text-ink/60 font-mono">
-                            Digital Seal Verified · AYUSH Reg
+                            Registration No.: to be added
                           </div>
                         </div>
                       </div>
@@ -2190,54 +2167,7 @@ export function AdminClient() {
             </div>
           )}
 
-          {/* TAB 7: BLOG / WISDOM */}
-          {activeTab === 'blog' && (
-            <div className="p-4 sm:p-6 max-w-7xl mx-auto w-full space-y-4">
-              <div className="bg-cream p-4 rounded-xl border border-[#E8DFC9] shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                  <h2 className="font-serif text-base sm:text-lg font-bold text-deep-forest">
-                    Wisdom & Clinical Knowledge Management
-                  </h2>
-                  <p className="text-xs text-ink/65">
-                    Published educational guides and patient health dissertations
-                  </p>
-                </div>
-                <Link
-                  href="/blog"
-                  className="text-xs font-medium text-forest hover:underline flex items-center gap-1"
-                >
-                  View Public Blog <ExternalLink className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-
-              <div className="bg-cream rounded-xl border border-[#E8DFC9] shadow-2xs divide-y divide-[#EAE2CE]">
-                {blogs.map((b) => (
-                  <div
-                    key={b.id}
-                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#F5EFE1]/30 transition-colors"
-                  >
-                    <div>
-                      <span className="text-[10px] font-mono bg-sage/20 text-forest px-2 py-0.5 rounded">
-                        {b.category}
-                      </span>
-                      <h3 className="font-serif font-bold text-sm sm:text-base text-deep-forest mt-1">
-                        {b.title}
-                      </h3>
-                      <p className="text-xs text-ink/65 line-clamp-1 mt-0.5">{b.excerpt}</p>
-                    </div>
-                    <div className="flex items-center gap-4 text-xs font-mono text-ink/60 shrink-0">
-                      <span>{b.readTimeMinutes} min read</span>
-                      <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold text-[10px]">
-                        Published
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 8: SETTINGS */}
+          {/* TAB 7: SETTINGS */}
           {activeTab === 'settings' && (
             <div className="p-4 sm:p-6 max-w-4xl mx-auto w-full space-y-6">
               <div className="bg-cream p-5 rounded-xl border border-[#E8DFC9] shadow-2xs space-y-4">
@@ -2251,7 +2181,7 @@ export function AdminClient() {
                     </label>
                     <input
                       type="text"
-                      defaultValue="Aarogyam Ayurvedic Chikitsalaya & Panchakarma"
+                      defaultValue="Vankal Ayurveda & Panchakarma"
                       className="w-full p-2 rounded bg-paper border border-[#DCD3BC] text-xs font-medium"
                     />
                   </div>
@@ -2261,17 +2191,17 @@ export function AdminClient() {
                     </label>
                     <input
                       type="text"
-                      defaultValue="AYUSH-RJ-2018-0482"
+                      defaultValue="Registration No.: to be added"
                       className="w-full p-2 rounded bg-paper border border-[#DCD3BC] text-xs font-mono font-bold"
                     />
                   </div>
                   <div>
                     <label className="text-[11px] font-mono text-ink/60 block mb-1">
-                      Chief Vaidya Registration:
+                      Practitioner Registration:
                     </label>
                     <input
                       type="text"
-                      defaultValue="Dr. Lavesh Bohra · AYUSH-RJ-1999-4081"
+                      defaultValue="Dr. Lavesh Bohra · Registration No.: to be added"
                       className="w-full p-2 rounded bg-paper border border-[#DCD3BC] text-xs font-mono"
                     />
                   </div>

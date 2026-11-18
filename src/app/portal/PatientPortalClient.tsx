@@ -35,7 +35,7 @@ import {
   Video,
 } from 'lucide-react';
 
-const PATIENT_SESSION_KEY = 'aarogyam_logged_in_patient';
+const PATIENT_SESSION_KEY = 'vankal_logged_in_patient';
 
 export function PatientPortalClient() {
   // Authentication State
@@ -214,12 +214,12 @@ export function PatientPortalClient() {
         <Container size="narrow">
           <div className="bg-paper border border-forest/20 rounded-[6px] p-6 sm:p-10 shadow-md relative overflow-hidden">
             <div className="absolute right-0 bottom-0 text-[140px] font-sanskrit text-forest/[0.03] select-none pointer-events-none translate-x-8 translate-y-8">
-              स्वास्थ्य
+              સ્વાસ્થ્ય
             </div>
 
             <div className="text-center max-w-sm mx-auto mb-8 space-y-2">
               <Badge variant="sage" className="mx-auto text-[10px]">
-                रोगी स्वास्थ्य विवरण · Patient Portal
+                રોગી સ્વાસ્થ્ય વિવરણ · Patient Portal
               </Badge>
               <h1 className="font-display text-2xl sm:text-3xl text-deep-forest font-medium">
                 Access Your Health Records
@@ -371,7 +371,7 @@ export function PatientPortalClient() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block">
-                रोगी स्वास्थ्य विवरण · Welcome Back
+                રોગી સ્વાસ્થ્ય વિવરણ · Welcome Back
               </span>
               <h1 className="font-display text-2xl sm:text-3xl text-deep-forest font-medium">
                 {currentUser.name}
@@ -436,7 +436,7 @@ export function PatientPortalClient() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-forest/10">
                 <div>
                   <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-0.5">
-                    आगामी परामर्श · Scheduled Visit
+                    આગામી પરામર્શ · Scheduled Visit
                   </span>
                   <h2 className="font-display text-xl sm:text-2xl text-deep-forest font-medium">
                     {nextAppointment.serviceName}
@@ -481,7 +481,7 @@ export function PatientPortalClient() {
                     {nextAppointment.mode === 'in-clinic' ? (
                       <>
                         <Building className="w-3.5 h-3.5 text-forest" />
-                        Civil Lines, Jaipur
+                        Address: to be added
                       </>
                     ) : (
                       <>
@@ -591,7 +591,7 @@ export function PatientPortalClient() {
                 <div className="space-y-2 text-xs font-body">
                   <div className="p-3 bg-cream rounded-[3px] border border-forest/10 space-y-1">
                     <span className="font-mono text-[10px] uppercase text-forest font-semibold block">
-                      Foods to Favor (पथ्य):
+                      Foods to Favor (પથ્ય):
                     </span>
                     <p className="text-ink/80 text-[11px]">
                       Moong dal soup, old Basmati rice, Lauki (bottle gourd), boiled warm water with dry ginger.
@@ -600,7 +600,7 @@ export function PatientPortalClient() {
 
                   <div className="p-3 bg-cream rounded-[3px] border border-forest/10 space-y-1">
                     <span className="font-mono text-[10px] uppercase text-clay font-semibold block">
-                      Foods to Avoid (अपथ्य):
+                      Foods to Avoid (અપથ્ય):
                     </span>
                     <p className="text-ink/80 text-[11px]">
                       Curd (yogurt), tomatoes, fermented dough, ice-cold water, daytime sleeping.
@@ -617,7 +617,7 @@ export function PatientPortalClient() {
           <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs space-y-6">
             <div className="pb-4 border-b border-forest/10">
               <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-0.5">
-                चिकित्सा इतिहास · Clinical History
+                ચિકિત્સા ઇતિહાસ · Clinical History
               </span>
               <h2 className="font-display text-2xl text-deep-forest font-medium">
                 Pulse Examination & Consultation Records
@@ -675,7 +675,7 @@ export function PatientPortalClient() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-forest/10 mb-6">
                 <div>
                   <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-0.5">
-                    रसशाला पर्ची · Official Prescription Monograph
+                    રસશાલા પર્ચી · Official Prescription Monograph
                   </span>
                   <h2 className="font-display text-2xl text-deep-forest font-medium">
                     Prescribed Classical Formulations
@@ -697,13 +697,13 @@ export function PatientPortalClient() {
                 <div className="flex justify-between items-start pb-4 border-b border-forest/15">
                   <div>
                     <h3 className="font-display text-lg text-deep-forest font-medium">
-                      Aarogyam Ayurveda Hospital
+                      Vankal Ayurveda
                     </h3>
                     <p className="font-mono text-[10px] text-ink/60">
-                      14, Jacob Road, Civil Lines, Jaipur · AYUSH-RJ-2018-0482
+                      Address: to be added · Registration No.: to be added
                     </p>
                     <p className="font-mono text-[10px] text-forest mt-0.5">
-                      Chief Physician: Dr. Lavesh Bohra, MD (Kayachikitsa) · Reg: AYUSH-RJ-1999-4081
+                      Physician: Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University · Registration No.: to be added
                     </p>
                   </div>
                   <div className="text-right font-mono text-xs">
@@ -756,7 +756,7 @@ export function PatientPortalClient() {
                     <span>Pharmacopoeial Standard: Ayurvedic Pharmacopoeia of India (API)</span>
                   </div>
                   <div className="text-right">
-                    <span className="font-sanskrit text-sm text-forest block">वैद्य हस्ताक्षर</span>
+                    <span className="font-sanskrit text-sm text-forest block">વૈદ્ય હસ્તાક્ષર</span>
                     <span className="font-bold text-deep-forest block">Dr. Lavesh Bohra, MD</span>
                     <span className="text-[10px] text-ink/50">Digital Seal Verified</span>
                   </div>
@@ -830,7 +830,7 @@ export function PatientPortalClient() {
           <div className="max-w-2xl bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs space-y-6">
             <div className="pb-4 border-b border-forest/10">
               <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-0.5">
-                प्रकृति निदान · Constitutional Blueprint
+                પ્રકૃતિ નિદાન · Constitutional Blueprint
               </span>
               <h2 className="font-display text-2xl text-deep-forest font-medium">
                 Prakriti: {currentUser.prakriti}
@@ -845,7 +845,7 @@ export function PatientPortalClient() {
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between font-mono text-xs mb-1">
-                  <span className="text-forest font-semibold">Vata (वायु एवं आकाश)</span>
+                  <span className="text-forest font-semibold">Vata (વાયુ એવં આકાશ)</span>
                   <span>52%</span>
                 </div>
                 <div className="w-full h-2.5 rounded-full bg-forest/10 overflow-hidden">
@@ -855,7 +855,7 @@ export function PatientPortalClient() {
 
               <div>
                 <div className="flex justify-between font-mono text-xs mb-1">
-                  <span className="text-turmeric font-semibold">Pitta (अग्नि एवं जल)</span>
+                  <span className="text-turmeric font-semibold">Pitta (અગ્નિ એવં જલ)</span>
                   <span>34%</span>
                 </div>
                 <div className="w-full h-2.5 rounded-full bg-turmeric/10 overflow-hidden">
@@ -865,7 +865,7 @@ export function PatientPortalClient() {
 
               <div>
                 <div className="flex justify-between font-mono text-xs mb-1">
-                  <span className="text-clay font-semibold">Kapha (जल एवं पृथ्वी)</span>
+                  <span className="text-clay font-semibold">Kapha (જલ એવં પૃથ્વી)</span>
                   <span>14%</span>
                 </div>
                 <div className="w-full h-2.5 rounded-full bg-clay/10 overflow-hidden">
@@ -896,7 +896,7 @@ export function PatientPortalClient() {
           <div className="max-w-xl bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs space-y-6">
             <div className="pb-4 border-b border-forest/10">
               <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-0.5">
-                रोगी विवरण · Demographic Profile
+                રોગી વિવરણ · Demographic Profile
               </span>
               <h2 className="font-display text-2xl text-deep-forest font-medium">
                 Edit Contact Details

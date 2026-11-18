@@ -23,7 +23,10 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-deep-forest text-cream pt-16 sm:pt-20 pb-12 overflow-hidden border-t border-forest/40">
+    <footer
+      suppressHydrationWarning
+      className="relative bg-deep-forest text-cream pt-16 sm:pt-20 pb-12 overflow-hidden border-t border-forest/40"
+    >
       {/* Delicate ambient botanical background motif */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-forest/20 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-sage/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20" />
@@ -59,32 +62,32 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-paper/80">
               <li>
                 <Link href="/treatments/panchakarma" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {language === 'HI' ? 'पंचकर्म शोधन चिकित्सा' : 'Panchakarma Detoxification'}
+                  {language === 'GU' ? 'પંચકર્મ શોધન સારવાર' : 'Panchakarma Detoxification'}
                 </Link>
               </li>
               <li>
                 <Link href="/treatments/shirodhara" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {language === 'HI' ? 'शिरोधारा एवं मेध्य कर्म' : 'Shirodhara & Medhya Karma'}
+                  {language === 'GU' ? 'શિરોધારા અને મેધ્ય કર્મ' : 'Shirodhara & Medhya Karma'}
                 </Link>
               </li>
               <li>
                 <Link href="/treatments/abhyanga" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {language === 'HI' ? 'अभ्यंग एवं स्वेदन चिकित्सा' : 'Abhyanga & Swedana Oleation'}
+                  {language === 'GU' ? 'અભ્યંગ અને સ્વેદન ઉપચાર' : 'Abhyanga & Swedana Oleation'}
                 </Link>
               </li>
               <li>
                 <Link href="/treatments" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {language === 'HI' ? 'जानु एवं कटि बस्ति (मेरुदण्ड व संधि)' : 'Janu & Kati Basti (Spine & Joints)'}
+                  {language === 'GU' ? 'જાનુ અને કટિ બસ્તિ (સાંધા અને કમર)' : 'Janu & Kati Basti (Spine & Joints)'}
                 </Link>
               </li>
               <li>
                 <Link href="/treatments" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {language === 'HI' ? 'नस्य एवं शालाक्य तंत्र (ऊर्ध्वजत्रुगत)' : 'Nasya & Shalakya Tantra (ENT)'}
+                  {language === 'GU' ? 'નસ્ય અને શાલક્ય તંત્ર' : 'Nasya & Shalakya Tantra (ENT)'}
                 </Link>
               </li>
               <li>
                 <Link href="/treatments" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {language === 'HI' ? 'रसायन एवं ओजस पुनर्स्थापन' : 'Rasayana & Immune Rehabilitation'}
+                  {language === 'GU' ? 'રસાયન અને રોગપ્રતિકારક શક્તિ' : 'Rasayana & Immune Rehabilitation'}
                 </Link>
               </li>
             </ul>
@@ -112,23 +115,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {t.nav.wisdom}
-                </Link>
-              </li>
-              <li>
                 <Link href="/faq" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {language === 'HI' ? 'प्रश्नोत्तरी (FAQ)' : 'Patient FAQs'}
+                  {language === 'GU' ? 'પ્રશ્નોત્તરી (FAQ)' : 'Patient FAQs'}
                 </Link>
               </li>
               <li>
-                <Link href="/portal" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {t.nav.portal}
-                </Link>
-              </li>
-              <li>
-                <Link href="/admin" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-                  {t.nav.admin}
+                <Link href="/contact" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
+                  {t.nav.contact}
                 </Link>
               </li>
             </ul>
@@ -142,7 +135,7 @@ export function Footer() {
             <div className="text-sm text-paper/80 space-y-2.5">
               <div>
                 <p className="text-cream font-medium">
-                  {language === 'HI' ? 'जयपुर मुख्य चिकित्सालय' : 'Jaipur Main Center'}
+                  {language === 'GU' ? 'પરામર્શ અને સંપર્ક' : 'Consultations & Care'}
                 </p>
                 <p className="text-xs text-paper/70 leading-relaxed mt-0.5">
                   {t.footer.address}
@@ -159,18 +152,14 @@ export function Footer() {
                 </p>
               </div>
 
-              <div className="pt-1 text-xs">
+              <div className="pt-1 text-xs space-y-1">
                 <p>
-                  <span className="text-sage">{language === 'HI' ? 'दूरभाष: ' : 'Direct: '}</span>
-                  <a href="tel:+911412398800" className="hover:text-cream font-mono">
-                    +91 (141) 239-8800
-                  </a>
+                  <span className="text-sage">{language === 'GU' ? 'ફોન: ' : 'Phone: '}</span>
+                  <span className="font-mono text-paper/80">{t.footer.phone}</span>
                 </p>
-                <p className="mt-0.5">
+                <p>
                   <span className="text-sage">Email: </span>
-                  <a href="mailto:care@aarogyamayurveda.com" className="hover:text-cream font-mono">
-                    care@aarogyamayurveda.com
-                  </a>
+                  <span className="font-mono text-paper/80">{t.footer.email}</span>
                 </p>
               </div>
             </div>
@@ -184,8 +173,8 @@ export function Footer() {
               {t.footer.newsletterTitle}
             </h3>
             <p className="text-xs text-paper/70 mt-1 leading-relaxed">
-              {language === 'HI'
-                ? 'शास्त्रीय आहार मार्गदर्शिका, ऋतुचर्या परामर्श और औषधीय ज्ञान। कोई स्पैम नहीं।'
+              {language === 'GU'
+                ? 'શાસ્ત્રીય આહાર માર્ગદર્શિકા, ઋતુચર્યા અને આરોગ્યપ્રદ જ્ઞાન. કોઈ સ્પેમ નહીં.'
                 : 'Curated classical dietary guides, seasonal detox reminders, and herb monographs from our chief physicians. No spam.'}
             </p>
           </div>
@@ -209,7 +198,7 @@ export function Footer() {
               {isSubscribed ? (
                 <>
                   <Check className="w-3.5 h-3.5" />
-                  <span>{language === 'HI' ? 'सदस्यता जोड़ी गई' : 'Subscribed'}</span>
+                  <span>{language === 'GU' ? 'સબ્સ્ક્રિપ્શન સફળ થયું' : 'Subscribed'}</span>
                 </>
               ) : (
                 <>
@@ -229,15 +218,15 @@ export function Footer() {
 
           <div className="flex flex-wrap items-center gap-4 text-xs">
             <Link href="/privacy" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-              {language === 'HI' ? 'गोपनीयता नीति' : 'Privacy Policy'}
+              {language === 'GU' ? 'ગોપનીયતા નીતિ' : 'Privacy Policy'}
             </Link>
             <span>•</span>
             <Link href="/terms" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-              {language === 'HI' ? 'नियम व शर्तें' : 'Terms of Care'}
+              {language === 'GU' ? 'નિયમો અને શરતો' : 'Terms of Care'}
             </Link>
             <span>•</span>
             <Link href="/disclaimer" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
-              {language === 'HI' ? 'वैधानिक सूचना' : 'Medical Disclaimer'}
+              {language === 'GU' ? 'તબીબી અસ્વીકરણ' : 'Medical Disclaimer'}
             </Link>
           </div>
         </div>
@@ -245,7 +234,7 @@ export function Footer() {
         {/* Medical Disclaimer */}
         <div className="pb-8 text-[11px] text-paper/50 leading-relaxed max-w-4xl">
           <span className="font-medium text-paper/70">
-            {language === 'HI' ? 'चिकित्सीय सूचना: ' : 'Medical Disclaimer: '}
+            {language === 'GU' ? 'તબીબી અસ્વીકરણ: ' : 'Medical Disclaimer: '}
           </span>
           {t.footer.disclaimer}
         </div>
@@ -256,7 +245,7 @@ export function Footer() {
         {/* Big Faded Wordmark */}
         <div className="pt-6 text-center select-none pointer-events-none">
           <span className="font-display text-[9vw] lg:text-[7.5rem] tracking-[0.12em] font-semibold text-cream/[0.04] leading-none uppercase block whitespace-nowrap overflow-hidden">
-            Aarogyam Ayurveda
+            VANKAL AYURVEDA
           </span>
         </div>
       </div>

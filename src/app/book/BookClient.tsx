@@ -62,7 +62,7 @@ export const BOOKING_SERVICES: BookingService[] = [
   {
     id: 'nadi-pariksha',
     name: 'Nadi Pariksha & Consultation',
-    sanskrit: 'नाड़ी परीक्षा एवं मौलिक निदान',
+    sanskrit: 'નાડી પરીક્ષા અને મૌલિક નિદાન',
     category: 'Diagnostic',
     tagline: 'Precision 8-fold radial pulse diagnosis evaluating 7 tissue layers (Dhatus) and Agni.',
     duration: '45 Mins',
@@ -72,7 +72,7 @@ export const BOOKING_SERVICES: BookingService[] = [
   {
     id: 'panchakarma',
     name: 'Panchakarma Bio-Cleansing',
-    sanskrit: 'पञ्चकर्म शोधन चिकित्सा',
+    sanskrit: 'પંચકર્મ શોધન ચિકિત્સા',
     category: 'Systemic Detox',
     tagline: 'Intensive cellular detoxification: internal oleation (Snehana), Swedana, and Karma.',
     duration: '7 to 21 Days',
@@ -82,7 +82,7 @@ export const BOOKING_SERVICES: BookingService[] = [
   {
     id: 'spine-joint',
     name: 'Spine & Joint Restoration',
-    sanskrit: 'सन्धि एवं मेरुदण्ड चिकित्सा',
+    sanskrit: 'સંધિ અને મેરુદંડ ચિકિત્સા',
     category: 'Musculoskeletal',
     tagline: 'Targeted Kati, Janu, and Greeva Basti reservoirs for sciatica, arthritis & disc bulges.',
     duration: '50 Mins',
@@ -92,7 +92,7 @@ export const BOOKING_SERVICES: BookingService[] = [
   {
     id: 'skin-hair',
     name: 'Skin & Hair Clinical Care',
-    sanskrit: 'त्वक् एवं केश विकार',
+    sanskrit: 'ત્વચા અને કેશ વિકાર',
     category: 'Dermatological',
     tagline: 'Deep blood purification (Rakta Shodhana) for psoriasis, chronic eczema, and hair loss.',
     duration: '40 Mins',
@@ -102,7 +102,7 @@ export const BOOKING_SERVICES: BookingService[] = [
   {
     id: 'womens-health',
     name: "Women's Health & Stri Roga",
-    sanskrit: 'स्त्रीरोग एवं प्रसूति तन्त्र',
+    sanskrit: 'સ્ત્રીરોગ અને પ્રસુતિ તંત્ર',
     category: 'Endocrinology',
     tagline: 'Restorative protocols for PCOD, hormonal dysregulation, cycle health & Garbh Sanskar.',
     duration: '45 Mins',
@@ -112,7 +112,7 @@ export const BOOKING_SERVICES: BookingService[] = [
   {
     id: 'digestive-metabolic',
     name: 'Digestive & Metabolic Agni Care',
-    sanskrit: 'अग्नि एवं ग्रहणी चिकित्सा',
+    sanskrit: 'અગ્નિ અને ગ્રહણી ચિકિત્સા',
     category: 'Gastroenterology',
     tagline: 'Deepana-Pachana therapy for chronic IBS, ulcerative colitis, GERD, and fatty liver.',
     duration: '40 Mins',
@@ -122,7 +122,7 @@ export const BOOKING_SERVICES: BookingService[] = [
   {
     id: 'stress-sleep',
     name: 'Stress, Insomnia & Sleep Care',
-    sanskrit: 'शिरोधरा एवं अनिद्रा शमन',
+    sanskrit: 'શિરોધારા અને અનિદ્રા શમન',
     category: 'Neuro-Psychological',
     tagline: 'Rhythmic warm Brahmi oil Shirodhara and herbal nervines calming Prana Vayu.',
     duration: '50 Mins',
@@ -131,7 +131,7 @@ export const BOOKING_SERVICES: BookingService[] = [
   },
 ];
 
-const SESSION_STORAGE_KEY = 'aarogyam_booking_session';
+const SESSION_STORAGE_KEY = 'vankal_booking_session';
 
 const stepVariants = {
   enter: (dir: number) => ({
@@ -227,7 +227,7 @@ export function BookClient() {
       setKnownDosha(paramDosha);
     } else if (typeof window !== 'undefined') {
       try {
-        const savedDosha = localStorage.getItem('aarogyam_dosha_result');
+        const savedDosha = localStorage.getItem('vankal_dosha_result');
         if (savedDosha) {
           const parsed = JSON.parse(savedDosha);
           if (parsed?.typeName) {
@@ -439,7 +439,7 @@ export function BookClient() {
         whatsappNumber: whatsappNumber.trim().startsWith('+91')
           ? whatsappNumber.trim()
           : `+91 ${whatsappNumber.trim()}`,
-        email: email.trim() || `${fullName.toLowerCase().replace(/\s+/g, '')}@aarogyam-patient.local`,
+        email: email.trim() || `${fullName.toLowerCase().replace(/\s+/g, '')}@vankal-patient.local`,
         age: parseInt(age, 10),
         gender,
         chiefComplaint: chiefComplaint.trim(),
@@ -521,7 +521,7 @@ export function BookClient() {
             <div>
               <div className="flex items-center gap-2 mb-1.5">
                 <Badge variant="sage" className="text-[10px]">
-                  AYUSH License: AYUSH-RJ-2018-0482
+                  Registration No.: to be added
                 </Badge>
                 {knownDosha && (
                   <Badge variant="turmeric" className="text-[10px]">
@@ -581,7 +581,7 @@ export function BookClient() {
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
               <div className="max-w-2xl mb-6">
                 <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 1 of 5 · सेवा चयन
+                  Step 1 of 5 · {language === 'GU' ? 'સેવા પસંદગી' : 'Service Selection'}
                 </span>
                 <h2 className="font-display text-2xl text-deep-forest font-medium">
                   Select Your Primary Clinical Concern or Service
@@ -671,7 +671,7 @@ export function BookClient() {
               {/* Step 1 Actions */}
               <div className="mt-8 pt-5 border-t border-forest/10 flex justify-end">
                 <Button onClick={handleNextStep} variant="primary" className="min-h-[44px]">
-                  {language === 'HI' ? 'वैद्य एवं माध्यम चुनें' : 'Continue to Doctor & Mode'}
+                  {language === 'GU' ? 'વૈદ્ય અને માધ્યમ પસંદ કરો' : 'Continue to Doctor & Mode'}
                   <ArrowRight className="w-3.5 h-3.5 ml-2" />
                 </Button>
               </div>
@@ -694,14 +694,13 @@ export function BookClient() {
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
               <div className="max-w-2xl mb-6">
                 <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 2 of 5 · चिकित्सक एवं विधि
+                  Step 2 of 5 · {language === 'GU' ? 'ચિકિત્સક અને પદ્ધતિ' : 'Doctor & Mode'}
                 </span>
                 <h2 className="font-display text-2xl text-deep-forest font-medium">
                   Choose Attending Vaidya & Consultation Mode
                 </h2>
                 <p className="font-body text-xs sm:text-sm text-ink/75 mt-1 leading-relaxed">
-                  Select your physician and indicate whether you will visit our Civil Lines, Jaipur clinic
-                  for hands-on pulse palpation, or connect via high-definition video telemedicine.
+                  Select your attending physician and choose between an in-person or online video consultation.
                 </p>
               </div>
 
@@ -721,14 +720,13 @@ export function BookClient() {
                   >
                     <div className="flex items-center gap-2.5 mb-1.5 font-display text-base text-deep-forest font-medium">
                       <Building className="w-4 h-4 text-forest" />
-                      <span>In-Clinic Visit (Jaipur)</span>
+                      <span>In-Person Consultation</span>
                       {selectedMode === 'in-clinic' && (
                         <CheckCircle2 className="w-4 h-4 text-turmeric ml-auto" />
                       )}
                     </div>
                     <p className="font-body text-xs text-ink/75 leading-relaxed">
-                      14 Jacob Road, Civil Lines. Precision radial pulse diagnosis (Nadi Pariksha)
-                      conducted in an unhurried, calm clinical environment.
+                      Address: to be added. Individual Ayurvedic consultation and lifestyle assessment conducted in an unhurried, calm environment.
                     </p>
                   </div>
 
@@ -777,7 +775,7 @@ export function BookClient() {
                         <div>
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-mono text-[10px] text-forest/70 uppercase">
-                              {doc.experienceYears}+ Yrs Exp
+                              Registered Practitioner
                             </span>
                             <span className="font-mono text-xs font-semibold text-deep-forest">
                               ₹{doc.consultationFee}
@@ -785,7 +783,7 @@ export function BookClient() {
                           </div>
 
                           <div className="w-12 h-14 rounded-t-full rounded-b-[2px] bg-forest/10 border border-forest/20 flex items-center justify-center font-sanskrit text-forest/60 text-lg mb-2">
-                            ॐ
+                            ૐ
                           </div>
 
                           <h3 className="font-display text-base text-deep-forest font-medium leading-snug">
@@ -825,7 +823,7 @@ export function BookClient() {
                   {t.booking.backBtn}
                 </Button>
                 <Button onClick={handleNextStep} variant="primary" className="min-h-[44px]">
-                  {language === 'HI' ? 'तिथि एवं स्लॉट चुनें' : 'Continue to Date & Slot'}
+                  {language === 'GU' ? 'તારીખ અને સમય પસંદ કરો' : 'Continue to Date & Slot'}
                   <ArrowRight className="w-3.5 h-3.5 ml-2" />
                 </Button>
               </div>
@@ -848,7 +846,7 @@ export function BookClient() {
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
               <div className="max-w-2xl mb-6">
                 <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 3 of 5 · तिथि एवं समय
+                  Step 3 of 5 · {language === 'GU' ? 'તારીખ અને સમય' : 'Date & Time'}
                 </span>
                 <h2 className="font-display text-2xl text-deep-forest font-medium">
                   Select Appointment Date & Time Slot
@@ -910,7 +908,7 @@ export function BookClient() {
                   {t.booking.backBtn}
                 </Button>
                 <Button onClick={handleNextStep} variant="primary" className="min-h-[44px]">
-                  {language === 'HI' ? 'रोगी विवरण भरें' : 'Continue to Patient Details'}
+                  {language === 'GU' ? 'દર્દીની વિગત ભરો' : 'Continue to Patient Details'}
                   <ArrowRight className="w-3.5 h-3.5 ml-2" />
                 </Button>
               </div>
@@ -933,7 +931,7 @@ export function BookClient() {
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
               <div className="max-w-2xl mb-6">
                 <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 4 of 5 · रोगी विवरण
+                  Step 4 of 5 · {language === 'GU' ? 'દર્દીની વિગત' : 'Patient Details'}
                 </span>
                 <h2 className="font-display text-2xl text-deep-forest font-medium">
                   Patient Health Details & Clinical Notes
@@ -1111,7 +1109,7 @@ export function BookClient() {
                   {t.booking.backBtn}
                 </Button>
                 <Button onClick={handleNextStep} variant="primary" className="min-h-[44px]">
-                  {language === 'HI' ? 'समीक्षा एवं पुष्टि' : 'Review & Confirm'}
+                  {language === 'GU' ? 'સમીક્ષા અને પુષ્ટિ' : 'Review & Confirm'}
                   <ArrowRight className="w-3.5 h-3.5 ml-2" />
                 </Button>
               </div>
@@ -1134,13 +1132,13 @@ export function BookClient() {
             <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
               <div className="max-w-2xl mb-6">
                 <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 5 of 5 · समीक्षा एवं सहमति
+                  Step 5 of 5 · {language === 'GU' ? 'સમીક્ષા અને સંમતિ' : 'Review & Consent'}
                 </span>
                 <h2 className="font-display text-2xl text-deep-forest font-medium">
                   Review Appointment Details & Confirm
                 </h2>
                 <p className="font-body text-xs sm:text-sm text-ink/75 mt-1 leading-relaxed">
-                  Verify your consultation parameters before generating your official Aarogyam token voucher.
+                  Verify your consultation parameters before generating your official Vankal token voucher.
                 </p>
               </div>
 
@@ -1162,7 +1160,7 @@ export function BookClient() {
                   <div className="flex justify-between py-1 border-b border-forest/5">
                     <span className="text-ink/60">Mode</span>
                     <span className="font-medium text-forest">
-                      {selectedMode === 'in-clinic' ? 'In-Clinic (Civil Lines, Jaipur)' : 'Online Video Call'}
+                      {selectedMode === 'in-clinic' ? 'In-Person Consultation' : 'Online Video Call'}
                     </span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-forest/5">
@@ -1256,7 +1254,7 @@ export function BookClient() {
                   className="bg-turmeric text-deep-forest hover:bg-turmeric/90 min-h-[44px]"
                 >
                   {isSubmitting ? (
-                    language === 'HI' ? 'स्लॉट आरक्षित किया जा रहा है...' : 'Reserving Slot...'
+                    language === 'GU' ? 'સ્લોટ બુક થઈ રહ્યો છે...' : 'Reserving Slot...'
                   ) : (
                     <>
                       {t.booking.submitBtn}

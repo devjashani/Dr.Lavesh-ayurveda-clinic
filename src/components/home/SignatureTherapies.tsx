@@ -28,7 +28,7 @@ const therapies: TherapyItem[] = [
     id: 'shirodhara',
     number: '01',
     name: 'Shirodhara Therapy',
-    sanskrit: 'शिरोधारा विधानम्',
+    sanskrit: 'શિરોધારા વિધાનમ્',
     benefit:
       'Continuous rhythmic stream of warm herbal Brahmi oil soothing the central nervous system, insomnia & anxiety.',
     duration: '60 min · 7-day cycle',
@@ -40,7 +40,7 @@ const therapies: TherapyItem[] = [
     id: 'kati-basti',
     number: '02',
     name: 'Kati Basti (Lumbar Reservoir)',
-    sanskrit: 'कटि बस्ति',
+    sanskrit: 'કટિ બસ્તિ',
     benefit:
       'Medicated black-gram dough ring holding warm Mahanarayan oil to relieve disc degeneration and sciatica.',
     duration: '45 min · 5 to 7 days',
@@ -52,7 +52,7 @@ const therapies: TherapyItem[] = [
     id: 'abhyanga',
     number: '03',
     name: 'Synchronized Abhyanga',
-    sanskrit: 'अभ्यङ्ग एवं स्वेदन',
+    sanskrit: 'અભ્યંગ અને સ્વેદન',
     benefit:
       'Two-practitioner synchronized full-body herbal massage stimulating 107 vital Marma energy junctions.',
     duration: '75 min · Daily therapy',
@@ -64,7 +64,7 @@ const therapies: TherapyItem[] = [
     id: 'nasya',
     number: '04',
     name: 'Nasya (Shalakya Tantra)',
-    sanskrit: 'नस्य कर्म',
+    sanskrit: 'નસ્ય કર્મ',
     benefit:
       'Trans-nasal delivery of Anu Thailam clears cranial micro-channels, chronic migraine, sinusitis & cervical tension.',
     duration: '30 min · 7-day protocol',
@@ -76,7 +76,7 @@ const therapies: TherapyItem[] = [
     id: 'virechana',
     number: '05',
     name: 'Virechana Bio-Cleansing',
-    sanskrit: 'विरेचन शुद्धि',
+    sanskrit: 'વિરેચન શુદ્ધિ',
     benefit:
       'Classical targeted therapeutic purgation purging accumulated morbid Pitta, hepatic toxins and skin inflammation.',
     duration: 'Full-day clinical cycle',
@@ -88,7 +88,7 @@ const therapies: TherapyItem[] = [
     id: 'basti',
     number: '06',
     name: 'Classical Basti Karma',
-    sanskrit: 'बस्ति कर्म (अर्धचिकित्सा)',
+    sanskrit: 'બસ્તિ કર્મ (અર્ધચિકિત્સા)',
     benefit:
       'Revered as 50% of all Ayurveda: herbal decoction and unctuous oil enemas pacifying Vata at its root colon seat.',
     duration: '8 to 16 day protocol',
@@ -240,7 +240,7 @@ export function SignatureTherapies() {
               <Reveal delay={0.04} direction="up" blur={false} className="flex-1">
                 <SectionHeading
                   eyebrow="Signature Chikitsa"
-                  sanskritEyebrow="प्रधान कर्म"
+                  sanskritEyebrow="પ્રધાન કર્મ"
                   title="Classical Panchakarma & Restorative Therapies"
                   subtitle="NOT a generic spa menu. Each protocol is an authentic Shodhana & Shamana science documented in the classical texts of Charaka and Vagbhata."
                   align="asymmetric"
@@ -299,7 +299,7 @@ export function SignatureTherapies() {
         <div className="px-5 mb-6">
           <SectionHeading
             eyebrow="Signature Chikitsa"
-            sanskritEyebrow="प्रधान कर्म"
+            sanskritEyebrow="પ્રધાન કર્મ"
             title="Classical Panchakarma & Restorative Therapies"
             subtitle="Authentic Shodhana & Shamana protocols documented in the Samhitas."
             align="asymmetric"
