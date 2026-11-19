@@ -123,11 +123,18 @@ export function HeroSection() {
         <div className="lg:hidden flex flex-col justify-between min-h-[calc(100dvh-3.5rem)] pt-1 pb-4">
           {/* Top Editorial Block */}
           <div className="flex flex-col items-start text-left">
-            {/* Eyebrow */}
-            <Reveal delay={0.02} direction="down" blur={false}>
-              <div className="inline-flex items-center gap-1.5 xs:gap-2 px-2.5 py-0.5 xs:px-3 xs:py-1 rounded-full bg-cream border border-forest/15 text-forest mb-3 shadow-2xs max-w-full">
+            {/* Eyebrow Pill Bar: Edge-to-edge on mobile with subtle screen margin and generous rounded end clearance */}
+            <Reveal delay={0.02} direction="down" blur={false} className="w-full">
+              <div className="w-full flex items-center justify-center gap-1.5 xs:gap-2 px-4 min-[360px]:px-5 min-[390px]:px-6 py-1.5 xs:py-2 rounded-full bg-cream border border-forest/15 text-forest mb-3.5 shadow-2xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
-                <span className="font-mono text-[8px] xs:text-[9px] sm:text-[10px] uppercase tracking-normal sm:tracking-wider font-semibold whitespace-nowrap">
+                <span
+                  className={cn(
+                    "text-[8px] min-[360px]:text-[8.5px] min-[390px]:text-[9.25px] min-[420px]:text-[10px] font-semibold whitespace-nowrap",
+                    language === 'GU'
+                      ? "font-gujarati-sans tracking-normal"
+                      : "font-mono uppercase tracking-tight min-[390px]:tracking-normal"
+                  )}
+                >
                   {t.hero.eyebrow}
                 </span>
               </div>
