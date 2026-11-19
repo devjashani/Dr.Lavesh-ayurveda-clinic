@@ -25,8 +25,8 @@ export function ScrollProgress() {
       aria-hidden="true"
     >
       <div
-        className="h-full bg-turmeric transition-all duration-150 ease-out"
-        style={{ width: `${progress}%` }}
+        className="h-full w-full bg-turmeric origin-left transition-transform duration-100 ease-out"
+        style={{ transform: `scaleX(${progress / 100})`, willChange: 'transform' }}
       />
     </div>
   );

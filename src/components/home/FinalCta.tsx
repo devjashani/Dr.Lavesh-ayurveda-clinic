@@ -13,7 +13,7 @@ export function FinalCta() {
   return (
     <section
       suppressHydrationWarning
-      className="py-20 sm:py-28 bg-deep-forest text-cream relative overflow-hidden"
+      className="py-20 sm:py-28 bg-deep-forest text-cream relative overflow-hidden content-auto"
     >
       {/* Ambient background glows */}
       <div className="absolute -top-24 -left-24 w-96 h-96 bg-sage/10 rounded-full blur-3xl pointer-events-none" />

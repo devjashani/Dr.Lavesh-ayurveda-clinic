@@ -3,13 +3,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Logo } from './Logo';
 import { Button } from '@/components/ui/Button';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useBookingSheet } from '@/lib/context/BookingSheetContext';
 
 export const navLinks = [
   { href: '/', label: 'Home', sanskrit: 'મુખ્ય' },
@@ -27,8 +28,49 @@ export function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
+  const { openBookingSheet } = useBookingSheet();
 
   const lastScrollY = useRef(0);
+
+  // Framer Motion variants for circular expanding clip-path and staggered links
+  const menuVariants: Variants = {
+    closed: {
+      clipPath: 'circle(0% at calc(100% - 2.5rem) 2.5rem)',
+      opacity: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 350,
+        damping: 35,
+      },
+    },
+    open: {
+      clipPath: 'circle(150% at calc(100% - 2.5rem) 2.5rem)',
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 240,
+        damping: 28,
+      },
+    },
+  };
+
+  const navListVariants: Variants = {
+    closed: {
+      transition: { staggerChildren: 0.025, staggerDirection: -1 },
+    },
+    open: {
+      transition: { staggerChildren: 0.05, delayChildren: 0.12 },
+    },
+  };
+
+  const navItemVariants: Variants = {
+    closed: { opacity: 0, y: 22 },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: { type: 'spring', stiffness: 300, damping: 24 },
+    },
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,11 +120,11 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          'fixed top-0 left-0 right-0 z-50 pl-safe pr-safe transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
           isVisible ? 'translate-y-0' : '-translate-y-full',
           isScrolled
-            ? 'bg-paper/95 backdrop-blur-sm border-b border-forest/15 shadow-[0_4px_20px_rgba(20,41,28,0.03)] py-3'
-            : 'bg-transparent border-b border-transparent py-5'
+            ? 'bg-paper/95 backdrop-blur-sm border-b border-forest/15 shadow-[0_4px_20px_rgba(20,41,28,0.03)] pt-[calc(env(safe-area-inset-top,0px)+0.875rem)] pb-3.5 sm:pt-[calc(env(safe-area-inset-top,0px)+1rem)] sm:pb-4'
+            : 'bg-transparent border-b border-transparent pt-[calc(env(safe-area-inset-top,0px)+1.25rem)] pb-4 sm:pt-[calc(env(safe-area-inset-top,0px)+1.75rem)] sm:pb-5'
         )}
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-6 xl:px-6 2xl:px-10 flex items-center justify-between gap-4 xl:gap-6 2xl:gap-10 h-11 sm:h-12">
@@ -204,51 +246,55 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Full-Screen Mobile Navigation Menu with Staggered Reveal */}
+      {/* Full-Screen Mobile Navigation Menu with Circular Expanding Clip-Path & Staggered Reveal */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-40 bg-paper flex flex-col justify-between pt-24 pb-8 px-6 sm:px-10 overflow-y-auto"
+            variants={menuVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="fixed inset-0 z-40 bg-paper flex flex-col justify-between pt-[calc(env(safe-area-inset-top,0px)+5rem)] pb-[calc(env(safe-area-inset-bottom,0px)+2rem)] px-6 sm:px-10 overflow-y-auto pl-safe pr-safe relative"
           >
+            {/* Large Faded Heritage Ornament in Background */}
+            <div
+              aria-hidden="true"
+              className="absolute -right-20 -bottom-20 w-[110vw] max-w-[520px] h-[110vw] max-h-[520px] opacity-[0.06] text-forest pointer-events-none select-none z-0"
+            >
+              <BotanicalDivider variant="lotus" className="w-full h-full" />
+            </div>
+
             {/* Header info & Close Button */}
-            <div className="flex items-center justify-between pb-4 border-b border-forest/15">
+            <div className="relative z-10 flex items-center justify-between pb-4 border-b border-forest/15">
               <span className="text-xs uppercase tracking-widest text-forest font-semibold">
                 {t.nav.menu}
               </span>
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 text-deep-forest hover:bg-forest/10 rounded-[4px] transition-colors focus:outline-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="p-2 text-deep-forest hover:bg-forest/10 rounded-[4px] transition-colors focus:outline-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97]"
                 aria-label="Close Navigation Menu"
               >
                 <X className="w-6 h-6 stroke-[1.5]" />
               </button>
             </div>
 
-            {/* Nav list with min-48px tap targets */}
-            <nav className="flex flex-col gap-1 py-4 my-auto">
+            {/* Nav list with staggered children and min-48px tap targets */}
+            <motion.nav
+              variants={navListVariants}
+              initial="closed"
+              animate="open"
+              className="relative z-10 flex flex-col gap-1 py-4 my-auto"
+            >
               {navLinks.map((link, index) => {
                 const isActive = pathname === link.href;
                 return (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.45,
-                      delay: 0.035 * index,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
+                  <motion.div key={link.href} variants={navItemVariants}>
                     <Link
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
-                        'flex items-center justify-between min-h-[48px] py-3 px-2.5 rounded-[4px] border-b border-forest/10 group transition-colors',
+                        'flex items-center justify-between min-h-[48px] py-3 px-2.5 rounded-[4px] border-b border-forest/10 group transition-all active:scale-[0.97]',
                         isActive
                           ? 'text-deep-forest bg-forest/5 font-semibold'
                           : 'text-ink/80 hover:text-deep-forest hover:bg-forest/5'
@@ -267,10 +313,10 @@ export function Navbar() {
                   </motion.div>
                 );
               })}
-            </nav>
+            </motion.nav>
 
             {/* Bottom Actions: Language Toggle & Book Button */}
-            <div className="space-y-4 pt-4 border-t border-forest/15 mt-auto">
+            <div className="relative z-10 space-y-4 pt-4 border-t border-forest/15 mt-auto">
               <div className="flex items-center justify-between">
                 <span className="text-xs uppercase tracking-wider text-forest/80 font-medium">
                   {language === 'GU' ? 'ભાષા પસંદ કરો' : 'Select Language'}
@@ -281,7 +327,7 @@ export function Navbar() {
                     onClick={() => setLanguage('EN')}
                     aria-label="Switch to English"
                     className={cn(
-                      'px-3.5 py-1.5 rounded-[3px] min-h-[38px] transition-colors cursor-pointer',
+                      'px-3.5 py-1.5 rounded-[3px] min-h-[38px] transition-colors cursor-pointer active:scale-[0.97]',
                       language === 'EN'
                         ? 'bg-deep-forest text-cream font-semibold shadow-xs'
                         : 'text-ink/70 hover:text-deep-forest'
@@ -294,7 +340,7 @@ export function Navbar() {
                     onClick={() => setLanguage('GU')}
                     aria-label="Switch to Gujarati"
                     className={cn(
-                      'px-3.5 py-1.5 rounded-[3px] min-h-[38px] transition-colors cursor-pointer',
+                      'px-3.5 py-1.5 rounded-[3px] min-h-[38px] transition-colors cursor-pointer active:scale-[0.97]',
                       language === 'GU'
                         ? 'bg-deep-forest text-cream font-semibold shadow-xs'
                         : 'text-ink/70 hover:text-deep-forest'
@@ -305,15 +351,17 @@ export function Navbar() {
                 </div>
               </div>
 
-              <Button
-                href="/book"
-                variant="primary"
-                size="lg"
-                showArrow
-                className="w-full min-h-[50px] text-base whitespace-nowrap"
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  openBookingSheet();
+                }}
+                className="w-full min-h-[50px] rounded-[4px] bg-deep-forest text-cream font-medium text-base shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-[0.97] transition-all btn-primary-ripple"
               >
-                {t.nav.bookConsultation}
-              </Button>
+                <span>{t.nav.bookConsultation}</span>
+                <ArrowUpRight className="w-4 h-4 text-turmeric" />
+              </button>
 
               <p className="text-center text-xs text-ink/50 pt-1">
                 VANKAL AYURVEDA • વાંકલ આયુર્વેદ

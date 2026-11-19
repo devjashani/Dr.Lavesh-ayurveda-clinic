@@ -1,15 +1,23 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Calendar, MessageCircle, ArrowUp } from 'lucide-react';
 import { Magnetic } from '@/components/motion';
 import { MOTION_TOKENS, usePrefersReducedMotion } from '@/lib/motion';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useBookingSheet } from '@/lib/context/BookingSheetContext';
+import { cn } from '@/lib/utils';
 
 export function FloatingActions() {
   const [scrollY, setScrollY] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isBottomBarVisible, setIsBottomBarVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  const { language } = useLanguage();
+  const { openBookingSheet } = useBookingSheet();
   const prefersReduced = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -23,6 +31,19 @@ export function FloatingActions() {
       if (totalHeight > 0) {
         setScrollProgress(Math.min(Math.max(currentScroll / totalHeight, 0), 1));
       }
+
+      // Hide bottom bar when scrolling down, reveal when scrolling up
+      if (currentScroll > 80) {
+        if (currentScroll > lastScrollY.current + 8) {
+          setIsBottomBarVisible(false);
+        } else if (currentScroll < lastScrollY.current - 8) {
+          setIsBottomBarVisible(true);
+        }
+      } else {
+        setIsBottomBarVisible(true);
+      }
+
+      lastScrollY.current = currentScroll;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -47,10 +68,15 @@ export function FloatingActions() {
 
   return (
     <>
-      {/* Floating Action Cluster: WhatsApp + Back to Top */}
+      {/* Floating Action Cluster: Contact + Back to Top */}
       <aside
         aria-label="Quick Actions & Consultation Help"
-        className="fixed bottom-20 sm:bottom-8 right-5 sm:right-8 z-40 flex flex-col items-end gap-3 pointer-events-none"
+        className={cn(
+          'fixed right-4 sm:right-8 pr-safe z-40 flex flex-col items-end gap-3 pointer-events-none transition-all duration-300',
+          isBottomBarVisible
+            ? 'bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] sm:bottom-8'
+            : 'bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] sm:bottom-8'
+        )}
       >
         {/* Back to Top Button with Circular Scroll-Progress Ring */}
         <AnimatePresence>
@@ -68,7 +94,7 @@ export function FloatingActions() {
                   onClick={scrollToTop}
                   aria-label="Scroll back to top of page"
                   title="Back to top"
-                  className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-deep-forest text-cream flex items-center justify-center shadow-[0_4px_16px_rgba(20,41,28,0.25)] border border-forest/40 hover:border-turmeric hover:text-turmeric transition-colors cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-turmeric"
+                  className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-deep-forest text-cream flex items-center justify-center shadow-[0_4px_16px_rgba(20,41,28,0.25)] border border-forest/40 hover:border-turmeric hover:text-turmeric active:scale-[0.97] transition-all cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-turmeric"
                 >
                   {/* Circular SVG Progress Ring */}
                   <svg
@@ -108,12 +134,12 @@ export function FloatingActions() {
           )}
         </AnimatePresence>
 
-        {/* Floating Contact Action */}
-        <div className="pointer-events-auto flex items-center group">
+        {/* Floating Contact Action (Hidden on small mobile since sticky bottom bar has Call/WhatsApp) */}
+        <div className="pointer-events-auto hidden sm:flex items-center group">
           <Link
             href="/contact"
             aria-label="Contact Vankal Ayurveda"
-            className="relative h-12 sm:h-14 rounded-full bg-deep-forest text-cream flex items-center shadow-[0_8px_24px_rgba(20,41,28,0.25)] hover:border-turmeric/60 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] border border-forest/30 pl-3.5 pr-3.5 sm:pl-4 sm:pr-4 group overflow-hidden"
+            className="relative h-12 sm:h-14 rounded-full bg-deep-forest text-cream flex items-center shadow-[0_8px_24px_rgba(20,41,28,0.25)] hover:border-turmeric/60 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] border border-forest/30 pl-3.5 pr-3.5 sm:pl-4 sm:pr-4 group overflow-hidden active:scale-[0.97]"
           >
             {/* Gentle pulse ring */}
             <span
@@ -131,26 +157,49 @@ export function FloatingActions() {
         </div>
       </aside>
 
-      {/* Mobile Sticky Bottom Bar (Visible on mobile screens < 640px) */}
+      {/* 3. STICKY BOTTOM BAR (Mobile only < 640px): Hides on scroll down, reappears on scroll up */}
       <nav
         aria-label="Mobile quick actions"
-        className="fixed sm:hidden bottom-0 left-0 right-0 z-40 bg-paper/95 backdrop-blur-md border-t border-forest/20 px-4 py-2.5 flex items-center gap-3 shadow-[0_-4px_16px_rgba(20,41,28,0.06)]"
+        className={cn(
+          'fixed sm:hidden bottom-0 left-0 right-0 z-40 bg-paper/95 backdrop-blur-md border-t border-forest/20 px-3.5 pt-2 pb-[max(0.625rem,env(safe-area-inset-bottom,0px))] pl-safe pr-safe flex items-center gap-2 shadow-[0_-4px_20px_rgba(20,41,28,0.08)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          isBottomBarVisible ? 'translate-y-0' : 'translate-y-full pointer-events-none'
+        )}
       >
-        <Link
-          href="/contact"
-          className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-3 rounded-[4px] border border-forest/30 text-deep-forest font-medium text-xs bg-cream active:bg-paper transition-colors"
+        {/* 1. Call Button */}
+        <a
+          href="tel:+911412458890"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[4px] border border-forest/20 text-deep-forest font-medium text-xs bg-cream active:scale-[0.97] transition-all touch-manipulation min-h-[44px]"
+          aria-label="Call clinic directly"
         >
-          <Phone className="w-3.5 h-3.5 text-forest" />
-          <span>Contact</span>
-        </Link>
+          <Phone className="w-3.5 h-3.5 text-forest shrink-0" />
+          <span className="font-sans font-medium">{language === 'GU' ? 'કોલ' : 'Call'}</span>
+        </a>
 
-        <Link
-          href="/book"
-          className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-3 rounded-[4px] bg-deep-forest text-cream font-medium text-xs shadow-xs active:bg-forest transition-colors"
+        {/* 2. WhatsApp Button */}
+        <a
+          href="https://wa.me/911412458890?text=Namaste%2C%20I%20would%20like%20to%20inquire%20about%20an%20Ayurvedic%20consultation%20with%20Dr.%20Lavesh%20Bohra."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[4px] border border-forest/20 text-deep-forest font-medium text-xs bg-cream active:scale-[0.97] transition-all touch-manipulation min-h-[44px]"
+          aria-label="Message on WhatsApp"
         >
-          <Calendar className="w-3.5 h-3.5 text-turmeric" />
-          <span>Book Consult</span>
-        </Link>
+          <MessageCircle className="w-3.5 h-3.5 text-[#25D366] shrink-0" />
+          <span className="font-sans font-medium">WhatsApp</span>
+        </a>
+
+        {/* 3. Book Button (Triggers Mobile Bottom Sheet) */}
+        <button
+          type="button"
+          onClick={openBookingSheet}
+          data-booking-trigger="true"
+          className="flex-[1.2] inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-[4px] bg-deep-forest text-cream font-medium text-xs shadow-xs active:scale-[0.97] transition-all touch-manipulation min-h-[44px] btn-primary-ripple cursor-pointer"
+          aria-label="Open booking sheet"
+        >
+          <Calendar className="w-3.5 h-3.5 text-turmeric shrink-0" />
+          <span className="font-sans font-semibold">
+            {language === 'GU' ? 'પરામર્શ બુક' : 'Book'}
+          </span>
+        </button>
       </nav>
     </>
   );

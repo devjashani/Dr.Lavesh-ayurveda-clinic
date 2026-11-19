@@ -9,34 +9,48 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Respect user's motion preferences
     if (typeof window === 'undefined') return;
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
 
     gsap.registerPlugin(ScrollTrigger);
 
+    // Prevent ScrollTrigger from recalculating / jumping when mobile address bar collapses/expands
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    // Initialize Lenis with standalone autoRaf loop and mobile touch momentum
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      syncTouch: false,
+      syncTouch: true,
+      syncTouchLerp: 0.08,
+      touchInertiaExponent: 1.6,
+      touchMultiplier: 1.1,
+      autoRaf: true,
     });
 
-    // Wire Lenis with GSAP ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
+    // Synchronize Lenis scroll position with GSAP ScrollTrigger
+    lenis.on('scroll', () => {
+      ScrollTrigger.update();
+    });
 
-    const tickerCallback = (time: number) => {
-      lenis.raf(time * 1000);
+    // Expose lenis globally for debugging and navigation links
+    (window as any).lenis = lenis;
+
+    // Pause animations when browser tab is inactive to preserve battery
+    const handleVisibility = () => {
+      if (document.hidden) {
+        document.body.classList.add('tab-hidden');
+      } else {
+        document.body.classList.remove('tab-hidden');
+      }
     };
-
-    gsap.ticker.add(tickerCallback);
+    document.addEventListener('visibilitychange', handleVisibility);
 
     return () => {
-      gsap.ticker.remove(tickerCallback);
+      document.removeEventListener('visibilitychange', handleVisibility);
       lenis.destroy();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      delete (window as any).lenis;
     };
   }, []);
 

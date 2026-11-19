@@ -30,7 +30,7 @@ const conditionsList: ConditionTag[] = [
 
 export function ConditionsCloud() {
   return (
-    <section className="py-20 sm:py-24 bg-cream/70 border-b border-forest/15 relative overflow-hidden">
+    <section className="py-20 sm:py-24 bg-cream/70 border-b border-forest/15 relative overflow-hidden content-auto">
       <Container size="default">
         <Reveal delay={0} direction="up">
           <SectionHeading

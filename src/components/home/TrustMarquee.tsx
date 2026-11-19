@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useAnimationFrame } from 'framer-motion';
-import { usePrefersReducedMotion } from '@/lib/motion';
+import { usePrefersReducedMotion, useInViewWithPause } from '@/lib/motion';
 
 const items = [
   'Individual Ayurvedic Consultations',
@@ -17,6 +17,7 @@ const items = [
 export function TrustMarquee() {
   const prefersReduced = usePrefersReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
+  const { ref: sectionRef, isActive } = useInViewWithPause<HTMLElement>(0.05);
 
   // We duplicate items to create a continuous seamless loop
   const displayItems = [...items, ...items, ...items, ...items];
@@ -29,7 +30,8 @@ export function TrustMarquee() {
   const speedRef = useRef(0.9);
 
   useAnimationFrame((_, delta) => {
-    if (prefersReduced) return;
+    // Pause immediately if user prefers reduced motion, tab is hidden, or element is off-screen
+    if (prefersReduced || !isActive) return;
 
     // Smoothly lerp towards target speed: 0.22 on hover, 0.9 normal
     const targetSpeed = isHovered ? 0.22 : 0.9;
@@ -54,6 +56,7 @@ export function TrustMarquee() {
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Clinical Highlights & Trust Pillars"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

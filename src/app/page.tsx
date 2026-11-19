@@ -8,6 +8,7 @@ import { ProcessTimeline } from '@/components/home/ProcessTimeline';
 import { DoctorSection } from '@/components/home/DoctorSection';
 import { ConditionsCloud } from '@/components/home/ConditionsCloud';
 import { FinalCta } from '@/components/home/FinalCta';
+import { OilDropDivider } from '@/components/ui/OilDropDivider';
 
 export default function HomePage() {
   return (
@@ -20,6 +21,9 @@ export default function HomePage() {
 
       {/* 3. PHILOSOPHY */}
       <PhilosophySection />
+
+      {/* 2. Thin gold/accent oil-drop divider */}
+      <OilDropDivider />
 
       {/* 4. SIGNATURE THERAPIES */}
       <SignatureTherapies />

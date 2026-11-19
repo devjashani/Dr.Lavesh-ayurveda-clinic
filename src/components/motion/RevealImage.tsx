@@ -3,7 +3,12 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { MOTION_TOKENS, useInViewOnce, usePrefersReducedMotion } from '@/lib/motion';
+import {
+  MOTION_TOKENS,
+  useInViewOnce,
+  usePrefersReducedMotion,
+  useIsMobile,
+} from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 export interface RevealImageProps {
@@ -49,11 +54,13 @@ export function RevealImage({
   children,
 }: RevealImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { ref, inView } = useInViewOnce<HTMLDivElement>(0.15);
   const prefersReduced = usePrefersReducedMotion();
-  const [isAnimating, setIsAnimating] = useState(true);
+  const isMobile = useIsMobile();
 
-  // Parallax scroll tracking: Image moves 8% slower than scroll
+  const activeDuration =
+    duration ?? (isMobile ? MOTION_TOKENS.mobileDurations.slow : MOTION_TOKENS.durations.slow);
+
+  // Parallax scroll tracking: Image moves 8% slower than scroll on desktop, disabled on mobile for frame rate
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
@@ -62,7 +69,7 @@ export function RevealImage({
   const parallaxY = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReduced || !parallax ? ['0%', '0%'] : ['-8%', '8%']
+    prefersReduced || isMobile || !parallax ? ['0%', '0%'] : ['-8%', '8%']
   );
 
   const getShapeClasses = () => {
@@ -117,39 +124,37 @@ export function RevealImage({
       className={cn('relative overflow-hidden', shapeClasses, aspectRatio, className)}
     >
       <motion.div
-        ref={ref as any}
         initial={{
-          clipPath: 'inset(12% 0% 0% 0%)',
+          clipPath: isMobile ? 'inset(16% 0% 0% 0%)' : 'inset(14% 0% 0% 0%)',
           opacity: 0,
+          y: isMobile ? 24 : 0,
         }}
-        animate={
-          inView
-            ? {
-                clipPath: 'inset(0% 0% 0% 0%)',
-                opacity: 1,
-              }
-            : undefined
-        }
+        whileInView={{
+          clipPath: 'inset(0% 0% 0% 0%)',
+          opacity: 1,
+          y: 0,
+        }}
+        viewport={{
+          once: true,
+          amount: 0.1,
+          margin: '0px 0px -30px 0px',
+        }}
         transition={{
-          duration,
+          duration: isMobile ? 0.85 : activeDuration,
           ease: MOTION_TOKENS.ease,
           delay,
         }}
-        onAnimationComplete={() => setIsAnimating(false)}
         className="w-full h-full relative overflow-hidden"
-        style={{
-          willChange: isAnimating ? 'clip-path, opacity' : 'auto',
-        }}
       >
         <motion.div
-          initial={{ scale: 1.15 }}
-          animate={inView ? { scale: 1.08 } : undefined}
+          initial={{ scale: isMobile ? 1.08 : 1.15 }}
+          whileInView={{ scale: 1.0 }}
+          viewport={{ once: true, amount: 0.1 }}
           style={{
             y: parallaxY,
-            willChange: 'transform',
           }}
           transition={{
-            duration: duration * 1.1,
+            duration: (isMobile ? 0.85 : activeDuration) * 1.05,
             ease: MOTION_TOKENS.ease,
             delay,
           }}

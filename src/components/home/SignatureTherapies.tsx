@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Clock, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { Reveal, Magnetic } from '@/components/motion';
+import { SectionMarginIndex } from '@/components/ui/SectionMarginIndex';
 import { usePrefersReducedMotion, MOTION_TOKENS } from '@/lib/motion';
 
 interface TherapyItem {
@@ -221,7 +222,7 @@ export function SignatureTherapies() {
   // Mobile scroll buttons
   const scrollMobile = (direction: 'left' | 'right') => {
     if (mobileTrackRef.current) {
-      const offset = direction === 'left' ? -340 : 340;
+      const offset = direction === 'left' ? -310 : 310;
       mobileTrackRef.current.scrollBy({ left: offset, behavior: 'smooth' });
     }
   };
@@ -231,9 +232,11 @@ export function SignatureTherapies() {
       {/* DESKTOP: Horizontal Pinned Scroll with Progress Line & Card Parallax */}
       <section
         ref={containerRef}
-        className="hidden md:block relative h-[280vh] bg-paper border-b border-forest/15"
+        className="hidden md:block relative h-[280dvh] bg-paper border-b border-forest/15"
       >
-        <div className="sticky top-0 h-screen flex flex-col justify-between py-12 lg:py-16 overflow-hidden">
+        <div className="sticky top-0 h-[100dvh] flex flex-col justify-between py-12 lg:py-16 overflow-hidden">
+          {/* 4. Section Margin Number revealed with a mask slide */}
+          <SectionMarginIndex number="02" label="THERAPIES" gujaratiLabel="ચિકિત્સા" />
           {/* Header */}
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
             <div className="flex items-end justify-between gap-6 mb-4">
@@ -295,7 +298,7 @@ export function SignatureTherapies() {
       </section>
 
       {/* MOBILE / TABLET: Native Swipeable Carousel */}
-      <section className="md:hidden relative py-16 bg-paper border-b border-forest/15 overflow-hidden">
+      <section className="md:hidden relative py-16 bg-paper border-b border-forest/15 overflow-hidden content-auto">
         <div className="px-5 mb-6">
           <SectionHeading
             eyebrow="Signature Chikitsa"
@@ -333,7 +336,7 @@ export function SignatureTherapies() {
 
         <div
           ref={mobileTrackRef}
-          className="w-full overflow-x-auto scroll-smooth no-scrollbar px-5 pb-4 flex gap-5 snap-x snap-mandatory"
+          className="w-full overflow-x-auto scroll-smooth no-scrollbar px-5 pb-4 flex gap-5 snap-x snap-mandatory scroll-pl-5 scroll-pr-5"
         >
           {therapies.map((therapy) => (
             <div
@@ -379,6 +382,8 @@ export function SignatureTherapies() {
               </div>
             </div>
           ))}
+          {/* Trailing padding anchor for cross-browser scroll snap */}
+          <div className="shrink-0 w-1 pointer-events-none" aria-hidden="true" />
         </div>
 
         <div className="px-5 mt-4 text-center">

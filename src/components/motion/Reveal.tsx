@@ -1,8 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { MOTION_TOKENS, useInViewOnce, usePrefersReducedMotion } from '@/lib/motion';
+import {
+  MOTION_TOKENS,
+  usePrefersReducedMotion,
+  useIsMobile,
+} from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 export interface RevealProps {
@@ -19,11 +23,11 @@ export interface RevealProps {
 
 /**
  * <Reveal>
- * Scroll-triggered blur-reveal component.
- * Transforms from opacity 0, translateY 28px, filter blur(12px) to opacity 1, y 0, blur 0.
- * Triggers once when 15% in view.
- * Removes will-change upon animation completion.
- * Fully bypasses animations when prefers-reduced-motion is active.
+ * Native Framer Motion scroll-triggered reveal component:
+ * - Direct DOM execution via whileInView (zero React state re-render lag)
+ * - Desktop: opacity 0, translateY 32px, soft blur -> opacity 1, y 0, blur 0.
+ * - Mobile: translateY 28px -> 0, opacity 0 -> 1, 0.7s duration.
+ * - Horizontal offsets safely convert to vertical on mobile to prevent horizontal shifts.
  */
 export function Reveal({
   children,
@@ -32,13 +36,37 @@ export function Reveal({
   as = 'div',
   className,
   blur = true,
-  duration = MOTION_TOKENS.durations.base,
-  distance = 28,
+  duration,
+  distance,
   style,
 }: RevealProps) {
-  const { ref, inView } = useInViewOnce<HTMLDivElement>(0.15);
   const prefersReduced = usePrefersReducedMotion();
-  const [isAnimating, setIsAnimating] = useState(true);
+  const isMobile = useIsMobile();
+
+  const activeDuration =
+    duration ?? (isMobile ? MOTION_TOKENS.mobileDurations.base : MOTION_TOKENS.durations.base);
+  const activeDistance =
+    distance ?? (isMobile ? MOTION_TOKENS.distances.mobile : MOTION_TOKENS.distances.desktop);
+  const useBlur = isMobile ? false : blur;
+
+  const getInitialTransform = () => {
+    switch (direction) {
+      case 'up':
+        return { y: activeDistance, x: 0 };
+      case 'down':
+        return { y: -activeDistance, x: 0 };
+      case 'left':
+        return isMobile ? { y: activeDistance, x: 0 } : { x: activeDistance, y: 0 };
+      case 'right':
+        return isMobile ? { y: activeDistance, x: 0 } : { x: -activeDistance, y: 0 };
+      case 'none':
+      default:
+        return { x: 0, y: 0 };
+    }
+  };
+
+  const initialTransform = getInitialTransform();
+  const MotionComponent = motion[as] || motion.div;
 
   if (prefersReduced) {
     const Component = as;
@@ -49,56 +77,31 @@ export function Reveal({
     );
   }
 
-  const getInitialTransform = () => {
-    switch (direction) {
-      case 'up':
-        return { y: distance, x: 0 };
-      case 'down':
-        return { y: -distance, x: 0 };
-      case 'left':
-        return { x: distance, y: 0 };
-      case 'right':
-        return { x: -distance, y: 0 };
-      case 'none':
-      default:
-        return { x: 0, y: 0 };
-    }
-  };
-
-  const initialTransform = getInitialTransform();
-  const MotionComponent = motion[as] || motion.div;
-
   return (
     <MotionComponent
-      ref={ref as any}
       initial={{
         opacity: 0,
         ...initialTransform,
-        filter: blur ? 'blur(12px)' : 'blur(0px)',
+        ...(useBlur ? { filter: 'blur(8px)' } : {}),
       }}
-      animate={
-        inView
-          ? {
-              opacity: 1,
-              x: 0,
-              y: 0,
-              filter: 'blur(0px)',
-            }
-          : undefined
-      }
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+        ...(useBlur ? { filter: 'blur(0px)' } : {}),
+      }}
+      viewport={{
+        once: true,
+        amount: 0.1,
+        margin: '0px 0px -25px 0px',
+      }}
       transition={{
-        duration,
+        duration: activeDuration,
         ease: MOTION_TOKENS.ease,
         delay,
       }}
-      onAnimationComplete={() => {
-        setIsAnimating(false);
-      }}
       className={cn(className)}
-      style={{
-        ...style,
-        willChange: isAnimating ? 'transform, opacity, filter' : 'auto',
-      }}
+      style={style}
     >
       {children}
     </MotionComponent>

@@ -1,17 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { ShieldCheck, Sparkles, Clock, CheckCircle2, Calendar, Phone, ArrowRight, User } from 'lucide-react';
+import { ShieldCheck, Sparkles, Clock, CheckCircle2, Calendar, Phone, ArrowRight, User, X } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useBookingSheet } from '@/lib/context/BookingSheetContext';
 import { Reveal, RevealText, Magnetic } from '@/components/motion';
+import { useInViewWithPause } from '@/lib/motion';
+import { cn } from '@/lib/utils';
+import { IMAGES } from '@/lib/config/images';
 
 export function HeroSection() {
   const { language, t } = useLanguage();
+  const { openBookingSheet } = useBookingSheet();
+  const { ref: heroRef, isActive: isHeroActive } = useInViewWithPause<HTMLElement>(0.05);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -19,6 +27,25 @@ export function HeroSection() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
+
+  // First scroll tracking for mobile indicator
+  const [mounted, setMounted] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setHasScrolled(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     if (typeof window === 'undefined' || window.matchMedia('(pointer: coarse)').matches) return;
@@ -33,9 +60,10 @@ export function HeroSection() {
     setCursorPos(null);
   };
 
-  // Parallax subtle scroll effect
+  // Parallax subtle scroll effects
   const { scrollY } = useScroll();
-  const yParallax = useTransform(scrollY, [0, 600], [0, 45]);
+  const yParallax = useTransform(scrollY, [0, 600], [0, 45]); // Desktop parallax
+  const mobileParallaxY = useTransform(scrollY, [0, 400], [0, 20]); // Mobile tiny parallax (max 20px)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,9 +82,13 @@ export function HeroSection() {
 
   return (
     <section
+      ref={heroRef}
       onMouseMove={handleHeroMouseMove}
       onMouseLeave={handleHeroMouseLeave}
-      className="relative pt-6 pb-16 sm:pt-10 sm:pb-24 lg:pt-12 lg:pb-28 overflow-hidden"
+      className={cn(
+        "relative pt-1 sm:pt-4 lg:pt-12 pb-6 sm:pb-16 lg:pb-28 overflow-hidden",
+        !isHeroActive && 'pause-animation'
+      )}
     >
       {/* Desktop-only subtle turmeric cursor-follow glow */}
       {cursorPos && (
@@ -76,7 +108,7 @@ export function HeroSection() {
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-sage/10 rounded-full blur-3xl pointer-events-none -ml-24" />
       <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-turmeric/5 rounded-full blur-3xl pointer-events-none -mr-28" />
 
-      {/* Pranayama floating botanical sprig (left accent) */}
+      {/* Pranayama floating botanical sprig (left accent on desktop) */}
       <div aria-hidden="true" className="absolute top-2/3 -left-6 w-32 h-32 text-forest/[0.07] pointer-events-none z-0 animate-pranayama-delayed hidden md:block">
         <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-full h-full">
           <path d="M20 80 C20 40 50 20 80 15 C75 45 55 75 20 80 Z" />
@@ -85,9 +117,248 @@ export function HeroSection() {
       </div>
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+        {/* ========================================================================= */}
+        {/* 1. MOBILE HERO VIEW (< 1024px): Full 100dvh, Arch Image, Heritage Jaali */}
+        {/* ========================================================================= */}
+        <div className="lg:hidden flex flex-col justify-between min-h-[calc(100dvh-3.5rem)] pt-1 pb-4">
+          {/* Top Editorial Block */}
+          <div className="flex flex-col items-start text-left">
+            {/* Eyebrow */}
+            <Reveal delay={0.02} direction="down" blur={false}>
+              <div className="inline-flex items-center gap-1.5 xs:gap-2 px-2.5 py-0.5 xs:px-3 xs:py-1 rounded-full bg-cream border border-forest/15 text-forest mb-3 shadow-2xs max-w-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
+                <span className="font-mono text-[8px] xs:text-[9px] sm:text-[10px] uppercase tracking-normal sm:tracking-wider font-semibold whitespace-nowrap">
+                  {t.hero.eyebrow}
+                </span>
+              </div>
+            </Reveal>
+
+            {/* Masked Headline Reveal: line by line, no blur */}
+            <RevealText
+              as="h1"
+              delay={0.06}
+              stagger={0.06}
+              className="text-display-hero text-deep-forest font-normal tracking-tight mb-3 text-[2.2rem] xs:text-[2.5rem] leading-[1.08]"
+              lines={[
+                t.hero.titleStart,
+                <span key="accent" className="font-serif italic font-light text-[#9E6517] selection:text-deep-forest">
+                  {t.hero.titleAccent}
+                </span>,
+              ]}
+            />
+
+            {/* 2 Lines of Calm Supporting Copy */}
+            <Reveal delay={0.16} blur={false}>
+              <p className="text-xs xs:text-sm text-ink/80 max-w-md leading-relaxed font-sans mb-4">
+                {t.hero.subhead}
+              </p>
+            </Reveal>
+
+            {/* Mobile CTAs: Primary "Book Consultation" Button + Secondary Text Link */}
+            <Reveal delay={0.22} blur={false} className="w-full">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
+                <Button
+                  id="hero-mobile-book-btn"
+                  type="button"
+                  onClick={openBookingSheet}
+                  data-booking-trigger="true"
+                  variant="primary"
+                  size="md"
+                  showArrow
+                  className="w-full sm:w-auto justify-center min-h-[46px] shadow-xs"
+                >
+                  {t.hero.ctaBook}
+                </Button>
+
+                <div className="text-center sm:text-left py-1">
+                  <Link
+                    href="/dosha-quiz"
+                    className="text-xs font-serif italic text-forest hover:text-deep-forest underline underline-offset-4 tracking-wide"
+                  >
+                    {language === 'GU' ? 'અથવા દોષ પ્રકૃતિ ક્વિઝ લો →' : 'Or take free Dosha Quiz →'}
+                  </Link>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Visual Centerpiece: Doctor Arch Image + Heritage Mandala/Jaali Line Art */}
+          <div className="relative flex flex-col items-center justify-center my-auto py-4">
+            {/* Heritage Mandala/Jaali SVG Line Art behind Image (draws once with stroke-dashoffset, then stays still) */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+              <svg
+                viewBox="0 0 200 200"
+                className="w-64 h-64 xs:w-72 xs:h-72 text-turmeric/45"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                {/* Concentric Heritage Rings */}
+                <motion.circle
+                  cx="100"
+                  cy="100"
+                  r="92"
+                  stroke="currentColor"
+                  strokeWidth="0.6"
+                  strokeDasharray="2 3"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                />
+                <motion.circle
+                  cx="100"
+                  cy="100"
+                  r="72"
+                  stroke="currentColor"
+                  strokeWidth="0.8"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+                />
+                <motion.circle
+                  cx="100"
+                  cy="100"
+                  r="48"
+                  stroke="currentColor"
+                  strokeWidth="0.7"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+                />
+
+                {/* 8-Petal Classical Jaali Lattice Arches */}
+                <motion.path
+                  d="M100 28 Q88 64 100 82 Q112 64 100 28 Z"
+                  stroke="currentColor"
+                  strokeWidth="0.8"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
+                />
+                <motion.path
+                  d="M100 172 Q88 136 100 118 Q112 136 100 172 Z"
+                  stroke="currentColor"
+                  strokeWidth="0.8"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
+                />
+                <motion.path
+                  d="M28 100 Q64 88 82 100 Q64 112 28 100 Z"
+                  stroke="currentColor"
+                  strokeWidth="0.8"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
+                />
+                <motion.path
+                  d="M172 100 Q136 88 118 100 Q136 112 172 100 Z"
+                  stroke="currentColor"
+                  strokeWidth="0.8"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
+                />
+
+                {/* Diagonal Lattice Petals */}
+                <motion.path
+                  d="M49 49 Q74 76 87 87 Q76 74 49 49 Z"
+                  stroke="currentColor"
+                  strokeWidth="0.7"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
+                />
+                <motion.path
+                  d="M151 49 Q126 76 113 87 Q124 74 151 49 Z"
+                  stroke="currentColor"
+                  strokeWidth="0.7"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
+                />
+                <motion.path
+                  d="M49 151 Q74 124 87 113 Q76 126 49 151 Z"
+                  stroke="currentColor"
+                  strokeWidth="0.7"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
+                />
+                <motion.path
+                  d="M151 151 Q126 124 113 113 Q124 126 151 151 Z"
+                  stroke="currentColor"
+                  strokeWidth="0.7"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
+                />
+              </svg>
+            </div>
+
+            {/* Doctor Arch Frame: Rises from bottom with clip-path and settles with tiny parallax (max 20px) */}
+            <motion.div
+              style={{ y: mobileParallaxY }}
+              initial={{ clipPath: 'inset(100% 0 0 0 round 120px 120px 0 0)', opacity: 0, y: 30 }}
+              animate={{ clipPath: 'inset(0% 0 0 0 round 120px 120px 0 0)', opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+              className="relative z-10 w-[210px] xs:w-[240px] aspect-[4/5] rounded-t-[120px] rounded-b-[4px] overflow-hidden bg-cream border border-forest/20 shadow-[0_12px_32px_rgba(20,41,28,0.12)]"
+            >
+              <Image
+                src={IMAGES.doctorPortrait}
+                alt="Dr. Lavesh Bohra, Ayurvedic practitioner at VANKAL AYURVEDA"
+                fill
+                priority
+                sizes="(max-width: 768px) 75vw, 240px"
+                placeholder="blur"
+                blurDataURL={IMAGES.doctorPortraitBlur}
+                className="object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/85 via-transparent to-transparent pointer-events-none" />
+
+              {/* Doctor Details overlay inside the arch */}
+              <div className="absolute bottom-3 left-3 right-3 text-cream text-center">
+                <span className="font-display text-sm font-normal block leading-tight">
+                  {language === 'GU' ? 'વૈદ્ય લવેશ બોહરા' : 'Dr. Lavesh Bohra'}
+                </span>
+                <span className="font-serif italic text-[11px] text-paper/85 tracking-wide block">
+                  BAMS (2026) · SMIAS
+                </span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Animated Scroll Cue at bottom */}
+          <div
+            className={cn(
+              'flex flex-col items-center gap-1 transition-opacity duration-500 pt-1',
+              hasScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            )}
+            aria-hidden="true"
+          >
+            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-forest/70">
+              Scroll
+            </span>
+            <div className="w-[1.5px] h-6 bg-forest/20 rounded-full relative overflow-hidden">
+              <motion.div
+                animate={{ y: [0, 16, 0] }}
+                transition={{
+                  duration: 1.8,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+                className="w-full h-2 rounded-full bg-turmeric shadow-[0_0_6px_rgba(217,154,43,0.6)]"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* 2. DESKTOP HERO VIEW (lg:grid): Preserved Exactly As Is */}
+        {/* ========================================================================= */}
+        <div className="hidden lg:grid grid-cols-12 gap-12 lg:gap-14 items-center">
           {/* LEFT COLUMN: Editorial & Headline */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left z-10">
+          <div className="col-span-7 flex flex-col items-start text-left z-10">
             {/* Eyebrow */}
             <Reveal delay={0.04} direction="down" blur={false}>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cream border border-forest/15 text-xs text-forest mb-5 shadow-2xs">
@@ -141,7 +412,7 @@ export function HeroSection() {
 
             {/* 3 Small Trust Points with Thin Line Icons */}
             <Reveal delay={0.38} blur={false} className="w-full">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10 pt-8 border-t border-forest/15 w-full text-xs text-ink/75">
+              <div className="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-forest/15 w-full text-xs text-ink/75">
                 <div className="flex items-center gap-2.5">
                   <ShieldCheck className="w-4 h-4 text-forest stroke-[1.25] shrink-0" />
                   <span className="font-medium text-deep-forest">{t.hero.trust1}</span>
@@ -159,7 +430,7 @@ export function HeroSection() {
           </div>
 
           {/* RIGHT COLUMN: Arch Image + Botanical Line Art + Mini-Form */}
-          <div className="lg:col-span-5 relative flex flex-col items-center">
+          <div className="col-span-5 relative flex flex-col items-center">
             {/* Self-Drawing Botanical SVG Line Art with Pranayama Breathing */}
             <svg
               className="absolute -top-10 -right-6 w-36 h-36 text-sage/40 pointer-events-none z-0 animate-pranayama"

@@ -11,16 +11,28 @@ import { Badge } from '@/components/ui/Badge';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
 import { ShieldCheck, Award, Clock, Calendar, CheckCircle2 } from 'lucide-react';
 import { Reveal, RevealText, RevealImage, Magnetic } from '@/components/motion';
+import { BreathingHaloOrnament } from '@/components/ui/BreathingHaloOrnament';
+import { BotanicalLeafSketch } from '@/components/ui/BotanicalLeafSketch';
+import { SectionMarginIndex } from '@/components/ui/SectionMarginIndex';
 
 export function DoctorSection() {
   const { t } = useLanguage();
 
   return (
-    <section className="py-20 sm:py-28 bg-paper border-b border-forest/15 relative overflow-hidden">
+    <section className="py-20 sm:py-28 bg-paper border-b border-forest/15 relative overflow-hidden content-auto">
+      {/* 1. Hand-Drawn Neem Botanical Sketch cropped off the bottom-left edge */}
+      <BotanicalLeafSketch variant="neem" position="bottom-left" />
+
+      {/* 4. Section Margin Number revealed with a mask slide */}
+      <SectionMarginIndex number="05" label="VAIDYA" gujaratiLabel="વૈદ્ય" />
+
       <Container size="default">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column: Large Portrait in Arch Mask */}
+          {/* Left Column: Large Portrait in Arch Mask with 3. Breathing Ornament */}
           <div className="lg:col-span-5 relative flex justify-center">
+            {/* 3. Tiny "breathing" ornament (scale 1 to 1.04, 7s loop, paused when off-screen) */}
+            <BreathingHaloOrnament />
+
             <RevealImage
               shape="arch"
               src={IMAGES.doctorPortrait}

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Logo } from './Logo';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
+import { RotatingSeal } from '@/components/ui/RotatingSeal';
 import { ArrowRight, Check } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -25,7 +26,7 @@ export function Footer() {
   return (
     <footer
       suppressHydrationWarning
-      className="relative bg-deep-forest text-cream pt-16 sm:pt-20 pb-12 overflow-hidden border-t border-forest/40"
+      className="relative bg-deep-forest text-cream pt-16 sm:pt-20 pb-12 overflow-hidden border-t border-forest/40 content-auto"
     >
       {/* Delicate ambient botanical background motif */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-forest/20 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
@@ -36,7 +37,11 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-14">
           {/* Column 1: Brand + Mission (col-span-4) */}
           <div className="lg:col-span-4 flex flex-col space-y-4">
-            <Logo variant="light" />
+            <div className="flex items-start justify-between gap-4">
+              <Logo variant="light" />
+              {/* 5. Circular rotating seal (60s/turn, tied to scroll on mobile, paused offscreen) */}
+              <RotatingSeal size={86} className="shrink-0 -mt-2" />
+            </div>
             <p className="text-paper/75 text-sm leading-relaxed max-w-sm pt-2 font-sans">
               {t.footer.mission}
             </p>
@@ -244,7 +249,7 @@ export function Footer() {
 
         {/* Big Faded Wordmark */}
         <div className="pt-6 text-center select-none pointer-events-none">
-          <span className="font-display text-[9vw] lg:text-[7.5rem] tracking-[0.12em] font-semibold text-cream/[0.04] leading-none uppercase block whitespace-nowrap overflow-hidden">
+          <span className="font-display text-[6.4vw] sm:text-[7.5vw] lg:text-[7.5rem] tracking-[0.06em] sm:tracking-[0.1em] lg:tracking-[0.12em] font-semibold text-cream/[0.04] leading-none uppercase block whitespace-nowrap overflow-hidden">
             VANKAL AYURVEDA
           </span>
         </div>

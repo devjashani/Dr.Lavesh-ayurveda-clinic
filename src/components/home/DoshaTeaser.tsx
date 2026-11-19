@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Wind, Flame, Mountain, ArrowRight } from 'lucide-react';
 import { Reveal, RevealText, Magnetic } from '@/components/motion';
+import { SectionMarginIndex } from '@/components/ui/SectionMarginIndex';
 import { usePrefersReducedMotion, MOTION_TOKENS } from '@/lib/motion';
 
 interface DoshaInfo {
@@ -197,8 +198,10 @@ export function DoshaTeaser() {
   return (
     <section
       suppressHydrationWarning
-      className="py-20 sm:py-28 bg-deep-forest text-cream relative overflow-hidden border-b border-forest/30"
+      className="py-20 sm:py-28 bg-deep-forest text-cream relative overflow-hidden border-b border-forest/30 content-auto"
     >
+      {/* 4. Section Margin Number revealed with a mask slide */}
+      <SectionMarginIndex number="03" label="PRAKRITI" gujaratiLabel="પ્રકૃતિ" theme="dark" />
       {/* Ambient background glows */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-sage/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-turmeric/10 rounded-full blur-3xl pointer-events-none" />

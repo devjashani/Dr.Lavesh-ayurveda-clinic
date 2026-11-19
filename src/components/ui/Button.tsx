@@ -57,7 +57,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const baseStyles =
-      'relative inline-flex items-center justify-center font-medium tracking-wide focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-forest/40 disabled:opacity-50 disabled:pointer-events-none select-none overflow-hidden';
+      'relative inline-flex items-center justify-center font-medium tracking-wide focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-forest/40 disabled:opacity-50 disabled:pointer-events-none select-none overflow-hidden touch-manipulation cursor-pointer active:scale-[0.97] transition-transform duration-120 ease-[cubic-bezier(0.22,1,0.36,1)]';
 
     const sizeStyles = {
       sm: 'text-xs px-3.5 py-1.5 gap-1.5 rounded-[3px]',
@@ -67,11 +67,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantStyles = {
       primary:
-        'bg-deep-forest text-cream border border-deep-forest active:bg-[#0E1C13] shadow-[0_1px_2px_rgba(20,41,28,0.12)]',
+        'bg-deep-forest text-cream border border-deep-forest active:bg-[#0E1C13] shadow-[0_1px_2px_rgba(20,41,28,0.12)] btn-primary-ripple',
       secondary:
         'bg-transparent text-forest border border-forest/40 hover:bg-cream hover:border-forest active:bg-paper',
       turmeric:
-        'bg-turmeric text-deep-forest font-semibold border border-turmeric hover:bg-[#C98A20] active:bg-[#B57816]',
+        'bg-turmeric text-deep-forest font-semibold border border-turmeric hover:bg-[#C98A20] active:bg-[#B57816] btn-primary-ripple',
       ghost:
         'bg-transparent text-forest hover:bg-forest/5 active:bg-forest/10 border border-transparent',
       'text-link':

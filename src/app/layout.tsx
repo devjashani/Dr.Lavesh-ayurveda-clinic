@@ -10,6 +10,8 @@ import { SmoothScrollProvider } from '@/components/layout/SmoothScrollProvider';
 import { PageTransition } from '@/components/layout/PageTransition';
 import { IntroPreloader } from '@/components/layout/IntroPreloader';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
+import { BookingSheetProvider } from '@/lib/context/BookingSheetContext';
+import { BottomSheetBooking } from '@/components/booking/BottomSheetBooking';
 import { JsonLd } from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
@@ -85,6 +87,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({
@@ -116,26 +119,32 @@ export default function RootLayout({
 
         {/* Global Language Context */}
         <LanguageProvider>
-          {/* Smooth Scroll via Lenis & GSAP */}
-          <SmoothScrollProvider>
-            {/* Global Header inside Suspense */}
-            <Suspense fallback={<div className="h-20" />}>
-              <Navbar />
-            </Suspense>
-
-            {/* Main Content Area with Page Transitions */}
-            <main className="flex-1 flex flex-col pt-20">
-              <Suspense fallback={null}>
-                <PageTransition>{children}</PageTransition>
+          {/* Global Mobile Booking Bottom Sheet */}
+          <BookingSheetProvider>
+            {/* Smooth Scroll via Lenis & GSAP */}
+            <SmoothScrollProvider>
+              {/* Global Header inside Suspense */}
+              <Suspense fallback={<div className="h-20" />}>
+                <Navbar />
               </Suspense>
-            </main>
 
-            {/* Global Footer */}
-            <Footer />
+              {/* Main Content Area with Page Transitions */}
+              <main className="flex-1 flex flex-col pt-14 sm:pt-20 lang-crossfade">
+                <Suspense fallback={null}>
+                  <PageTransition>{children}</PageTransition>
+                </Suspense>
+              </main>
 
-            {/* WhatsApp & Mobile Floating Actions */}
-            <FloatingActions />
-          </SmoothScrollProvider>
+              {/* Global Footer */}
+              <Footer />
+
+              {/* WhatsApp & Mobile Floating Actions */}
+              <FloatingActions />
+
+              {/* Global Mobile Bottom Sheet Booking Form */}
+              <BottomSheetBooking />
+            </SmoothScrollProvider>
+          </BookingSheetProvider>
         </LanguageProvider>
       </body>
     </html>

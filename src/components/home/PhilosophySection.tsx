@@ -7,10 +7,18 @@ import { Badge } from '@/components/ui/Badge';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { Reveal, RevealText } from '@/components/motion';
+import { BotanicalLeafSketch } from '@/components/ui/BotanicalLeafSketch';
+import { SectionMarginIndex } from '@/components/ui/SectionMarginIndex';
 
 export function PhilosophySection() {
   return (
-    <section className="py-20 sm:py-28 bg-cream/70 border-b border-forest/15 relative overflow-hidden">
+    <section className="py-20 sm:py-28 bg-cream/70 border-b border-forest/15 relative overflow-hidden content-auto">
+      {/* 1. Asymmetric Hand-Drawn Tulsi Leaf Illustration cropped off the top-right screen edge */}
+      <BotanicalLeafSketch variant="tulsi" position="top-right" />
+
+      {/* 4. Section Margin Number revealed with a mask slide */}
+      <SectionMarginIndex number="01" label="PHILOSOPHY" gujaratiLabel="દર્શન" />
+
       {/* Decorative ambient watermark */}
       <svg
         aria-hidden="true"

@@ -216,7 +216,7 @@ export function DoshaQuizClient() {
   };
 
   return (
-    <div className="py-12 sm:py-20 min-h-[85vh] flex flex-col justify-center">
+    <div className="py-12 sm:py-20 min-h-[85dvh] flex flex-col justify-center">
       <Container size="default">
         {/* ===================== QUIZ VIEW ===================== */}
         {!isCompleted ? (

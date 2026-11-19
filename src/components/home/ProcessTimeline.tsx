@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Stethoscope, Activity, FileSpreadsheet, RefreshCw, Check } from 'lucide-react';
 import { Reveal } from '@/components/motion';
 import { usePrefersReducedMotion, MOTION_TOKENS } from '@/lib/motion';
+import { SectionMarginIndex } from '@/components/ui/SectionMarginIndex';
 
 interface ProcessStep {
   number: string;
@@ -147,10 +148,10 @@ export function ProcessTimeline() {
     offset: ['start 60%', 'end 80%'],
   });
 
-  const lineHeight = useTransform(
+  const lineScaleY = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReduced ? ['100%', '100%'] : ['0%', '100%']
+    prefersReduced ? [1, 1] : [0, 1]
   );
 
   // Thresholds where the vertical line reaches each node
@@ -159,8 +160,10 @@ export function ProcessTimeline() {
   return (
     <section
       ref={containerRef}
-      className="py-20 sm:py-28 bg-cream/70 border-b border-forest/15 relative overflow-hidden"
+      className="py-20 sm:py-28 bg-cream/70 border-b border-forest/15 relative overflow-hidden content-auto"
     >
+      {/* 4. Section Margin Number revealed with a mask slide */}
+      <SectionMarginIndex number="04" label="PROTOCOL" gujaratiLabel="ક્રમ" />
       <Container size="default">
         <Reveal delay={0} direction="up">
           <SectionHeading
@@ -176,10 +179,10 @@ export function ProcessTimeline() {
           {/* Vertical Track Background Line */}
           <div className="absolute left-6 sm:left-1/2 top-4 bottom-4 w-[2px] bg-forest/15 -translate-x-1/2" />
 
-          {/* Vertical Dynamic Drawing Line in Turmeric */}
+          {/* Vertical Dynamic Drawing Line in Turmeric (GPU scaleY) */}
           <motion.div
-            style={{ height: lineHeight }}
-            className="absolute left-6 sm:left-1/2 top-4 w-[2px] bg-turmeric -translate-x-1/2 origin-top shadow-[0_0_8px_rgba(217,154,43,0.5)] z-0"
+            style={{ scaleY: lineScaleY }}
+            className="absolute left-6 sm:left-1/2 top-4 bottom-4 w-[2px] bg-turmeric -translate-x-1/2 origin-top shadow-[0_0_8px_rgba(217,154,43,0.5)] z-0 will-change-transform"
           />
 
           {/* Steps */}

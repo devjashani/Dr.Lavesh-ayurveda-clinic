@@ -1,5 +1,33 @@
 @import "tailwindcss";
 
+/* Lenis Smooth Scroll Core Styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis.lenis-autoToggle {
+  transition-property: overflow;
+  transition-duration: 1ms;
+  transition-behavior: allow-discrete;
+}
+
 @theme {
   --color-paper: #F6F1E7;
   --color-cream: #FBF8F1;
@@ -32,6 +60,12 @@
   --mist: #E4EADF;
 
   --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Safe Area Insets for notched devices */
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
 }
 
 /* Subtle paper grain overlay */
@@ -39,7 +73,7 @@
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   pointer-events: none;
   z-index: 999;
   opacity: 0.032;
@@ -71,6 +105,8 @@ html {
   scroll-behavior: auto; /* Handled smoothly by Lenis */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Gujarati Typography when GU language is active with generous line-height */
@@ -125,10 +161,60 @@ html[lang="gu"] textarea,
 body {
   background-color: var(--paper);
   color: var(--ink);
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
   selection-background-color: var(--sage);
   selection-color: var(--deep-forest);
+}
+
+/* Dynamic Viewport Unit Overrides for Mobile Address Bar Stability */
+.min-h-screen {
+  min-height: 100dvh !important;
+}
+
+.h-screen {
+  height: 100dvh !important;
+}
+
+/* Safe Area Utilities for Notched Mobile Screens */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+.pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+.bottom-safe {
+  bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Touch & Interaction Optimizations */
+button,
+a,
+input[type="button"],
+input[type="submit"],
+[role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Content Visibility Optimization for long below-the-fold sections */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
+}
+
+/* Pause animations when tab is hidden or element is off-screen */
+body.tab-hidden *,
+.pause-animation {
+  animation-play-state: paused !important;
 }
 
 ::selection {
@@ -353,6 +439,90 @@ textarea:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+/* ========================================================================= */
+/* Touch-First Mobile Interactions & Press Feedback                          */
+/* ========================================================================= */
+
+/* 1. Touch-down Press Feedback: Scale 0.97 on all buttons and interactive cards */
+button:active:not(:disabled),
+a[role="button"]:active,
+[data-pressable]:active,
+.card-press:active,
+.touch-card:active,
+.touch-press:active {
+  transform: scale(0.97) !important;
+  transition: transform 0.12s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Also apply to generic card elements on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  article:active,
+  [data-interactive-card]:active {
+    transform: scale(0.97);
+    transition: transform 0.12s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* 2. Quick Soft Ripple for Primary Buttons */
+@keyframes soft-ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+.btn-primary-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at center, rgba(217, 154, 43, 0.45) 0%, transparent 65%);
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn-primary-ripple:active::after {
+  animation: soft-ripple 0.35s ease-out;
+}
+
+/* 3. Inline Form Validation Error Shake (Transform Only) */
+@keyframes gentle-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-4px);
+  }
+  40%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-gentle-shake {
+  animation: gentle-shake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  will-change: transform;
+}
+
+/* 4. Language Crossfade (Opacity Only, 200ms) */
+.lang-crossfade {
+  transition: opacity 200ms ease-in-out;
+}
+
+[data-lang-switching="true"] .lang-crossfade,
+[data-lang-switching="true"] main {
+  opacity: 0.15;
 }
 
 /* Animation: Respect prefers-reduced-motion */
