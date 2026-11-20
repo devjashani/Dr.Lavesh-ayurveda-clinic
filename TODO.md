@@ -14,7 +14,7 @@ The following verified facts are actively applied across the **VANKAL AYURVEDA**
 | # | Item | Current Site Value / Placeholder | Locations Used | Action Required |
 |---|---|---|---|---|
 | 1 | **AYUSH Registration Number** | `Registration No.: to be added` | Doctor Profile (`/doctors`), Home Doctor Section, Footer, Appointment Voucher, Email & WhatsApp templates | Add state/central board registration number once officially allotted. |
-| 2 | **Clinic Phone Number** | `Phone: to be added` | Footer, Contact Page (`/contact`), Mobile Sticky Bar, Confirmation Templates | Provide official clinic calling number. |
+| 2 | **Clinic Phone Number** | `+91 9016432576` | Footer, Contact Page (`/contact`), Mobile Sticky Bar, Confirmation Templates | Provide official clinic calling number. |
 | 3 | **Official WhatsApp Helpline** | `WhatsApp: to be added` | Floating WhatsApp button, Contact Page, Appointment Voucher | Provide WhatsApp Business contact number for inquiries & appointment booking. |
 | 4 | **Official Email Address** | `Email: to be added` | Footer, Contact Page, Email notifications | Provide official clinical communication email. |
 | 5 | **Clinic Physical Address** | `Address: to be added` | Contact Page, Footer, Booking Voucher, Confirmation templates | Provide clinic physical location (city, area, address, landmarks). |

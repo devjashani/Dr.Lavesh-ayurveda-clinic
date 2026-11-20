@@ -1979,7 +1979,7 @@ export function AdminClient() {
                           </div>
                           <div className="text-right text-[11px] text-ink/70 font-mono hidden sm:block">
                             <div>Address: to be added</div>
-                            <div>Phone: to be added</div>
+                            <div>+91 9016432576</div>
                             <div>Email: to be added</div>
                           </div>
                         </div>
