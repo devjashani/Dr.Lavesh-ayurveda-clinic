@@ -6,7 +6,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { ScrollProgress } from '@/components/layout/ScrollProgress';
 import { FloatingActions } from '@/components/layout/FloatingActions';
-import { SmoothScrollProvider } from '@/components/layout/SmoothScrollProvider';
+import { MotionProvider } from '@/components/motion/MotionProvider';
 import { PageTransition } from '@/components/layout/PageTransition';
 import { IntroPreloader } from '@/components/layout/IntroPreloader';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
@@ -121,8 +121,8 @@ export default function RootLayout({
         <LanguageProvider>
           {/* Global Mobile Booking Bottom Sheet */}
           <BookingSheetProvider>
-            {/* Smooth Scroll via Lenis & GSAP */}
-            <SmoothScrollProvider>
+            {/* Centralized Motion & Smooth Scroll Foundation */}
+            <MotionProvider>
               {/* Global Header inside Suspense */}
               <Suspense fallback={<div className="h-20" />}>
                 <Navbar />
@@ -143,7 +143,7 @@ export default function RootLayout({
 
               {/* Global Mobile Bottom Sheet Booking Form */}
               <BottomSheetBooking />
-            </SmoothScrollProvider>
+            </MotionProvider>
           </BookingSheetProvider>
         </LanguageProvider>
       </body>

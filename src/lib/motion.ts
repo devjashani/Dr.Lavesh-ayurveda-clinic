@@ -54,24 +54,8 @@ export const MOTION_TRANSITION = {
   },
 } as const;
 
-/**
- * Hook to detect prefers-reduced-motion media query
- */
-export function usePrefersReducedMotion(): boolean {
-  const [prefersReduced, setPrefersReduced] = useState(false);
+export { usePrefersReducedMotion, useLenis } from '@/components/motion/MotionProvider';
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReduced(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
-
-  return prefersReduced;
-}
 
 /**
  * Hook to detect mobile screens (< 768px)

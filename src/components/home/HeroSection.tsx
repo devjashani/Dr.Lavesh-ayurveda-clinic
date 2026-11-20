@@ -319,7 +319,7 @@ export function HeroSection() {
                 sizes="(max-width: 768px) 75vw, 240px"
                 placeholder="blur"
                 blurDataURL={IMAGES.doctorPortraitBlur}
-                className="object-cover object-top"
+                className="object-cover object-top scale-[1.14] origin-top"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/85 via-transparent to-transparent pointer-events-none" />
 

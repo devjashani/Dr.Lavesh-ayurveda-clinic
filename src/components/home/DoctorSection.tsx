@@ -9,7 +9,7 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
-import { ShieldCheck, Award, Clock, Calendar, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Award, Clock, Calendar, CheckCircle2, Phone } from 'lucide-react';
 import { Reveal, RevealText, RevealImage, Magnetic } from '@/components/motion';
 import { BreathingHaloOrnament } from '@/components/ui/BreathingHaloOrnament';
 import { BotanicalLeafSketch } from '@/components/ui/BotanicalLeafSketch';
@@ -38,7 +38,7 @@ export function DoctorSection() {
               src={IMAGES.doctorPortrait}
               alt={t.doctor.imageAlt}
               className="w-full max-w-[380px] sm:max-w-[420px] aspect-[4/5] rounded-t-[160px] rounded-b-[4px] bg-cream border border-forest/20 shadow-[0_12px_36px_rgba(20,41,28,0.08)]"
-              imageClassName="object-cover object-top"
+              imageClassName="object-cover object-top scale-[1.14] origin-top"
               sizes="(max-width: 768px) 90vw, 480px"
               priority={false}
               placeholder="blur"
@@ -121,26 +121,35 @@ export function DoctorSection() {
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-forest/10 flex flex-wrap items-center gap-4">
-                  <Magnetic strength={8}>
-                    <Button
-                      href="/book?doctor=dr-lavesh-bohra"
-                      variant="primary"
-                      size="md"
-                      showArrow
-                    >
-                      Book Consultation
-                    </Button>
-                  </Magnetic>
-                  <Magnetic strength={6}>
-                    <Button
-                      href="/doctors/dr-lavesh-bohra"
-                      variant="secondary"
-                      size="md"
-                    >
-                      View Full Profile
-                    </Button>
-                  </Magnetic>
+                <div className="pt-3 border-t border-forest/10 flex flex-wrap items-center justify-between gap-4">
+                  <div className="flex flex-wrap items-center gap-4">
+                    <Magnetic strength={8}>
+                      <Button
+                        href="/book?doctor=dr-lavesh-bohra"
+                        variant="primary"
+                        size="md"
+                        showArrow
+                      >
+                        Book Consultation
+                      </Button>
+                    </Magnetic>
+                    <Magnetic strength={6}>
+                      <Button
+                        href="/doctors/dr-lavesh-bohra"
+                        variant="secondary"
+                        size="md"
+                      >
+                        View Full Profile
+                      </Button>
+                    </Magnetic>
+                  </div>
+                  <a
+                    href="tel:+919016432576"
+                    className="inline-flex items-center gap-1.5 text-xs font-mono text-forest hover:text-turmeric transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5 text-turmeric" />
+                    <span>+91 9016432576</span>
+                  </a>
                 </div>
               </div>
             </Reveal>

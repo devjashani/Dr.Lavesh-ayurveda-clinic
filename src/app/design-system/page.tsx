@@ -11,18 +11,24 @@ import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Textarea } from '@/components/ui/Textarea';
 import {
+  Eyebrow,
+  Accent,
+  BlurReveal,
+  PillButton,
+  FloatChip,
+  ArchFrame,
+  SoftSection,
+  InlinePill,
+} from '@/components/ui';
+import {
   Sparkles,
   Calendar,
   Compass,
-  FileText,
   User,
   Mail,
   Phone,
   ShieldCheck,
-  CheckCircle2,
-  Clock,
-  Heart,
-  Droplet,
+  Leaf,
 } from 'lucide-react';
 
 export default function DesignSystemPage() {
@@ -595,6 +601,528 @@ export default function DesignSystemPage() {
               <div className="p-3 bg-paper rounded border border-forest/10">
                 <span className="font-semibold text-deep-forest block mb-1">Reduced Motion Native</span>
                 <p className="text-ink/70">Automatically disables spatial translation for users preferring reduced motion.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <BotanicalDivider variant="lotus" tone="sage" className="my-16" />
+
+        {/* SECTION 8: Calm Skincare-Style Editorial Primitives */}
+        <section id="skincare-primitives" className="mb-24">
+          <SectionHeading
+            eyebrow="Skincare-Style Editorial Primitives"
+            sanskritEyebrow="સૌંદર્ય વ્યાકરણ"
+            title="Restorative & Light-Airy Primitives"
+            subtitle="Inspired by high-end botanical and skincare editorial aesthetics: light airy whitespace, delicate uppercase labels, mixed-style headlines with strict Gujarati non-italic compliance, organic floating chips, and card-overlapping surfaces."
+            align="left"
+          />
+
+          <div className="space-y-16">
+            {/* 1. EYEBROW COMPONENT */}
+            <div className="bg-cream/70 border border-forest/15 rounded-[4px] p-6 sm:p-10 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-forest/10 pb-4">
+                <div>
+                  <h3 className="font-display text-xl text-deep-forest">1. &lt;Eyebrow&gt;</h3>
+                  <p className="text-xs text-ink/70 mt-1">
+                    Tiny uppercase label (letter-spacing 0.18em, 11-12px) with a small round turmeric accent dot.
+                  </p>
+                </div>
+                <span className="font-mono text-xs text-sage font-medium">Component: Eyebrow</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* English */}
+                <div className="bg-paper p-5 rounded border border-forest/10 space-y-4">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60 block border-b border-forest/10 pb-2">
+                    English Showcase
+                  </span>
+                  <div className="flex flex-wrap items-center gap-4">
+                    <Eyebrow>Pure Botanical Formulation</Eyebrow>
+                    <Eyebrow dotColor="sage">Holistic Dermatology</Eyebrow>
+                    <Eyebrow dotColor="clay">Charaka Samhita Protocol</Eyebrow>
+                    <Eyebrow dotColor="forest">Clinical Consultation</Eyebrow>
+                  </div>
+                </div>
+
+                {/* Gujarati */}
+                <div className="bg-paper p-5 rounded border border-forest/10 space-y-4">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60 block border-b border-forest/10 pb-2">
+                    Gujarati Showcase (ગુજરાતી)
+                  </span>
+                  <div className="flex flex-wrap items-center gap-4">
+                    <Eyebrow>શુદ્ધ ઔષધીય વિજ્ઞાન</Eyebrow>
+                    <Eyebrow dotColor="sage">પ્રાકૃતિક ત્વચા સંભાળ</Eyebrow>
+                    <Eyebrow dotColor="clay">ચરક સંહિતા પ્રમાણિત</Eyebrow>
+                    <Eyebrow dotColor="forest">વ્યક્તિગત નાડી પરીક્ષણ</Eyebrow>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. ACCENT COMPONENT */}
+            <div className="bg-cream/70 border border-forest/15 rounded-[4px] p-6 sm:p-10 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-forest/10 pb-4">
+                <div>
+                  <h3 className="font-display text-xl text-deep-forest">2. &lt;Accent&gt; (Mixed-Style Headline Word)</h3>
+                  <p className="text-xs text-ink/70 mt-1">
+                    English renders in Fraunces italic serif. Gujarati has no italic — sets font-style: normal; font-synthesis: none and renders in turmeric accent with heavier weight.
+                  </p>
+                </div>
+                <span className="font-mono text-xs text-sage font-medium">Component: Accent</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* English */}
+                <div className="bg-paper p-6 rounded border border-forest/10 space-y-5">
+                  <div className="flex items-center justify-between border-b border-forest/10 pb-2">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60">
+                      English (Fraunces Italic Serif)
+                    </span>
+                    <span className="text-[11px] text-sage font-mono">font-serif italic</span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h2 className="text-display-h2 text-deep-forest font-normal">
+                      Ayurveda, <Accent>finally</Accent> understood.
+                    </h2>
+                    <h3 className="text-display-h3 text-deep-forest font-normal">
+                      Skin luminosity, <Accent>naturally</Accent> restored.
+                    </h3>
+                    <p className="text-body-base text-ink/80">
+                      Classical restorative therapies, <Accent>gently</Accent> woven into your daily dinacharya.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Gujarati */}
+                <div className="bg-paper p-6 rounded border border-forest/10 space-y-5">
+                  <div className="flex items-center justify-between border-b border-forest/10 pb-2">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60">
+                      Gujarati (Non-italic + Turmeric Heavier Weight)
+                    </span>
+                    <span className="text-[11px] text-turmeric font-mono font-medium">font-synthesis: none</span>
+                  </div>
+
+                  <div className="space-y-4 font-gujarati">
+                    <h2 className="text-display-h2 text-deep-forest font-normal">
+                      આયુર્વેદ, <Accent lang="gu">સંપૂર્ણ</Accent> રીતે સમજો.
+                    </h2>
+                    <h3 className="text-display-h3 text-deep-forest font-normal">
+                      ત્વચાનું તેજ, <Accent lang="gu">કુદરતી</Accent> રીતે પુનઃ પ્રાપ્ત કરો.
+                    </h3>
+                    <p className="text-body-base text-ink/80">
+                      શુદ્ધ ઔષધિય પરિણામો, <Accent lang="gu">સહજતાથી</Accent> તમારી દિનચર્યામાં અપનાવો.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-paper/70 p-3.5 rounded border border-forest/10 text-xs text-ink/75 leading-relaxed">
+                <strong className="text-deep-forest font-semibold">Typography Note:</strong> In Indic typography, synthetic obliquing distorts ligatures and matras. &lt;Accent&gt; enforces authentic non-italic weight with the warm turmeric pigment when rendered in Gujarati.
+              </div>
+            </div>
+
+            {/* 3. BLUR REVEAL COMPONENT */}
+            <div className="bg-cream/70 border border-forest/15 rounded-[4px] p-6 sm:p-10 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-forest/10 pb-4">
+                <div>
+                  <h3 className="font-display text-xl text-deep-forest">3. &lt;BlurReveal&gt;</h3>
+                  <p className="text-xs text-ink/70 mt-1">
+                    Text reveal transitioning from blur(8px) + opacity 0.2 + translateY(12px) to sharp. On mobile (&lt;768px): blur(4px) and line-only mode for paragraphs.
+                  </p>
+                </div>
+                <span className="font-mono text-xs text-sage font-medium">Component: BlurReveal</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* English */}
+                <div className="bg-paper p-6 rounded border border-forest/10 space-y-6">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60 block border-b border-forest/10 pb-2">
+                    English (Words & Lines Mode)
+                  </span>
+
+                  <div>
+                    <span className="font-mono text-[11px] text-sage block mb-1.5">Mode: Words (Scroll-triggered)</span>
+                    <BlurReveal as="h3" mode="words" trigger="scroll" className="text-display-h3 text-deep-forest font-normal">
+                      Pure cold-pressed Kumkumadi oils awakening skin luminosity.
+                    </BlurReveal>
+                  </div>
+
+                  <div>
+                    <span className="font-mono text-[11px] text-sage block mb-1.5">Mode: Lines (Paragraph)</span>
+                    <BlurReveal as="p" mode="lines" trigger="scroll" className="text-body-base text-ink/80 leading-relaxed">
+                      Formulated with Kashmiri saffron stigmas, red sandalwood, and blue water lily.
+                      Prepared strictly according to classical Ashtanga Hridaya protocols for deep cutaneous nourishment.
+                    </BlurReveal>
+                  </div>
+
+                  <div>
+                    <span className="font-mono text-[11px] text-sage block mb-1.5">Trigger: Immediate On-Load</span>
+                    <BlurReveal as="div" mode="words" trigger="load" delay={0.1} className="text-xs font-mono text-forest bg-cream/80 p-2.5 rounded border border-forest/10">
+                      Loaded directly upon component hydration without waiting for scroll threshold.
+                    </BlurReveal>
+                  </div>
+                </div>
+
+                {/* Gujarati */}
+                <div className="bg-paper p-6 rounded border border-forest/10 space-y-6">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60 block border-b border-forest/10 pb-2">
+                    Gujarati (શબ્દ અને પંક્તિ મોડ)
+                  </span>
+
+                  <div className="font-gujarati">
+                    <span className="font-mono text-[11px] text-sage block mb-1.5">Mode: Words (Scroll-triggered)</span>
+                    <BlurReveal as="h3" mode="words" trigger="scroll" className="text-display-h3 text-deep-forest font-normal">
+                      કુદરતી ઔષધિઓ દ્વારા ત્વચાનું નવજીવન અને કુદરતી કાંતિ.
+                    </BlurReveal>
+                  </div>
+
+                  <div className="font-gujarati">
+                    <span className="font-mono text-[11px] text-sage block mb-1.5">Mode: Lines (Paragraph)</span>
+                    <BlurReveal as="p" mode="lines" trigger="scroll" className="text-body-base text-ink/80 leading-relaxed">
+                      ચરક સંહિતાના સિદ્ધાંતો અનુસાર કાળજીપૂર્વક તૈયાર કરાયેલ શુદ્ધ ઔષધિય ઉપચાર.
+                      દરેક તેલનું બુંદ ત્વચાના ઊંડા સ્તરો સુધી પહોંચી સાચું પ્રાકૃતિક સંતુલન આપે છે.
+                    </BlurReveal>
+                  </div>
+
+                  <div>
+                    <span className="font-mono text-[11px] text-sage block mb-1.5">Trigger: Immediate On-Load (ગુજરાતી)</span>
+                    <BlurReveal as="div" mode="words" trigger="load" delay={0.1} className="text-xs font-gujarati text-forest bg-cream/80 p-2.5 rounded border border-forest/10">
+                      સ્ક્રોલની રાહ જોયા વિના પૃષ્ઠ લોડ થતાં જ ત્વરિત અને સુગમ રીતે પ્રદર્શિત થાય છે.
+                    </BlurReveal>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. PILL BUTTON COMPONENT */}
+            <div className="bg-cream/70 border border-forest/15 rounded-[4px] p-6 sm:p-10 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-forest/10 pb-4">
+                <div>
+                  <h3 className="font-display text-xl text-deep-forest">4. &lt;PillButton&gt;</h3>
+                  <p className="text-xs text-ink/70 mt-1">
+                    Rounded-full button with a circular arrow chip on the right. On hover the arrow chip slides 3px and background fills slowly; on press scales to 0.97.
+                  </p>
+                </div>
+                <span className="font-mono text-xs text-sage font-medium">Component: PillButton</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* English */}
+                <div className="bg-paper p-6 rounded border border-forest/10 space-y-5">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60 block border-b border-forest/10 pb-2">
+                    English Variants
+                  </span>
+
+                  <div className="flex flex-wrap items-center gap-4">
+                    <PillButton variant="dark" size="md">
+                      Explore Treatments
+                    </PillButton>
+                    <PillButton variant="light" size="md">
+                      Book Consultation
+                    </PillButton>
+                    <PillButton variant="outline" size="md">
+                      View Botanical Recipes
+                    </PillButton>
+                  </div>
+
+                  <div className="flex items-center gap-3 pt-3 border-t border-forest/10">
+                    <span className="text-[11px] font-mono text-ink/60">Sizes:</span>
+                    <PillButton variant="dark" size="sm">Small</PillButton>
+                    <PillButton variant="dark" size="md">Medium</PillButton>
+                    <PillButton variant="dark" size="lg">Large</PillButton>
+                  </div>
+                </div>
+
+                {/* Gujarati */}
+                <div className="bg-paper p-6 rounded border border-forest/10 space-y-5">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60 block border-b border-forest/10 pb-2">
+                    Gujarati Variants (ગુજરાતી)
+                  </span>
+
+                  <div className="flex flex-wrap items-center gap-4">
+                    <PillButton variant="dark" size="md">
+                      ઉપચારો શોધો
+                    </PillButton>
+                    <PillButton variant="light" size="md">
+                      પરામર્શ બુક કરો
+                    </PillButton>
+                    <PillButton variant="outline" size="md">
+                      વનસ્પતિ વિજ્ઞાન જુઓ
+                    </PillButton>
+                  </div>
+
+                  <div className="flex items-center gap-3 pt-3 border-t border-forest/10">
+                    <span className="text-[11px] font-mono text-ink/60">કદ:</span>
+                    <PillButton variant="dark" size="sm">નાનું</PillButton>
+                    <PillButton variant="dark" size="md">મધ્યમ</PillButton>
+                    <PillButton variant="dark" size="lg">મોટું</PillButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. FLOAT CHIP COMPONENT */}
+            <div className="bg-cream/70 border border-forest/15 rounded-[4px] p-6 sm:p-10 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-forest/10 pb-4">
+                <div>
+                  <h3 className="font-display text-xl text-deep-forest">5. &lt;FloatChip&gt;</h3>
+                  <p className="text-xs text-ink/70 mt-1">
+                    Small rounded-full white-ish chip with soft border and light shadow. Slow floating drift (6-9s transform only, different phase per chip), paused when off-screen and under reduced motion.
+                  </p>
+                </div>
+                <span className="font-mono text-xs text-sage font-medium">Component: FloatChip</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* English */}
+                <div className="bg-paper p-8 rounded border border-forest/10 space-y-4">
+                  <div className="flex items-center justify-between border-b border-forest/10 pb-2">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60">
+                      English Floating Cluster (Unsynchronized Phases)
+                    </span>
+                    <span className="text-[11px] text-sage font-mono">6s–9s transform drift</span>
+                  </div>
+
+                  <div className="py-6 flex flex-wrap items-center justify-center gap-3 min-h-[140px]">
+                    <FloatChip phase={0} dotColor="turmeric">
+                      100% Organic Saffron
+                    </FloatChip>
+                    <FloatChip phase={1} dotColor="sage" glyph={<Leaf className="w-3.5 h-3.5 text-sage" />}>
+                      Kumkumadi Tailam
+                    </FloatChip>
+                    <FloatChip phase={2} dotColor="clay">
+                      Cold-Pressed Sesame
+                    </FloatChip>
+                    <FloatChip phase={3} dotColor="forest" glyph={<Sparkles className="w-3.5 h-3.5 text-turmeric" />}>
+                      Zero Synthetic Fragrance
+                    </FloatChip>
+                  </div>
+                </div>
+
+                {/* Gujarati */}
+                <div className="bg-paper p-8 rounded border border-forest/10 space-y-4 font-gujarati">
+                  <div className="flex items-center justify-between border-b border-forest/10 pb-2">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60">
+                      Gujarati Floating Cluster (ગુજરાતી)
+                    </span>
+                    <span className="text-[11px] text-sage font-mono">અલગ ગતિ તબક્કા</span>
+                  </div>
+
+                  <div className="py-6 flex flex-wrap items-center justify-center gap-3 min-h-[140px]">
+                    <FloatChip phase={0} dotColor="turmeric">
+                      ૧૦૦% શુદ્ધ કાશ્મીરી કેસર
+                    </FloatChip>
+                    <FloatChip phase={1} dotColor="sage" glyph={<Leaf className="w-3.5 h-3.5 text-sage" />}>
+                      કુંકુમાદિ તૈલમ્
+                    </FloatChip>
+                    <FloatChip phase={2} dotColor="clay">
+                      લાકડાના ઘાણીનું તલનું તેલ
+                    </FloatChip>
+                    <FloatChip phase={3} dotColor="forest" glyph={<Sparkles className="w-3.5 h-3.5 text-turmeric" />}>
+                      કોઈ કૃત્રિમ રસાયણ નહીં
+                    </FloatChip>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 6. ARCH FRAME COMPONENT */}
+            <div className="bg-cream/70 border border-forest/15 rounded-[4px] p-6 sm:p-10 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-forest/10 pb-4">
+                <div>
+                  <h3 className="font-display text-xl text-deep-forest">6. &lt;ArchFrame&gt;</h3>
+                  <p className="text-xs text-ink/70 mt-1">
+                    Arch-shaped image mask (rounded top, flat bottom) with a thin offset outline ring and soft shadow.
+                  </p>
+                </div>
+                <span className="font-mono text-xs text-sage font-medium">Component: ArchFrame</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                {/* English */}
+                <div className="bg-paper p-8 rounded border border-forest/10 flex flex-col items-center text-center space-y-4">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60 block border-b border-forest/10 pb-2 w-full text-left">
+                    English (Sun-Dried Botanicals)
+                  </span>
+
+                  <div className="w-48 sm:w-56 py-3">
+                    <ArchFrame
+                      src="/images/treatments/herbs.jpg"
+                      alt="Classical raw Ayurvedic herbs and mortar"
+                      aspectRatio="aspect-[3/4]"
+                      offsetRing={true}
+                    />
+                  </div>
+
+                  <div>
+                    <h4 className="font-display text-base text-deep-forest font-medium">Raw Botanical Apothecary</h4>
+                    <p className="text-xs text-ink/70 mt-0.5">Offset ring + rounded arch top</p>
+                  </div>
+                </div>
+
+                {/* Gujarati */}
+                <div className="bg-paper p-8 rounded border border-forest/10 flex flex-col items-center text-center space-y-4 font-gujarati">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60 block border-b border-forest/10 pb-2 w-full text-left">
+                    Gujarati (ઔષધ શાલા)
+                  </span>
+
+                  <div className="w-48 sm:w-56 py-3">
+                    <ArchFrame
+                      src="/images/treatments/apothecary.jpg"
+                      alt="ઔષધ શાલા"
+                      aspectRatio="aspect-[3/4]"
+                      offsetRing={true}
+                    />
+                  </div>
+
+                  <div>
+                    <h4 className="font-display text-base text-deep-forest font-medium">શાસ્ત્રોક્ત ઔષધ શાલા</h4>
+                    <p className="text-xs text-ink/70 mt-0.5">મંદિર વાસ્તુ શૈલી કમાન આકાર</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 7. SOFT SECTION COMPONENT */}
+            <div className="bg-cream/70 border border-forest/15 rounded-[4px] p-6 sm:p-10 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-forest/10 pb-4">
+                <div>
+                  <h3 className="font-display text-xl text-deep-forest">7. &lt;SoftSection&gt;</h3>
+                  <p className="text-xs text-ink/70 mt-1">
+                    Section wrapper with a soft vertical gradient (paper to cream), generous padding, and an optional rounded top edge for card-overlapping transitions.
+                  </p>
+                </div>
+                <span className="font-mono text-xs text-sage font-medium">Component: SoftSection</span>
+              </div>
+
+              {/* Embedded Live SoftSection Demo */}
+              <div className="space-y-4">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60 block">
+                  Live Overlapping Card Demo
+                </span>
+
+                <div className="rounded-xl overflow-hidden border border-forest/15 bg-paper p-1">
+                  {/* Base section */}
+                  <div className="p-8 sm:p-12 bg-paper text-center">
+                    <Eyebrow className="justify-center mb-3">Base Section</Eyebrow>
+                    <h4 className="text-display-h3 text-deep-forest font-normal">
+                      The Foundation of Classical Healing
+                    </h4>
+                    <p className="text-xs sm:text-sm text-ink/70 max-w-lg mx-auto mt-2">
+                      Grounded in classical Charaka Samhita wisdom with clean, airy layout rhythm.
+                    </p>
+                  </div>
+
+                  {/* Overlapping SoftSection */}
+                  <SoftSection
+                    gradient="paper-to-cream"
+                    roundedTop={true}
+                    container={false}
+                    className="py-12 sm:py-16 px-6 sm:px-12 text-center"
+                  >
+                    <div className="max-w-2xl mx-auto space-y-4">
+                      <Eyebrow dotColor="turmeric" className="justify-center">
+                        Overlapping Card Layer
+                      </Eyebrow>
+                      <h4 className="text-display-h2 text-deep-forest font-normal">
+                        Soft Gradient &amp; Overlapping <Accent>Card Edge</Accent>
+                      </h4>
+                      <p className="text-xs sm:text-sm text-ink/80 leading-relaxed font-gujarati">
+                        ચરક સંહિતા અનુસાર રચાયેલ આ કાર્ડ સ્તર ઉપરની સપાટી સાથે કુદરતી રીતે ભળી જાય છે.
+                      </p>
+                      <div className="pt-2">
+                        <PillButton variant="dark" size="sm">
+                          Explore Restorative Layers
+                        </PillButton>
+                      </div>
+                    </div>
+                  </SoftSection>
+                </div>
+              </div>
+            </div>
+
+            {/* 8. INLINE PILL COMPONENT */}
+            <div className="bg-cream/70 border border-forest/15 rounded-[4px] p-6 sm:p-10 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-forest/10 pb-4">
+                <div>
+                  <h3 className="font-display text-xl text-deep-forest">8. &lt;InlinePill&gt;</h3>
+                  <p className="text-xs text-ink/70 mt-1">
+                    Small rounded image capsule (~1.6em wide, ~0.9em high) aligned to the typographic baseline, embedding tiny botanical crops between words.
+                  </p>
+                </div>
+                <span className="font-mono text-xs text-sage font-medium">Component: InlinePill</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* English */}
+                <div className="bg-paper p-6 sm:p-8 rounded border border-forest/10 space-y-6">
+                  <div className="flex items-center justify-between border-b border-forest/10 pb-2">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60">
+                      English Inline Embedding
+                    </span>
+                    <span className="text-[11px] text-sage font-mono">1.6em x 0.9em baseline</span>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div>
+                      <span className="font-mono text-[11px] text-sage block mb-2">Inside Headline (H2)</span>
+                      <h2 className="text-display-h2 text-deep-forest font-normal leading-snug">
+                        Pure healing with{' '}
+                        <InlinePill src="/images/treatments/herbs.jpg" alt="Botanical herbs" />{' '}
+                        living herbs and{' '}
+                        <InlinePill src="/images/treatments/shirodhara.jpg" alt="Shirodhara oil" />{' '}
+                        warm decoctions.
+                      </h2>
+                    </div>
+
+                    <div>
+                      <span className="font-mono text-[11px] text-sage block mb-2">Inside Editorial Body Paragraph</span>
+                      <p className="text-body-base text-ink/80 leading-relaxed">
+                        At our clinical apothecary{' '}
+                        <InlinePill src="/images/treatments/apothecary.jpg" alt="Apothecary shelf" />
+                        , every consultation is guided by traditional nadi pariksha{' '}
+                        <InlinePill src="/images/clinic/consultation.jpg" alt="Doctor consultation" />
+                        , restoring your dosha equilibrium with calm botanical precision.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Gujarati */}
+                <div className="bg-paper p-6 sm:p-8 rounded border border-forest/10 space-y-6 font-gujarati">
+                  <div className="flex items-center justify-between border-b border-forest/10 pb-2">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-forest/60">
+                      Gujarati Inline Embedding (ગુજરાતી)
+                    </span>
+                    <span className="text-[11px] text-sage font-mono">શબ્દો વચ્ચે ઇનલાઇન કેપ્સ્યુલ</span>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div>
+                      <span className="font-mono text-[11px] text-sage block mb-2 font-sans">Inside Headline (H2)</span>
+                      <h2 className="text-display-h2 text-deep-forest font-normal leading-snug">
+                        શુદ્ધ પ્રાકૃતિક{' '}
+                        <InlinePill src="/images/treatments/herbs.jpg" alt="ઔષધિઓ" />{' '}
+                        જડીબુટ્ટીઓ અને{' '}
+                        <InlinePill src="/images/treatments/shirodhara.jpg" alt="શિરોધારા તેલ" />{' '}
+                        દ્વારા ત્વચા સંભાળ.
+                      </h2>
+                    </div>
+
+                    <div>
+                      <span className="font-mono text-[11px] text-sage block mb-2 font-sans">Inside Editorial Body Paragraph</span>
+                      <p className="text-body-base text-ink/80 leading-relaxed">
+                        અમારી ક્લિનિકલ શાલા{' '}
+                        <InlinePill src="/images/treatments/apothecary.jpg" alt="ઔષધ શાલા" />
+                        માં અનુભવી વૈદ્ય દ્વારા પરામર્શ{' '}
+                        <InlinePill src="/images/clinic/consultation.jpg" alt="વૈદ્ય પરામર્શ" />
+                        લઈને દોષ પ્રકૃતિ મુજબ યોગ્ય ઉપચાર કરવામાં આવે છે.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

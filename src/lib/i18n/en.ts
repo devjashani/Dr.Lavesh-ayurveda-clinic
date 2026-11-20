@@ -207,7 +207,7 @@ export const en = {
     hoursMonSat: 'Mon – Sat: By Prior Appointment',
     hoursSun: 'Sunday: Closed / Emergency hospital care not provided',
     address: 'Address: to be added',
-    phone: 'Phone: to be added',
+    phone: '+91 9016432576',
     email: 'Email: to be added',
     disclaimer:
       'Information on this website is educational and does not replace medical advice. Not for emergencies.',

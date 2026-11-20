@@ -117,7 +117,7 @@ export function ContactClient() {
 
             <div className="flex flex-wrap justify-center gap-3 pt-4">
               <Button
-                href={`https://wa.me/919414012345?text=Namaste%2C%20I%20have%20submitted%20a%20consultation%20request%20for%20${encodeURIComponent(
+                href={`https://wa.me/919016432576?text=Namaste%2C%20I%20have%20submitted%20a%20consultation%20request%20for%20${encodeURIComponent(
                   submissionData.fullName
                 )}%20(${submissionData.consultationMode}).`}
                 variant="primary"
@@ -410,11 +410,23 @@ export function ContactClient() {
           <div className="pt-2 space-y-2 text-xs">
             <div className="p-2.5 rounded-[3px] bg-cream/70 border border-forest/10 flex items-center justify-between">
               <span className="font-mono text-[11px] text-forest">WhatsApp:</span>
-              <span className="font-mono text-ink/70">to be added</span>
+              <a
+                href="https://wa.me/919016432576"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-ink/80 hover:text-turmeric transition-colors"
+              >
+                +91 9016432576
+              </a>
             </div>
             <div className="p-2.5 rounded-[3px] bg-cream/70 border border-forest/10 flex items-center justify-between">
               <span className="font-mono text-[11px] text-forest">Phone:</span>
-              <span className="font-mono text-ink/70">to be added</span>
+              <a
+                href="tel:+919016432576"
+                className="font-mono text-ink/80 hover:text-turmeric transition-colors"
+              >
+                +91 9016432576
+              </a>
             </div>
             <div className="p-2.5 rounded-[3px] bg-cream/70 border border-forest/10 flex items-center justify-between">
               <span className="font-mono text-[11px] text-forest">Email:</span>

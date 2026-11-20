@@ -70,6 +70,7 @@ export interface Doctor {
   specialties: string[];
   bio: string;
   consultationFee: number;
+  phone?: string;
   availableDays: string[];
   languages: string[];
   image: string;

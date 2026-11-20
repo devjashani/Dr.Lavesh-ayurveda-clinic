@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import {
   MOTION_TOKENS,
-  useInViewOnce,
   usePrefersReducedMotion,
   useIsMobile,
 } from '@/lib/motion';
@@ -31,10 +31,11 @@ export interface RevealImageProps {
 
 /**
  * <RevealImage>
- * Clip-path inset reveal (arch, rectangle, circle) with inner image scaling.
- * Smooth 8% parallax lag relative to scroll inside frame.
- * Triggers once when 15% in view.
- * Fully bypasses animation when prefers-reduced-motion is active.
+ * Progressive enhancement clip-path inset reveal with inner image parallax.
+ * - SSR: Image is rendered fully visible by default (no opacity-0, no animation inline styles).
+ * - Client: Hidden initial states and scroll triggers are applied in useGSAP only after mount.
+ * - Parallax tracking powered by GSAP ScrollTrigger scrub.
+ * - Automatically bypassed under prefers-reduced-motion.
  */
 export function RevealImage({
   src,
@@ -54,23 +55,14 @@ export function RevealImage({
   children,
 }: RevealImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const imageWrapperRef = useRef<HTMLDivElement>(null);
+
   const prefersReduced = usePrefersReducedMotion();
   const isMobile = useIsMobile();
 
   const activeDuration =
     duration ?? (isMobile ? MOTION_TOKENS.mobileDurations.slow : MOTION_TOKENS.durations.slow);
-
-  // Parallax scroll tracking: Image moves 8% slower than scroll on desktop, disabled on mobile for frame rate
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const parallaxY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    prefersReduced || isMobile || !parallax ? ['0%', '0%'] : ['-8%', '8%']
-  );
 
   const getShapeClasses = () => {
     switch (shape) {
@@ -90,75 +82,71 @@ export function RevealImage({
 
   const shapeClasses = getShapeClasses();
 
-  if (prefersReduced) {
-    return (
-      <div
-        ref={containerRef}
-        className={cn(
-          'relative overflow-hidden',
-          shapeClasses,
-          aspectRatio,
-          className
-        )}
-      >
-        {src && (
-          <Image
-            src={src}
-            alt={alt}
-            fill={fill}
-            sizes={sizes}
-            priority={priority}
-            placeholder={placeholder}
-            blurDataURL={blurDataURL}
-            className={cn('object-cover', imageClassName)}
-          />
-        )}
-        {children}
-      </div>
-    );
-  }
+  useGSAP(
+    () => {
+      const container = containerRef.current;
+      const inner = innerRef.current;
+      if (!container || !inner || prefersReduced) return;
+
+      // Reveal animation: clip-path inset expansion + gentle fade/slide
+      gsap.fromTo(
+        inner,
+        {
+          clipPath: isMobile ? 'inset(16% 0% 0% 0%)' : 'inset(14% 0% 0% 0%)',
+          opacity: 0,
+          y: isMobile ? 24 : 0,
+        },
+        {
+          clipPath: 'inset(0% 0% 0% 0%)',
+          opacity: 1,
+          y: 0,
+          duration: isMobile ? 0.85 : activeDuration,
+          delay,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: container,
+            start: 'top 90%',
+            once: true,
+          },
+        }
+      );
+
+      // Subtle parallax: Image moves 8% slower than scroll on desktop, disabled on mobile
+      if (imageWrapperRef.current && parallax && !isMobile) {
+        gsap.fromTo(
+          imageWrapperRef.current,
+          { yPercent: -8 },
+          {
+            yPercent: 8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: container,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          }
+        );
+      }
+    },
+    {
+      scope: containerRef,
+      dependencies: [prefersReduced, isMobile, delay, activeDuration, parallax],
+    }
+  );
 
   return (
     <div
       ref={containerRef}
       className={cn('relative overflow-hidden', shapeClasses, aspectRatio, className)}
     >
-      <motion.div
-        initial={{
-          clipPath: isMobile ? 'inset(16% 0% 0% 0%)' : 'inset(14% 0% 0% 0%)',
-          opacity: 0,
-          y: isMobile ? 24 : 0,
-        }}
-        whileInView={{
-          clipPath: 'inset(0% 0% 0% 0%)',
-          opacity: 1,
-          y: 0,
-        }}
-        viewport={{
-          once: true,
-          amount: 0.1,
-          margin: '0px 0px -30px 0px',
-        }}
-        transition={{
-          duration: isMobile ? 0.85 : activeDuration,
-          ease: MOTION_TOKENS.ease,
-          delay,
-        }}
-        className="w-full h-full relative overflow-hidden"
-      >
-        <motion.div
-          initial={{ scale: isMobile ? 1.08 : 1.15 }}
-          whileInView={{ scale: 1.0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          style={{
-            y: parallaxY,
-          }}
-          transition={{
-            duration: (isMobile ? 0.85 : activeDuration) * 1.05,
-            ease: MOTION_TOKENS.ease,
-            delay,
-          }}
-          className="w-full h-[116%] -top-[8%] relative"
+      <div ref={innerRef} className="w-full h-full relative overflow-hidden">
+        <div
+          ref={imageWrapperRef}
+          className={cn(
+            'w-full relative',
+            parallax && !isMobile ? 'h-[116%] -top-[8%]' : 'h-full'
+          )}
         >
           {src && (
             <Image
@@ -173,8 +161,8 @@ export function RevealImage({
             />
           )}
           {children}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </div>
   );
 }

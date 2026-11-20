@@ -167,7 +167,7 @@ export function FloatingActions() {
       >
         {/* 1. Call Button */}
         <a
-          href="tel:+911412458890"
+          href="tel:+919016432576"
           className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[4px] border border-forest/20 text-deep-forest font-medium text-xs bg-cream active:scale-[0.97] transition-all touch-manipulation min-h-[44px]"
           aria-label="Call clinic directly"
         >
@@ -177,7 +177,7 @@ export function FloatingActions() {
 
         {/* 2. WhatsApp Button */}
         <a
-          href="https://wa.me/911412458890?text=Namaste%2C%20I%20would%20like%20to%20inquire%20about%20an%20Ayurvedic%20consultation%20with%20Dr.%20Lavesh%20Bohra."
+          href="https://wa.me/919016432576?text=Namaste%2C%20I%20would%20like%20to%20inquire%20about%20an%20Ayurvedic%20consultation%20with%20Dr.%20Lavesh%20Bohra."
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[4px] border border-forest/20 text-deep-forest font-medium text-xs bg-cream active:scale-[0.97] transition-all touch-manipulation min-h-[44px]"

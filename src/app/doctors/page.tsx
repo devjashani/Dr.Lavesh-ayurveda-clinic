@@ -15,6 +15,7 @@ import {
   ArrowRight,
   ShieldCheck,
   Calendar,
+  Phone,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -70,7 +71,7 @@ export default function DoctorsPage() {
                   alt="Dr. Lavesh Bohra, Ayurvedic practitioner at VANKAL AYURVEDA"
                   fill
                   sizes="(max-width: 768px) 90vw, 320px"
-                  className="object-cover object-top"
+                  className="object-cover object-top scale-[1.14] origin-top"
                   placeholder="blur"
                   blurDataURL={IMAGES.doctorPortraitBlur}
                 />
@@ -102,6 +103,12 @@ export default function DoctorsPage() {
                 <div className="flex items-center gap-2 text-xs text-ink/80 font-body">
                   <Award className="w-3.5 h-3.5 text-clay shrink-0" />
                   <span>Consultation Fee: ₹{doctor.consultationFee}</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-ink/80 font-body">
+                  <Phone className="w-3.5 h-3.5 text-turmeric shrink-0" />
+                  <a href="tel:+919016432576" className="font-mono hover:text-turmeric transition-colors">
+                    +91 9016432576
+                  </a>
                 </div>
               </div>
             </div>

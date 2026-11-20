@@ -4,4 +4,7 @@ export * from './RevealImage';
 export * from './CountUp';
 export * from './StatBlock';
 export * from './Magnetic';
+export * from './MotionProvider';
+export * from './MotionDebugBadge';
+
 

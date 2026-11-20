@@ -463,7 +463,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                 </Button>
 
                 <Button
-                  href={`https://wa.me/919829012345?text=${encodeURIComponent(
+                  href={`https://wa.me/919016432576?text=${encodeURIComponent(
                     `Hello Dr. Bohra's team at Vankal Ayurveda, I would like to inquire about the ${treatment.name} therapy.`
                   )}`}
                   variant="secondary"

@@ -160,7 +160,12 @@ export function Footer() {
               <div className="pt-1 text-xs space-y-1">
                 <p>
                   <span className="text-sage">{language === 'GU' ? 'ફોન: ' : 'Phone: '}</span>
-                  <span className="font-mono text-paper/80">{t.footer.phone}</span>
+                  <a
+                    href="tel:+919016432576"
+                    className="font-mono text-paper/80 hover:text-turmeric transition-colors"
+                  >
+                    +91 9016432576
+                  </a>
                 </p>
                 <p>
                   <span className="text-sage">Email: </span>

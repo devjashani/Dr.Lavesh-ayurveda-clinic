@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import {
   MOTION_TOKENS,
   usePrefersReducedMotion,
@@ -23,11 +24,11 @@ export interface RevealProps {
 
 /**
  * <Reveal>
- * Native Framer Motion scroll-triggered reveal component:
- * - Direct DOM execution via whileInView (zero React state re-render lag)
- * - Desktop: opacity 0, translateY 32px, soft blur -> opacity 1, y 0, blur 0.
- * - Mobile: translateY 28px -> 0, opacity 0 -> 1, 0.7s duration.
- * - Horizontal offsets safely convert to vertical on mobile to prevent horizontal shifts.
+ * Progressive enhancement scroll-triggered reveal component.
+ * - SSR: Content is rendered fully visible by default (no opacity-0, no animation inline styles).
+ * - Client: Hidden initial states and scroll triggers are applied in useGSAP only after mount.
+ * - Connected with GSAP ScrollTrigger and Lenis smooth scrolling.
+ * - Automatically bypassed under prefers-reduced-motion.
  */
 export function Reveal({
   children,
@@ -40,6 +41,7 @@ export function Reveal({
   distance,
   style,
 }: RevealProps) {
+  const containerRef = useRef<HTMLElement | null>(null);
   const prefersReduced = usePrefersReducedMotion();
   const isMobile = useIsMobile();
 
@@ -65,45 +67,54 @@ export function Reveal({
     }
   };
 
-  const initialTransform = getInitialTransform();
-  const MotionComponent = motion[as] || motion.div;
+  useGSAP(
+    () => {
+      const el = containerRef.current;
+      if (!el || prefersReduced) return;
 
-  if (prefersReduced) {
-    const Component = as;
-    return (
-      <Component className={className} style={style}>
-        {children}
-      </Component>
-    );
-  }
+      const { x, y } = getInitialTransform();
+
+      // Progressive enhancement:
+      // Starting hidden state is applied ONLY after mount inside useGSAP
+      gsap.fromTo(
+        el,
+        {
+          opacity: 0,
+          x,
+          y,
+          filter: useBlur ? 'blur(8px)' : 'none',
+        },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          filter: useBlur ? 'blur(0px)' : 'none',
+          duration: activeDuration,
+          delay,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 90%',
+            once: true,
+          },
+        }
+      );
+    },
+    {
+      scope: containerRef,
+      dependencies: [prefersReduced, isMobile, delay, activeDuration, activeDistance],
+    }
+  );
+
+  const Component = as as React.ElementType;
 
   return (
-    <MotionComponent
-      initial={{
-        opacity: 0,
-        ...initialTransform,
-        ...(useBlur ? { filter: 'blur(8px)' } : {}),
-      }}
-      whileInView={{
-        opacity: 1,
-        x: 0,
-        y: 0,
-        ...(useBlur ? { filter: 'blur(0px)' } : {}),
-      }}
-      viewport={{
-        once: true,
-        amount: 0.1,
-        margin: '0px 0px -25px 0px',
-      }}
-      transition={{
-        duration: activeDuration,
-        ease: MOTION_TOKENS.ease,
-        delay,
-      }}
+    <Component
+      ref={containerRef}
       className={cn(className)}
       style={style}
     >
       {children}
-    </MotionComponent>
+    </Component>
   );
 }

@@ -35,6 +35,7 @@ export const doctors: Doctor[] = [
       'Seasonal health transitions (Ritucharya)',
     ],
     opdTimings: 'Monday to Saturday: By prior appointment',
+    phone: '+91 9016432576',
     consultationFee: 1200,
     availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     languages: ['English', 'Hindi', 'Gujarati'],

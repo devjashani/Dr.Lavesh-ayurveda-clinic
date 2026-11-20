@@ -11,7 +11,7 @@ export function JsonLd() {
     url: 'https://vankalayurveda.com',
     logo: 'https://vankalayurveda.com/logo.png',
     image: 'https://vankalayurveda.com/og-image.jpg',
-    telephone: 'Phone: to be added',
+    telephone: '+91 9016432576',
     email: 'Email: to be added',
     priceRange: '₹₹',
     medicalSpecialty: [
@@ -45,7 +45,7 @@ export function JsonLd() {
         '@type': 'Physician',
         name: 'Dr. Lavesh Bohra',
         jobTitle: 'Registered Ayurvedic Practitioner · BAMS (2026)',
-        telephone: 'Phone: to be added',
+        telephone: '+91 9016432576',
         identifier: 'Registration No.: to be added',
       },
     ],

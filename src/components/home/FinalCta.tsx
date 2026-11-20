@@ -87,10 +87,13 @@ export function FinalCta() {
               <span>Address: to be added</span>
             </div>
 
-            <div className="flex items-center justify-center gap-2">
+            <a
+              href="tel:+919016432576"
+              className="flex items-center justify-center gap-2 hover:text-turmeric transition-colors"
+            >
               <Phone className="w-4 h-4 text-turmeric shrink-0" />
-              <span>Phone: to be added</span>
-            </div>
+              <span>Phone: +91 9016432576</span>
+            </a>
           </div>
         </Reveal>
       </Container>

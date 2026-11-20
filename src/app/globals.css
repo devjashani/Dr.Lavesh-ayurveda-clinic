@@ -409,6 +409,17 @@ p a:not([class*="btn"]):not([class*="button"]):not([class*="underline"]):hover {
   }
 }
 
+/* FloatChip slow organic drift (transform only, 6-9s) */
+@keyframes floatChipDrift {
+  0%, 100% {
+    transform: translate3d(0, 0px, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0) rotate(0.8deg);
+  }
+}
+
+
 .animate-pranayama {
   animation: pranayamaFloat 7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }

@@ -524,7 +524,7 @@ export function PatientPortalClient() {
                   </div>
 
                   <Link
-                    href="https://wa.me/919414012345?text=Namaste%2C%20I%20have%20an%20inquiry%20regarding%20my%20appointment%20token%20"
+                    href="https://wa.me/919016432576?text=Namaste%2C%20I%20have%20an%20inquiry%20regarding%20my%20appointment%20token%20"
                     target="_blank"
                     className="text-xs font-body text-forest hover:underline flex items-center gap-1"
                   >

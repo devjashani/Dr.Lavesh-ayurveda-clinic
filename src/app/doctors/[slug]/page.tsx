@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   CheckCircle2,
   Building,
+  Phone,
 } from 'lucide-react';
 
 interface PageProps {
@@ -85,7 +86,7 @@ export default async function DoctorProfilePage({ params }: PageProps) {
                   alt="Dr. Lavesh Bohra, Ayurvedic practitioner at VANKAL AYURVEDA"
                   fill
                   sizes="(max-width: 768px) 90vw, 200px"
-                  className="object-cover object-top"
+                  className="object-cover object-top scale-[1.14] origin-top"
                   placeholder="blur"
                   blurDataURL={IMAGES.doctorPortraitBlur}
                 />
@@ -129,6 +130,19 @@ export default async function DoctorProfilePage({ params }: PageProps) {
                   <span className="text-ink/70">
                     ₹{doctor.consultationFee} (Includes Prakriti assessment & lifestyle plan)
                   </span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2.5">
+                <Phone className="w-4 h-4 text-turmeric shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-medium text-deep-forest block">Direct Helpline / WhatsApp</span>
+                  <a
+                    href="tel:+919016432576"
+                    className="font-mono text-forest hover:text-turmeric transition-colors block"
+                  >
+                    +91 9016432576
+                  </a>
                 </div>
               </div>
             </div>
