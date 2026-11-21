@@ -300,7 +300,7 @@ export function Navbar() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 z-40 bg-paper flex flex-col justify-between pt-[calc(env(safe-area-inset-top,0px)+4.5rem)] pb-[calc(env(safe-area-inset-bottom,0px)+1.5rem)] px-5 min-[390px]:px-6 sm:px-10 overflow-y-auto pl-safe pr-safe relative"
+            className="fixed inset-0 z-40 bg-paper flex flex-col justify-between w-full h-[100dvh] pt-[calc(env(safe-area-inset-top,0px)+5.5rem)] pb-[calc(env(safe-area-inset-bottom,0px)+1.75rem)] px-6 min-[390px]:px-7 sm:px-10 overflow-y-auto pl-safe pr-safe"
           >
             {/* Heritage Ornament in Background */}
             <div
@@ -310,12 +310,12 @@ export function Navbar() {
               <BotanicalDivider variant="lotus" className="w-full h-full" />
             </div>
 
-            {/* Nav list with staggered children and min-48px tap targets (All 7 links visible) */}
+            {/* Nav list with staggered children and min-48px tap targets (All 7 links fully visible starting with 01 Home) */}
             <motion.nav
               variants={navListVariants}
               initial="closed"
               animate="open"
-              className="relative z-10 flex flex-col gap-0.5 py-1.5 my-auto"
+              className="relative z-10 flex flex-col gap-0.5 py-2 flex-1 justify-center min-h-0"
             >
               {navLinks.map((link, index) => {
                 const isActive =
@@ -351,12 +351,12 @@ export function Navbar() {
             </motion.nav>
 
             {/* Bottom Actions: Preserved Language Selection & Book Button */}
-            <div className="relative z-10 space-y-3 pt-3 border-t border-forest/15 mt-auto">
-              <div className="flex items-center justify-between">
-                <span className="text-xs uppercase tracking-wider text-forest/80 font-medium">
+            <div className="relative z-10 space-y-4 pt-4 pb-1 border-t border-forest/15 mt-auto">
+              <div className="flex items-center justify-between gap-3 px-1 sm:px-2">
+                <span className="text-xs font-mono uppercase tracking-wider text-forest/80 font-semibold pl-1.5 sm:pl-2">
                   {language === 'GU' ? 'ભાષા પસંદ કરો' : 'Select Language'}
                 </span>
-                <div className="flex items-center bg-cream rounded-full p-1 border border-forest/15 text-xs font-medium">
+                <div className="flex items-center bg-cream/90 rounded-full p-1 border border-forest/15 text-xs font-medium shrink-0 shadow-2xs">
                   <button
                     type="button"
                     onClick={() => setLanguage('EN')}
@@ -386,16 +386,18 @@ export function Navbar() {
                 </div>
               </div>
 
-              <Link
-                href="/book"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full min-h-[48px] rounded-full bg-deep-forest text-cream font-medium text-sm sm:text-base shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-[0.97] transition-all hover:bg-forest"
-              >
-                <span>{t.nav.bookConsultation}</span>
-                <span className="w-5 h-5 rounded-full bg-cream/15 flex items-center justify-center shrink-0">
-                  <ArrowUpRight className="w-3.5 h-3.5 text-turmeric" />
-                </span>
-              </Link>
+              <div className="px-0 sm:px-1">
+                <Link
+                  href="/book"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full min-h-[48px] rounded-full bg-deep-forest text-cream font-medium text-sm sm:text-base shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-[0.97] transition-all hover:bg-forest"
+                >
+                  <span>{t.nav.bookConsultation}</span>
+                  <span className="w-5 h-5 rounded-full bg-cream/15 flex items-center justify-center shrink-0">
+                    <ArrowUpRight className="w-3.5 h-3.5 text-turmeric" />
+                  </span>
+                </Link>
+              </div>
 
               <p className="text-center text-[11px] text-ink/50 pt-0.5">
                 VANKAL AYURVEDA • વાંકલ આયુર્વેદ
