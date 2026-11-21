@@ -118,34 +118,34 @@ export function HeroSection() {
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         {/* ========================================================================= */}
-        {/* 1. MOBILE HERO VIEW (< 1024px): Full 100dvh, Arch Image, Heritage Jaali */}
+        {/* 1. MOBILE HERO VIEW (< 1024px): Classical Ayurvedic Visual, Editorial First */}
         {/* ========================================================================= */}
-        <div className="lg:hidden flex flex-col justify-between min-h-[calc(100dvh-3.5rem)] pt-1 pb-4">
-          {/* Top Editorial Block */}
-          <div className="flex flex-col items-start text-left">
-            {/* Eyebrow Pill Bar: Edge-to-edge on mobile with subtle screen margin and generous rounded end clearance */}
-            <Reveal delay={0.02} direction="down" blur={false} className="w-full">
-              <div className="w-full flex items-center justify-center gap-1.5 xs:gap-2 px-4 min-[360px]:px-5 min-[390px]:px-6 py-1.5 xs:py-2 rounded-full bg-cream border border-forest/15 text-forest mb-3.5 shadow-2xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
-                <span
-                  className={cn(
-                    "text-[8px] min-[360px]:text-[8.5px] min-[390px]:text-[9.25px] min-[420px]:text-[10px] font-semibold whitespace-nowrap",
-                    language === 'GU'
-                      ? "font-gujarati-sans tracking-normal"
-                      : "font-mono uppercase tracking-tight min-[390px]:tracking-normal"
-                  )}
-                >
-                  {t.hero.eyebrow}
-                </span>
-              </div>
-            </Reveal>
+        <div className="lg:hidden flex flex-col pt-1 pb-4">
+          {/* 1.1 Eyebrow Pill Bar */}
+          <Reveal delay={0.02} direction="down" blur={false} className="w-full">
+            <div className="w-full flex items-center justify-center gap-1.5 xs:gap-2 px-4 min-[360px]:px-5 min-[390px]:px-6 py-1.5 xs:py-2 rounded-full bg-cream border border-forest/15 text-forest mb-3.5 shadow-2xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0" />
+              <span
+                className={cn(
+                  "text-[8px] min-[360px]:text-[8.5px] min-[390px]:text-[9.25px] min-[420px]:text-[10px] font-semibold whitespace-nowrap",
+                  language === 'GU'
+                    ? "font-gujarati-sans tracking-normal"
+                    : "font-mono uppercase tracking-tight min-[390px]:tracking-normal"
+                )}
+              >
+                {t.hero.eyebrow}
+              </span>
+            </div>
+          </Reveal>
 
+          {/* 1.2 Editorial Content */}
+          <div className="flex flex-col items-start text-left pt-1">
             {/* Masked Headline Reveal: line by line, no blur */}
             <RevealText
               as="h1"
               delay={0.06}
               stagger={0.06}
-              className="text-display-hero text-deep-forest font-normal tracking-tight mb-3 text-[2.2rem] xs:text-[2.5rem] leading-[1.08]"
+              className="text-display-hero text-deep-forest font-normal tracking-tight mb-3 text-[2.1rem] xs:text-[2.4rem] leading-[1.08]"
               lines={[
                 t.hero.titleStart,
                 <span key="accent" className="font-serif italic font-light text-[#9E6517] selection:text-deep-forest">
@@ -189,13 +189,13 @@ export function HeroSection() {
             </Reveal>
           </div>
 
-          {/* Visual Centerpiece: Doctor Arch Image + Heritage Mandala/Jaali Line Art */}
-          <div className="relative flex flex-col items-center justify-center my-auto py-4">
-            {/* Heritage Mandala/Jaali SVG Line Art behind Image (draws once with stroke-dashoffset, then stays still) */}
+          {/* 1.3 Visual Centerpiece: Classical Shirodhara Arch (No Doctor Portrait on Front Hero) */}
+          <div className="relative flex flex-col items-center justify-center my-4 py-3">
+            {/* Heritage Mandala/Jaali SVG Line Art behind Image */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
               <svg
                 viewBox="0 0 200 200"
-                className="w-64 h-64 xs:w-72 xs:h-72 text-turmeric/45"
+                className="w-60 h-60 xs:w-68 xs:h-68 text-turmeric/45"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true"
@@ -303,42 +303,56 @@ export function HeroSection() {
               </svg>
             </div>
 
-            {/* Doctor Arch Frame: Rises from bottom with clip-path and settles with tiny parallax (max 20px) */}
+            {/* Treatment Arch Frame with Parallax */}
             <motion.div
               style={{ y: mobileParallaxY }}
-              initial={{ clipPath: 'inset(100% 0 0 0 round 120px 120px 0 0)', opacity: 0, y: 30 }}
-              animate={{ clipPath: 'inset(0% 0 0 0 round 120px 120px 0 0)', opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
-              className="relative z-10 w-[210px] xs:w-[240px] aspect-[4/5] rounded-t-[120px] rounded-b-[4px] overflow-hidden bg-cream border border-forest/20 shadow-[0_12px_32px_rgba(20,41,28,0.12)]"
+              initial={{ clipPath: 'inset(100% 0 0 0 round 110px 110px 0 0)', opacity: 0, y: 20 }}
+              animate={{ clipPath: 'inset(0% 0 0 0 round 110px 110px 0 0)', opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+              className="relative z-10 w-[210px] xs:w-[240px] aspect-[4/5] rounded-t-[110px] rounded-b-[4px] overflow-hidden bg-gradient-to-b from-mist/70 via-cream to-paper border border-forest/20 shadow-[0_12px_32px_rgba(20,41,28,0.12)]"
             >
               <Image
-                src={IMAGES.doctorPortrait}
-                alt="Dr. Lavesh Bohra, Ayurvedic practitioner at VANKAL AYURVEDA"
+                src="/images/treatments/shirodhara.jpg"
+                alt="Classical Shirodhara with Brahmi herbal oil"
                 fill
                 priority
                 sizes="(max-width: 768px) 75vw, 240px"
-                placeholder="blur"
-                blurDataURL={IMAGES.doctorPortraitBlur}
-                className="object-cover object-top scale-[1.14] origin-top"
+                className="object-cover object-center opacity-90 transition-transform duration-700 hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/85 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent pointer-events-none" />
 
-              {/* Doctor Details overlay inside the arch */}
-              <div className="absolute bottom-3 left-3 right-3 text-cream text-center">
-                <span className="font-display text-sm font-normal block leading-tight">
-                  {language === 'GU' ? 'વૈદ્ય લવેશ બોહરા' : 'Dr. Lavesh Bohra'}
-                </span>
-                <span className="font-serif italic text-[11px] text-paper/85 tracking-wide block">
-                  BAMS (2026) · SMIAS
+              {/* Classical Inscription inside the arch */}
+              <div className="absolute bottom-3 left-3 right-3 text-cream flex items-baseline justify-between z-10">
+                <div>
+                  <span className="text-[9px] uppercase font-mono tracking-widest text-turmeric block">
+                    Classical Consultation
+                  </span>
+                  <span className="font-display text-sm font-normal">
+                    Vankal Ayurveda
+                  </span>
+                </div>
+                <span className="font-serif italic text-xs text-paper/80">
+                  શાંતિ માર્ગ
                 </span>
               </div>
+            </motion.div>
+
+            {/* Small Floating "Next Available Slot" Card on Mobile */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+              className="relative z-20 -mt-3 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream/95 backdrop-blur-md border border-forest/20 shadow-[0_4px_16px_rgba(20,41,28,0.08)] text-[11px] font-mono text-deep-forest"
+            >
+              <div className="w-2 h-2 rounded-full bg-turmeric animate-pulse shrink-0" />
+              <span>{t.hero.slotTime}</span>
             </motion.div>
           </div>
 
           {/* Animated Scroll Cue at bottom */}
           <div
             className={cn(
-              'flex flex-col items-center gap-1 transition-opacity duration-500 pt-1',
+              'flex flex-col items-center gap-1 transition-opacity duration-500 pt-3 pb-1',
               hasScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
             )}
             aria-hidden="true"
