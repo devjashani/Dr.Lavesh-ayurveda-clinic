@@ -9,35 +9,41 @@ export interface LogoProps {
   className?: string;
   variant?: 'dark' | 'light' | 'auto';
   showTagline?: boolean;
+  compactNavbar?: boolean;
 }
 
 export function Logo({
   className,
   variant = 'auto',
   showTagline = true,
+  compactNavbar = false,
 }: LogoProps) {
   const isLight = variant === 'light';
   const { language } = useLanguage();
 
-  const brandName = language === 'GU' ? 'વાંકલ આયુર્વેદ' : 'VANKAL AYURVEDA';
+  const brandName = compactNavbar
+    ? 'VANKAL AYURVEDA'
+    : language === 'GU'
+    ? 'વાંકલ આયુર્વેદ'
+    : 'VANKAL AYURVEDA';
 
   return (
     <Link
       href="/"
-      className={cn('inline-flex items-center gap-3 group select-none h-11 shrink-0', className)}
+      className={cn('inline-flex items-center gap-2.5 sm:gap-3 group select-none shrink-0', className)}
     >
       {/* Classical Leaf / Mudra SVG Mark */}
       <div
         className={cn(
-          'w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300',
+          'w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300',
           isLight
             ? 'bg-cream/10 text-cream border border-cream/20 group-hover:bg-cream/20'
             : 'bg-forest/10 text-deep-forest border border-forest/20 group-hover:bg-forest/15'
         )}
       >
         <svg
-          width="24"
-          height="24"
+          width="22"
+          height="22"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -76,10 +82,11 @@ export function Logo({
       </div>
 
       {/* Wordmark Typography */}
-      <div className="flex flex-col text-left justify-center h-11">
+      <div className="flex flex-col text-left justify-center">
         <span
           className={cn(
-            'font-display text-xl sm:text-2xl font-semibold tracking-tight leading-none',
+            'font-display font-semibold tracking-tight leading-none whitespace-nowrap',
+            compactNavbar ? 'text-base sm:text-lg' : 'text-xl sm:text-2xl',
             isLight ? 'text-cream' : 'text-deep-forest'
           )}
         >
@@ -89,11 +96,11 @@ export function Logo({
           <span
             aria-hidden="true"
             className={cn(
-              'font-serif text-[11px] italic leading-none font-medium mt-1 tracking-wide',
+              'font-serif text-[10px] sm:text-[11px] leading-none font-medium mt-1 tracking-wider whitespace-nowrap',
               isLight ? 'text-cream/80' : 'text-forest'
             )}
           >
-            વાંકલ
+            {compactNavbar ? 'વાંકલ આયુર્વેદ' : 'વાંકલ'}
           </span>
         )}
       </div>
