@@ -122,9 +122,9 @@ export function Navbar() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
           isVisible ? 'translate-y-0' : '-translate-y-full',
-          'pt-[calc(env(safe-area-inset-top,0px)+0.75rem)] pb-3 px-4 sm:px-6 2xl:px-8 pl-safe pr-safe',
-          isScrolled
-            ? 'max-xl:bg-paper/90 max-xl:backdrop-blur-md max-xl:border-b max-xl:border-forest/10 max-xl:shadow-2xs'
+          'pt-[calc(env(safe-area-inset-top,0px)+0.75rem)] pb-3 px-5 min-[390px]:px-6 sm:px-8 lg:px-12 pl-safe pr-safe',
+          isScrolled || isMobileMenuOpen
+            ? 'max-xl:bg-paper/95 max-xl:backdrop-blur-md max-xl:border-b max-xl:border-forest/10 max-xl:shadow-2xs'
             : 'max-xl:bg-transparent'
         )}
       >
@@ -132,7 +132,7 @@ export function Navbar() {
           {/* ============================================================ */}
           {/* 1. Left: Logo (Leaf Mark + Brand Wordmark + Compact Gujarati) */}
           {/* ============================================================ */}
-          <div className="flex-1 flex items-center justify-start min-w-0">
+          <div className="flex-1 flex items-center justify-start min-w-0 pl-1 sm:pl-0">
             <Logo compactNavbar />
           </div>
 
@@ -232,35 +232,37 @@ export function Navbar() {
           {/* 4. Mobile / Tablet Header Controls (< 1280px / < xl)         */}
           {/* ============================================================ */}
           <div className="flex xl:hidden items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Language Toggle on Mobile Header */}
-            <div className="flex items-center bg-cream/80 rounded-full p-0.5 border border-forest/15 text-[11px] font-medium shrink-0">
-              <button
-                type="button"
-                onClick={() => setLanguage('EN')}
-                aria-label="Switch to English"
-                className={cn(
-                  'px-2 py-0.5 rounded-full transition-colors whitespace-nowrap',
-                  language === 'EN'
-                    ? 'bg-deep-forest text-cream font-semibold'
-                    : 'text-ink/70'
-                )}
-              >
-                EN
-              </button>
-              <button
-                type="button"
-                onClick={() => setLanguage('GU')}
-                aria-label="Switch to Gujarati"
-                className={cn(
-                  'px-2 py-0.5 rounded-full transition-colors whitespace-nowrap',
-                  language === 'GU'
-                    ? 'bg-deep-forest text-cream font-semibold'
-                    : 'text-ink/70'
-                )}
-              >
-                ગુજ
-              </button>
-            </div>
+            {/* Language Toggle: Preserved in the menu bar, hidden from the main first page */}
+            {isMobileMenuOpen && (
+              <div className="flex items-center bg-cream/90 rounded-full p-0.5 border border-forest/15 text-[11px] font-medium shrink-0 animate-in fade-in duration-200">
+                <button
+                  type="button"
+                  onClick={() => setLanguage('EN')}
+                  aria-label="Switch to English"
+                  className={cn(
+                    'px-2 py-0.5 rounded-full transition-colors whitespace-nowrap',
+                    language === 'EN'
+                      ? 'bg-deep-forest text-cream font-semibold'
+                      : 'text-ink/70'
+                  )}
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLanguage('GU')}
+                  aria-label="Switch to Gujarati"
+                  className={cn(
+                    'px-2 py-0.5 rounded-full transition-colors whitespace-nowrap',
+                    language === 'GU'
+                      ? 'bg-deep-forest text-cream font-semibold'
+                      : 'text-ink/70'
+                  )}
+                >
+                  ગુજ
+                </button>
+              </div>
+            )}
 
             {/* Compact Book Button on Tablet */}
             <Link
@@ -271,11 +273,11 @@ export function Navbar() {
               <ArrowUpRight className="w-3 h-3 text-turmeric" />
             </Link>
 
-            {/* Hamburger Button */}
+            {/* Hamburger / Close Toggle Button */}
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-deep-forest hover:bg-forest/10 rounded-full transition-colors focus:outline-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center bg-paper/80 backdrop-blur-xs border border-forest/15 shadow-2xs"
+              className="p-2 text-deep-forest hover:bg-forest/10 rounded-full transition-colors focus:outline-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center bg-paper/90 backdrop-blur-xs border border-forest/15 shadow-2xs"
               aria-label={isMobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
             >
               {isMobileMenuOpen ? (
@@ -298,7 +300,7 @@ export function Navbar() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 z-40 bg-paper flex flex-col justify-between pt-[calc(env(safe-area-inset-top,0px)+5rem)] pb-[calc(env(safe-area-inset-bottom,0px)+2rem)] px-6 sm:px-10 overflow-y-auto pl-safe pr-safe relative"
+            className="fixed inset-0 z-40 bg-paper flex flex-col justify-between pt-[calc(env(safe-area-inset-top,0px)+4.5rem)] pb-[calc(env(safe-area-inset-bottom,0px)+1.5rem)] px-5 min-[390px]:px-6 sm:px-10 overflow-y-auto pl-safe pr-safe relative"
           >
             {/* Heritage Ornament in Background */}
             <div
@@ -308,27 +310,12 @@ export function Navbar() {
               <BotanicalDivider variant="lotus" className="w-full h-full" />
             </div>
 
-            {/* Header info & Close Button */}
-            <div className="relative z-10 flex items-center justify-between pb-4 border-b border-forest/15">
-              <span className="text-xs uppercase tracking-widest text-forest font-semibold">
-                {t.nav.menu}
-              </span>
-              <button
-                type="button"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 text-deep-forest hover:bg-forest/10 rounded-full transition-colors focus:outline-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97]"
-                aria-label="Close Navigation Menu"
-              >
-                <X className="w-6 h-6 stroke-[1.5]" />
-              </button>
-            </div>
-
-            {/* Nav list with staggered children and min-48px tap targets */}
+            {/* Nav list with staggered children and min-48px tap targets (All 7 links visible) */}
             <motion.nav
               variants={navListVariants}
               initial="closed"
               animate="open"
-              className="relative z-10 flex flex-col gap-1 py-4 my-auto"
+              className="relative z-10 flex flex-col gap-0.5 py-1.5 my-auto"
             >
               {navLinks.map((link, index) => {
                 const isActive =
@@ -342,15 +329,15 @@ export function Navbar() {
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
-                        'flex items-center justify-between min-h-[50px] py-3 px-3 rounded-lg border-b border-forest/10 group transition-all active:scale-[0.98]',
+                        'flex items-center justify-between min-h-[46px] py-2 px-3 rounded-lg border-b border-forest/10 group transition-all active:scale-[0.98]',
                         isActive
                           ? 'text-deep-forest bg-forest/10 font-semibold'
                           : 'text-ink/80 hover:text-deep-forest hover:bg-forest/5'
                       )}
                     >
-                      <div className="flex items-center gap-3.5">
+                      <div className="flex items-center gap-3">
                         <span className="text-xs font-mono text-sage">0{index + 1}</span>
-                        <span className="font-display text-xl sm:text-2xl font-normal tracking-tight group-hover:translate-x-1 transition-transform">
+                        <span className="font-display text-lg sm:text-xl font-normal tracking-tight group-hover:translate-x-1 transition-transform">
                           {language === 'GU' ? link.sanskrit : link.label}
                         </span>
                       </div>
@@ -363,8 +350,8 @@ export function Navbar() {
               })}
             </motion.nav>
 
-            {/* Bottom Actions: Language Toggle & Book Button */}
-            <div className="relative z-10 space-y-4 pt-4 border-t border-forest/15 mt-auto">
+            {/* Bottom Actions: Preserved Language Selection & Book Button */}
+            <div className="relative z-10 space-y-3 pt-3 border-t border-forest/15 mt-auto">
               <div className="flex items-center justify-between">
                 <span className="text-xs uppercase tracking-wider text-forest/80 font-medium">
                   {language === 'GU' ? 'ભાષા પસંદ કરો' : 'Select Language'}
@@ -375,7 +362,7 @@ export function Navbar() {
                     onClick={() => setLanguage('EN')}
                     aria-label="Switch to English"
                     className={cn(
-                      'px-3.5 py-1.5 rounded-full min-h-[40px] transition-colors cursor-pointer active:scale-[0.97]',
+                      'px-3.5 py-1.5 rounded-full min-h-[38px] transition-colors cursor-pointer active:scale-[0.97]',
                       language === 'EN'
                         ? 'bg-deep-forest text-cream font-semibold shadow-xs'
                         : 'text-ink/70 hover:text-deep-forest'
@@ -388,7 +375,7 @@ export function Navbar() {
                     onClick={() => setLanguage('GU')}
                     aria-label="Switch to Gujarati"
                     className={cn(
-                      'px-3.5 py-1.5 rounded-full min-h-[40px] transition-colors cursor-pointer active:scale-[0.97]',
+                      'px-3.5 py-1.5 rounded-full min-h-[38px] transition-colors cursor-pointer active:scale-[0.97]',
                       language === 'GU'
                         ? 'bg-deep-forest text-cream font-semibold shadow-xs'
                         : 'text-ink/70 hover:text-deep-forest'
@@ -402,7 +389,7 @@ export function Navbar() {
               <Link
                 href="/book"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full min-h-[50px] rounded-full bg-deep-forest text-cream font-medium text-base shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-[0.97] transition-all hover:bg-forest"
+                className="w-full min-h-[48px] rounded-full bg-deep-forest text-cream font-medium text-sm sm:text-base shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-[0.97] transition-all hover:bg-forest"
               >
                 <span>{t.nav.bookConsultation}</span>
                 <span className="w-5 h-5 rounded-full bg-cream/15 flex items-center justify-center shrink-0">
@@ -410,7 +397,7 @@ export function Navbar() {
                 </span>
               </Link>
 
-              <p className="text-center text-xs text-ink/50 pt-1">
+              <p className="text-center text-[11px] text-ink/50 pt-0.5">
                 VANKAL AYURVEDA • વાંકલ આયુર્વેદ
               </p>
             </div>
