@@ -124,7 +124,7 @@ function PinnedTherapyCard({
   );
 
   return (
-    <div className="shrink-0 w-[380px] lg:w-[420px] h-[520px] rounded-[4px] bg-cream border border-forest/20 flex flex-col justify-between p-6 sm:p-8 shadow-[0_4px_24px_rgba(20,41,28,0.04)] hover:border-turmeric/60 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] relative overflow-hidden group">
+    <div className="shrink-0 w-[350px] lg:w-[380px] xl:w-[400px] h-[390px] lg:h-[410px] xl:h-[430px] rounded-[4px] bg-cream border border-forest/20 flex flex-col justify-between p-5 lg:p-6 shadow-[0_4px_24px_rgba(20,41,28,0.04)] hover:border-turmeric/60 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] relative overflow-hidden group">
       {/* Corner arrow circle reveal */}
       <div
         aria-hidden="true"
@@ -134,26 +134,26 @@ function PinnedTherapyCard({
       </div>
 
       {/* Background Arch Image with slow zoom */}
-      <div className="absolute top-0 right-0 w-44 h-48 rounded-bl-[120px] overflow-hidden opacity-30 group-hover:opacity-45 transition-opacity duration-500 pointer-events-none">
+      <div className="absolute top-0 right-0 w-36 h-40 lg:w-40 lg:h-44 rounded-bl-[100px] overflow-hidden opacity-30 group-hover:opacity-45 transition-opacity duration-500 pointer-events-none">
         <Image
           src={therapy.image}
           alt={therapy.name}
           fill
-          sizes="240px"
+          sizes="200px"
           className="object-cover grayscale-[25%] group-hover:grayscale-0 group-hover:scale-[1.06] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
         />
       </div>
 
       {/* Top: Number & Dosha Badge with Parallax Offset */}
       <div className="relative z-10">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3 lg:mb-3.5">
           <motion.span
             style={{ x: numberX }}
-            className="font-mono text-3xl font-normal text-forest/70 group-hover:text-turmeric transition-colors inline-block"
+            className="font-mono text-2xl lg:text-3xl font-normal text-forest/70 group-hover:text-turmeric transition-colors inline-block"
           >
             {therapy.number}
           </motion.span>
-          <Badge variant="sage" dot>
+          <Badge variant="sage" size="sm" dot>
             {therapy.primaryDosha}
           </Badge>
         </div>
@@ -164,29 +164,28 @@ function PinnedTherapyCard({
 
         <motion.h3
           style={{ x: titleX }}
-          className="font-display text-2xl font-normal text-deep-forest group-hover:text-forest transition-colors"
+          className="font-display text-xl lg:text-2xl font-normal text-deep-forest group-hover:text-forest transition-colors leading-tight"
         >
           {therapy.name}
         </motion.h3>
 
-        <p className="text-xs text-ink/75 leading-relaxed mt-3">{therapy.benefit}</p>
+        <p className="text-xs text-ink/75 leading-relaxed mt-2.5 line-clamp-3">{therapy.benefit}</p>
       </div>
 
       {/* Bottom: Specs & CTA */}
-      <div className="relative z-10 pt-4 border-t border-forest/15 space-y-3">
-        <div className="flex items-center gap-4 text-xs text-ink/70">
+      <div className="relative z-10 pt-3 lg:pt-3.5 border-t border-forest/15 space-y-2.5">
+        <div className="flex items-center justify-between text-xs text-ink/70">
           <div className="flex items-center gap-1.5 font-mono text-[11px]">
-            <Clock className="w-3.5 h-3.5 text-turmeric" />
+            <Clock className="w-3.5 h-3.5 text-turmeric shrink-0" />
             <span>{therapy.duration}</span>
+          </div>
+          <div className="text-[11px] text-forest/80 line-clamp-1 max-w-[200px] text-right">
+            <strong className="text-deep-forest font-medium">Herbs: </strong>
+            {therapy.herbs}
           </div>
         </div>
 
-        <div className="text-[11px] text-forest/80 line-clamp-1">
-          <strong className="text-deep-forest font-medium">Herbs: </strong>
-          {therapy.herbs}
-        </div>
-
-        <div className="pt-2">
+        <div className="pt-1">
           <Button
             href={`/treatments/${therapy.id}`}
             variant="text-link"
@@ -234,12 +233,12 @@ export function SignatureTherapies() {
         ref={containerRef}
         className="hidden md:block relative h-[280dvh] bg-paper border-b border-forest/15"
       >
-        <div className="sticky top-0 h-[100dvh] flex flex-col justify-between py-12 lg:py-16 overflow-hidden">
+        <div className="sticky top-0 h-[100dvh] flex flex-col justify-between pt-20 pb-4 lg:pt-24 lg:pb-6 overflow-hidden">
           {/* 4. Section Margin Number revealed with a mask slide */}
           <SectionMarginIndex number="02" label="THERAPIES" gujaratiLabel="ચિકિત્સા" />
           {/* Header */}
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
-            <div className="flex items-end justify-between gap-6 mb-4">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full shrink-0">
+            <div className="flex items-end justify-between gap-6 mb-3">
               <Reveal delay={0.04} direction="up" blur={false} className="flex-1">
                 <SectionHeading
                   eyebrow="Signature Chikitsa"
@@ -251,7 +250,7 @@ export function SignatureTherapies() {
                 />
               </Reveal>
 
-              <div className="shrink-0 text-right pb-2">
+              <div className="shrink-0 text-right pb-1">
                 <span className="font-mono text-xs text-forest/70 uppercase tracking-widest block mb-1">
                   Horizontal Pinned Journey
                 </span>
@@ -265,7 +264,7 @@ export function SignatureTherapies() {
             </div>
 
             {/* Progress Line */}
-            <div className="w-full h-[2px] bg-forest/15 rounded-full overflow-hidden relative mt-2">
+            <div className="w-full h-[2px] bg-forest/15 rounded-full overflow-hidden relative mt-1">
               <motion.div
                 style={{ scaleX: scrollYProgress }}
                 className="absolute inset-y-0 left-0 bg-turmeric origin-left w-full shadow-[0_0_8px_rgba(217,154,43,0.6)]"
@@ -274,10 +273,10 @@ export function SignatureTherapies() {
           </div>
 
           {/* Horizontally Pinned Card Carousel */}
-          <div className="w-full overflow-hidden px-6 sm:px-8 lg:px-12 my-auto">
+          <div className="w-full overflow-hidden px-6 sm:px-8 lg:px-12 my-auto flex-1 flex items-center min-h-0">
             <motion.div
               style={{ x }}
-              className="flex gap-8 w-max will-change-transform py-4"
+              className="flex gap-6 lg:gap-8 w-max will-change-transform py-2"
             >
               {therapies.map((therapy) => (
                 <PinnedTherapyCard
@@ -290,7 +289,7 @@ export function SignatureTherapies() {
           </div>
 
           {/* Bottom helper navigation hint */}
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full flex items-center justify-between text-xs text-forest/70 font-mono">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full flex items-center justify-between text-xs text-forest/70 font-mono shrink-0 pt-1">
             <span>↓ Scroll vertically to glide across signature therapies</span>
             <span>01 – 0{therapies.length} Classical Protocols</span>
           </div>
