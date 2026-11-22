@@ -300,7 +300,7 @@ export function Navbar() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 z-40 bg-paper flex flex-col justify-between w-full h-[100dvh] pt-[calc(env(safe-area-inset-top,0px)+5.5rem)] pb-[calc(env(safe-area-inset-bottom,0px)+1.75rem)] px-6 min-[390px]:px-7 sm:px-10 overflow-y-auto pl-safe pr-safe"
+            className="fixed inset-0 z-40 bg-paper flex flex-col justify-between w-full h-[100dvh] pt-[calc(env(safe-area-inset-top,0px)+4rem)] pb-[calc(env(safe-area-inset-bottom,0px)+1.5rem)] px-6 min-[390px]:px-7 sm:px-10 overflow-y-auto pl-safe pr-safe"
           >
             {/* Heritage Ornament in Background */}
             <div
@@ -310,12 +310,12 @@ export function Navbar() {
               <BotanicalDivider variant="lotus" className="w-full h-full" />
             </div>
 
-            {/* Nav list with staggered children and min-48px tap targets (All 7 links fully visible starting with 01 Home) */}
+            {/* Nav list with staggered children and min-48px tap targets (Starts right below header without excessive gap) */}
             <motion.nav
               variants={navListVariants}
               initial="closed"
               animate="open"
-              className="relative z-10 flex flex-col gap-0.5 py-2 flex-1 justify-center min-h-0"
+              className="relative z-10 flex flex-col gap-0.5 pt-2 pb-2 min-h-0"
             >
               {navLinks.map((link, index) => {
                 const isActive =
