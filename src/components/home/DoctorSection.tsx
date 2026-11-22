@@ -49,10 +49,10 @@ export function DoctorSection() {
               <div className="absolute bottom-4 left-5 right-5 text-cream flex items-baseline justify-between z-10">
                 <div>
                   <span className="text-[10px] uppercase font-mono tracking-widest text-turmeric block">
-                    Registration Status
+                    Ayurvedic Practitioner
                   </span>
                   <span className="font-mono text-xs font-semibold">
-                    Registration No.: to be added
+                    BAMS (2026), SMIAS
                   </span>
                 </div>
                 <span className="font-serif italic text-xs text-paper/80">
@@ -115,7 +115,7 @@ export function DoctorSection() {
                       Consultation Fee
                     </span>
                     <p className="text-deep-forest font-medium mt-0.5">
-                      <strong className="text-base text-deep-forest">₹1,200</strong>
+                      <strong className="text-base text-deep-forest">₹499</strong>
                       <span className="text-[11px] text-ink/75 block">Includes intake, Prakriti assessment & lifestyle plan</span>
                     </p>
                   </div>

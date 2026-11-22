@@ -14,15 +14,12 @@ Attending Vaidya    : {{doctor_name}}
 Consultation Mode   : {{consultation_mode}}
 Date & Scheduled Slot: {{appointment_date}} at {{appointment_slot}}
 Clinic Address      : Address: to be added
-Registration No.    : to be added
 
-CRITICAL PRE-CONSULTATION INSTRUCTIONS (નાડી પરીક્ષા પૂર્વ નિયમ)
+PRE-CONSULTATION INSTRUCTIONS
 --------------------------------------------------------------------------------
-For accurate radial pulse diagnosis (Nadi Pariksha) and metabolic assessment:
-1. Fasting Requirement: Please arrive on an empty stomach, or allow at least 2.5 hours after a light herbal tea or meal.
-2. Substances to Avoid: Avoid caffeine, tobacco, alcohol, chewing betel leaves, and heavy physical exercise for 3 hours prior to your pulse reading.
-3. Medical Records: Please bring all prior medical investigations (blood panels, MRIs, X-rays, discharge summaries) and a list of any ongoing medications.
-4. Punctuality: Please report 10 minutes prior to your allocated slot.
+1. Medical Records: Please keep all prior medical investigations (blood panels, MRIs, X-rays, discharge summaries) and a list of any ongoing medications handy.
+2. Punctuality: Please be ready 5 minutes prior to your allocated slot.
+3. Substances to Avoid: Avoid caffeine, tobacco, or alcohol immediately prior to the session.
 
 {{#if is_online}}
 ONLINE CONSULTATION DETAILS:

@@ -187,7 +187,7 @@ export function AdminClient() {
   const monthlyRevenueInr = useMemo(() => {
     return appointments
       .filter((a) => a.status === 'Confirmed' || a.status === 'Completed')
-      .reduce((sum, item) => sum + (item.feeInr || 1200), 0) + 345000; // includes treatments & pharmacy
+      .reduce((sum, item) => sum + (item.feeInr || 499), 0) + 345000; // includes treatments & pharmacy
   }, [appointments]);
 
   // Chart data: last 7 days + next 3 days
@@ -424,7 +424,7 @@ export function AdminClient() {
           </span>
           <span className="hidden sm:inline text-cream/40">•</span>
           <span className="hidden sm:inline text-cream/75">
-            Registration: <strong>to be added</strong>
+            Status: <strong>Active</strong>
           </span>
         </div>
         <div className="flex items-center gap-4 text-cream/80 text-[10px] sm:text-[11px]">
@@ -1718,11 +1718,11 @@ export function AdminClient() {
                     className="w-full p-2 rounded-lg bg-paper border border-[#DCD3BC] text-xs font-medium text-deep-forest focus:outline-none"
                   >
                     <option value="dr-lavesh-bohra">
-                      Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University · Registration No.: to be added
+                      Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University
                     </option>
                   </select>
                   <div className="text-[11px] text-ink/60 font-mono flex items-center justify-between pt-1">
-                    <span>Registration No.: to be added</span>
+                    <span>Registered Practitioner</span>
                     <span>Date: {todayStr}</span>
                   </div>
                 </div>
@@ -1973,7 +1973,7 @@ export function AdminClient() {
                                 Classical Ayurvedic Consultation & Lifestyle Care
                               </p>
                               <p className="text-[10px] text-ink/60 font-mono">
-                                Registration No.: to be added
+                                Registered Ayurvedic Practitioner
                               </p>
                             </div>
                           </div>
@@ -2080,7 +2080,7 @@ export function AdminClient() {
                             Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University
                           </div>
                           <div className="text-[10px] text-ink/60 font-mono">
-                            Registration No.: to be added
+                            Registered Ayurvedic Practitioner
                           </div>
                         </div>
                       </div>
@@ -2191,7 +2191,7 @@ export function AdminClient() {
                     </label>
                     <input
                       type="text"
-                      defaultValue="Registration No.: to be added"
+                      defaultValue=""
                       className="w-full p-2 rounded bg-paper border border-[#DCD3BC] text-xs font-mono font-bold"
                     />
                   </div>
@@ -2201,7 +2201,7 @@ export function AdminClient() {
                     </label>
                     <input
                       type="text"
-                      defaultValue="Dr. Lavesh Bohra · Registration No.: to be added"
+                      defaultValue="Dr. Lavesh Bohra"
                       className="w-full p-2 rounded bg-paper border border-[#DCD3BC] text-xs font-mono"
                     />
                   </div>
@@ -2211,7 +2211,7 @@ export function AdminClient() {
                     </label>
                     <input
                       type="text"
-                      defaultValue="₹1,200 (In-Clinic) · ₹1,000 (Video)"
+                      defaultValue="₹499 (Video Consultation)"
                       className="w-full p-2 rounded bg-paper border border-[#DCD3BC] text-xs font-mono"
                     />
                   </div>

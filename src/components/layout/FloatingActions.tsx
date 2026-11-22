@@ -7,7 +7,6 @@ import { Phone, Calendar, MessageCircle, ArrowUp } from 'lucide-react';
 import { Magnetic } from '@/components/motion';
 import { MOTION_TOKENS, usePrefersReducedMotion } from '@/lib/motion';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { useBookingSheet } from '@/lib/context/BookingSheetContext';
 import { cn } from '@/lib/utils';
 
 export function FloatingActions() {
@@ -17,7 +16,6 @@ export function FloatingActions() {
   const lastScrollY = useRef(0);
 
   const { language } = useLanguage();
-  const { openBookingSheet } = useBookingSheet();
   const prefersReduced = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -187,19 +185,17 @@ export function FloatingActions() {
           <span className="font-sans font-medium">WhatsApp</span>
         </a>
 
-        {/* 3. Book Button (Triggers Mobile Bottom Sheet) */}
-        <button
-          type="button"
-          onClick={openBookingSheet}
-          data-booking-trigger="true"
+        {/* 3. Book Button (Direct Link to /book) */}
+        <Link
+          href="/book"
           className="flex-[1.2] inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-[4px] bg-deep-forest text-cream font-medium text-xs shadow-xs active:scale-[0.97] transition-all touch-manipulation min-h-[44px] btn-primary-ripple cursor-pointer"
-          aria-label="Open booking sheet"
+          aria-label="Book Consultation"
         >
           <Calendar className="w-3.5 h-3.5 text-turmeric shrink-0" />
           <span className="font-sans font-semibold">
             {language === 'GU' ? 'પરામર્શ બુક' : 'Book'}
           </span>
-        </button>
+        </Link>
       </nav>
     </>
   );

@@ -6,7 +6,7 @@ export const faqs: FAQItem[] = [
     id: 'faq-fv-1',
     category: 'First visit',
     question: 'How should I prepare for a classical Nadi Pariksha (Pulse Diagnosis)?',
-    answer: 'For optimal pulse sensitivity and accuracy, we strongly recommend booking a morning appointment between 8:30 AM and 12:00 PM. Arrive in a fasting state or at least 2.5 hours after a light herbal tea or meal. Please avoid caffeine, tobacco, alcohol, strenuous exercise, and hot showers immediately prior to your consultation, as these temporarily elevate heart rate and distort the subtle Vata, Pitta, and Kapha pulse waves.',
+    answer: 'For optimal diagnostic sensitivity, we recommend booking a morning appointment. Please avoid caffeine, tobacco, alcohol, strenuous exercise, and hot showers immediately prior to your consultation, as these temporarily elevate heart rate and distort vital indicators.',
   },
   {
     id: 'faq-fv-2',
@@ -38,7 +38,7 @@ export const faqs: FAQItem[] = [
     id: 'faq-oc-2',
     category: 'Online consultation',
     question: 'How do I receive my prescribed herbal formulations after an online consultation?',
-    answer: 'Following your consultation, your verified digital prescription is generated along with customized dietary guidelines. Our in-house pharmacy packages freshly prepared, batch-tested classical Kashayams, tailas, and churnas. We dispatch via express temperature-controlled courier with tracking across all major cities in India (2 to 4 business days) and internationally to eligible countries via DHL Medical Express.',
+    answer: 'Following your consultation, personalized dietary and herbal recommendations are shared with you along with guidance on sourcing and regimen instructions.',
   },
   {
     id: 'faq-oc-3',
@@ -84,7 +84,7 @@ export const faqs: FAQItem[] = [
     id: 'faq-pay-2',
     category: 'Payments',
     question: 'What are the consultation fees and how can I pay?',
-    answer: 'Consultation with Dr. Lavesh Bohra is ₹1,200. We accept all major UPI applications (Google Pay, PhonePe, Paytm), credit and debit cards, net banking, and cash.',
+    answer: 'Consultation with Dr. Lavesh Bohra is ₹499. We accept all major UPI applications (Google Pay, PhonePe, Paytm), credit and debit cards, net banking, and cash.',
   },
   {
     id: 'faq-pay-3',

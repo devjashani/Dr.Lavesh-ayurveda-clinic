@@ -457,7 +457,7 @@ export const SEED_APPOINTMENTS: DbAppointment[] = [
     slot: '09:00 AM',
     status: 'Confirmed',
     chiefComplaint: 'Severe lumbar disc protrusion (L4-L5) with sciatic nerve radiation.',
-    feeInr: 1200,
+    feeInr: 499,
     createdAt: '2026-11-05T09:12:00Z',
   },
   {
@@ -477,7 +477,7 @@ export const SEED_APPOINTMENTS: DbAppointment[] = [
     slot: '09:45 AM',
     status: 'Confirmed',
     chiefComplaint: 'Rheumatoid arthritis follow-up pulse assessment.',
-    feeInr: 1200,
+    feeInr: 499,
     createdAt: '2026-11-06T11:20:00Z',
   },
   {
@@ -517,7 +517,7 @@ export const SEED_APPOINTMENTS: DbAppointment[] = [
     slot: '10:30 AM',
     status: 'Confirmed',
     chiefComplaint: 'Psoriasis plaque review post-Virechana.',
-    feeInr: 1200,
+    feeInr: 499,
     createdAt: '2026-11-07T08:15:00Z',
   },
   {
@@ -577,7 +577,7 @@ export const SEED_APPOINTMENTS: DbAppointment[] = [
     slot: '12:45 PM',
     status: 'Pending',
     chiefComplaint: 'Bilateral knee pain checkup.',
-    feeInr: 1200,
+    feeInr: 499,
     createdAt: '2026-11-08T09:00:00Z',
   },
   {
@@ -597,7 +597,7 @@ export const SEED_APPOINTMENTS: DbAppointment[] = [
     slot: '04:30 PM',
     status: 'Confirmed',
     chiefComplaint: 'Fatty liver & blood glucose review.',
-    feeInr: 1200,
+    feeInr: 499,
     createdAt: '2026-11-08T11:10:00Z',
   },
   {
@@ -637,7 +637,7 @@ export const SEED_APPOINTMENTS: DbAppointment[] = [
     slot: '06:00 PM',
     status: 'Completed',
     chiefComplaint: 'Cervical spondylosis post-Greeva Basti session.',
-    feeInr: 1200,
+    feeInr: 499,
     createdAt: '2026-11-08T16:00:00Z',
   },
 
@@ -649,7 +649,7 @@ export const SEED_APPOINTMENTS: DbAppointment[] = [
       dayOffset < 0 ? ['Completed', 'Completed', 'Cancelled'] : ['Confirmed', 'Pending', 'Confirmed'];
     const pat = SEED_PATIENTS[i % SEED_PATIENTS.length];
     const docs = [
-      { slug: 'dr-lavesh-bohra', name: 'Dr. Lavesh Bohra', fee: 1200 },
+      { slug: 'dr-lavesh-bohra', name: 'Dr. Lavesh Bohra', fee: 499 },
     ];
     const doc = docs[i % docs.length];
 

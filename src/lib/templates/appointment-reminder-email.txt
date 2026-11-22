@@ -17,10 +17,9 @@ Location            : Address: to be added
 
 PRE-APPOINTMENT CHECKLIST
 --------------------------------------------------------------------------------
-[ ] Fasting / Digestion: Maintain at least 2.5 hours gap after eating so your radial pulse is clear.
-[ ] Avoid Stimulants   : No coffee, black tea, energy drinks, or nicotine before the session.
+[ ] Avoid Stimulants   : No coffee, black tea, energy drinks, or nicotine immediately before the session.
 [ ] Medical Reports    : Keep your blood panels, imaging, and current prescriptions handy.
-[ ] Arrival Time       : Please be ready 10 minutes prior to complete initial assessment.
+[ ] Arrival Time       : Please be ready 5 minutes prior to your session.
 
 {{#if is_online}}
 ONLINE CONSULTATION DETAILS:

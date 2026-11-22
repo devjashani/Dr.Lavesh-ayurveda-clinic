@@ -122,9 +122,6 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
   return (
     <MotionContext.Provider value={{ prefersReducedMotion, lenis: lenisInstance }}>
       {children}
-      {process.env.NODE_ENV !== 'production' && (
-        <MotionDebugBadge lenis={lenisInstance} prefersReducedMotion={prefersReducedMotion} />
-      )}
     </MotionContext.Provider>
   );
 }

@@ -10,7 +10,7 @@ export const doctors: Doctor[] = [
     title: 'Registered Ayurvedic Practitioner',
     degrees: ['BAMS (2026), SMIAS, Gujarat Ayurved University'],
     experienceYears: 0,
-    ayushRegistrationNo: 'Registration No.: to be added',
+    ayushRegistrationNo: '',
     specialties: [
       'Individual Ayurvedic Consultations',
       'Personalized Lifestyle Care (Ahara & Vihara)',
@@ -36,7 +36,7 @@ export const doctors: Doctor[] = [
     ],
     opdTimings: 'Monday to Saturday: By prior appointment',
     phone: '+91 9016432576',
-    consultationFee: 1200,
+    consultationFee: 499,
     availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     languages: ['English', 'Hindi', 'Gujarati'],
     image: IMAGES.doctorPortrait,

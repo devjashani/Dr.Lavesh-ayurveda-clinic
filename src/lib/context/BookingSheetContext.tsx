@@ -33,45 +33,6 @@ export function BookingSheetProvider({ children }: { children: React.ReactNode }
     setIsOpen(false);
   }, [pathname]);
 
-  // Global custom event listener & mobile link interception
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const handleCustomOpen = () => {
-      setIsOpen(true);
-    };
-
-    window.addEventListener('open-booking-sheet', handleCustomOpen);
-
-    // Intercept clicks on links / buttons pointing to /book on mobile screens (< 768px)
-    const handleGlobalClick = (e: MouseEvent) => {
-      // Don't intercept if already on the /book page or on desktop screens
-      if (window.innerWidth >= 768 || window.location.pathname === '/book') return;
-
-      const target = (e.target as HTMLElement).closest('a, button');
-      if (!target) return;
-
-      const href = target.getAttribute('href');
-      const isBookingTrigger =
-        target.getAttribute('data-booking-trigger') === 'true' ||
-        href === '/book' ||
-        href?.startsWith('/book?');
-
-      if (isBookingTrigger) {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsOpen(true);
-      }
-    };
-
-    document.addEventListener('click', handleGlobalClick, { capture: true });
-
-    return () => {
-      window.removeEventListener('open-booking-sheet', handleCustomOpen);
-      document.removeEventListener('click', handleGlobalClick, { capture: true });
-    };
-  }, []);
-
   return (
     <BookingSheetContext.Provider
       value={{

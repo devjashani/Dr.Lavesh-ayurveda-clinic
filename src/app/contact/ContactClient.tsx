@@ -41,16 +41,6 @@ const contactFormSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
-const WEEK_HOURS = [
-  { day: 'Sunday', hours: '8:00 AM – 1:00 PM (Therapy & Follow-up Only)', dayIndex: 0 },
-  { day: 'Monday', hours: '9:00 AM – 1:30 PM & 4:30 PM – 7:30 PM', dayIndex: 1 },
-  { day: 'Tuesday', hours: '9:00 AM – 1:30 PM & 4:30 PM – 7:30 PM', dayIndex: 2 },
-  { day: 'Wednesday', hours: '9:00 AM – 1:30 PM & 4:30 PM – 7:30 PM', dayIndex: 3 },
-  { day: 'Thursday', hours: '9:00 AM – 1:30 PM & 4:30 PM – 7:30 PM', dayIndex: 4 },
-  { day: 'Friday', hours: '9:00 AM – 1:30 PM & 4:30 PM – 7:30 PM', dayIndex: 5 },
-  { day: 'Saturday', hours: '9:00 AM – 1:30 PM & 4:30 PM – 7:30 PM', dayIndex: 6 },
-];
-
 export function ContactClient() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submissionData, setSubmissionData] = useState<ContactFormData | null>(null);
@@ -193,7 +183,7 @@ export function ContactClient() {
                       selectedMode === 'online' ? 'text-paper/80' : 'text-ink/60'
                     }`}
                   >
-                    High-Definition Video + Medicine Courier
+                    High-Definition Video Consultation
                   </div>
                 </button>
               </div>
@@ -212,7 +202,7 @@ export function ContactClient() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Ramesh Chandra Sharma"
+                  placeholder="Your full name"
                   {...register('fullName')}
                   className="w-full px-3.5 py-2.5 rounded-[3px] bg-cream text-xs font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest"
                 />
@@ -321,58 +311,21 @@ export function ContactClient() {
         )}
       </div>
 
-      {/* Right Column: Dynamic Hours Table, Location & Quick Contacts (5 cols) */}
+      {/* Right Column: OPD Timings, Location & Quick Contacts (5 cols) */}
       <div className="lg:col-span-5 space-y-6">
-        {/* Automatic Today's Hours Highlight Table */}
+        {/* OPD Timings Highlight Card */}
         <div className="bg-paper border border-forest/15 rounded-[4px] p-6 shadow-xs">
-          <div className="flex items-center justify-between mb-4 pb-2 border-b border-forest/10">
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-turmeric" />
-              <h3 className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium">
-                OPD & Clinic Timings
-              </h3>
-            </div>
-            <Badge variant="sage" className="text-[10px]">
-              Jaipur Standard Time (IST)
-            </Badge>
+          <div className="flex items-center gap-2 mb-4 pb-2 border-b border-forest/10">
+            <Clock className="w-4 h-4 text-turmeric" />
+            <h3 className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium">
+              OPD Timings
+            </h3>
           </div>
 
-          <div className="space-y-1 text-xs font-body">
-            {WEEK_HOURS.map((item) => {
-              const isToday = item.dayIndex === todayIndex;
-
-              return (
-                <div
-                  key={item.day}
-                  className={`flex items-center justify-between p-2 rounded-[3px] transition-colors ${
-                    isToday
-                      ? 'bg-forest text-paper font-medium shadow-xs'
-                      : 'text-ink/80 hover:bg-cream'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span>{item.day}</span>
-                    {isToday && (
-                      <span className="font-mono text-[9px] bg-turmeric text-deep-forest px-1.5 py-0.2 rounded-[2px] uppercase font-bold">
-                        Today
-                      </span>
-                    )}
-                  </div>
-                  <span
-                    className={`font-mono text-[11px] ${
-                      isToday ? 'text-turmeric' : 'text-ink/60'
-                    }`}
-                  >
-                    {item.hours}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="mt-4 pt-3 border-t border-forest/10 text-[11px] font-body text-ink/60 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-turmeric shrink-0" />
-            <span>Nadi Pariksha recommended early morning (8:30 AM – 11:30 AM).</span>
+          <div className="p-3 bg-cream/70 rounded-[3px] border border-forest/10">
+            <p className="font-mono text-xs text-deep-forest font-medium">
+              OPD Timings: [Update Real Timings]
+            </p>
           </div>
         </div>
 

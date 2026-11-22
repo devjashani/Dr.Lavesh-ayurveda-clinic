@@ -38,7 +38,6 @@ export function JsonLd() {
         '@type': 'EducationalOrganization',
         name: 'SMIAS, Gujarat Ayurved University',
       },
-      identifier: 'Registration No.: to be added',
     },
     physician: [
       {
@@ -46,7 +45,6 @@ export function JsonLd() {
         name: 'Dr. Lavesh Bohra',
         jobTitle: 'Registered Ayurvedic Practitioner · BAMS (2026)',
         telephone: '+91 9016432576',
-        identifier: 'Registration No.: to be added',
       },
     ],
   };

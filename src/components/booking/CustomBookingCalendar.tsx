@@ -6,8 +6,11 @@ import { ChevronLeft, ChevronRight, AlertCircle, Calendar as CalendarIcon } from
 interface CustomBookingCalendarProps {
   selectedDate: string; // YYYY-MM-DD
   onSelectDate: (dateStr: string) => void;
-  minDate?: string;
+  minDate?: string; // YYYY-MM-DD in IST
+  maxDate?: string; // YYYY-MM-DD in IST
   maxDaysAhead?: number;
+  disabledDates?: string[];
+  availableDates?: string[];
 }
 
 const MONTH_NAMES = [
@@ -21,7 +24,10 @@ export function CustomBookingCalendar({
   selectedDate,
   onSelectDate,
   minDate,
-  maxDaysAhead = 60,
+  maxDate: propMaxDate,
+  maxDaysAhead = 14,
+  disabledDates = [],
+  availableDates,
 }: CustomBookingCalendarProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -38,8 +44,8 @@ export function CustomBookingCalendar({
   const startingDayIndex = (firstDayOfMonth.getDay() + 6) % 7;
 
   // Maximum allowed selectable date
-  const maxDate = new Date(today);
-  maxDate.setDate(today.getDate() + maxDaysAhead);
+  const calculatedMaxDate = new Date(today);
+  calculatedMaxDate.setDate(today.getDate() + maxDaysAhead - 1);
 
   const handlePrevMonth = () => {
     if (currentMonth === 0) {
@@ -64,9 +70,9 @@ export function CustomBookingCalendar({
     (currentYear === today.getFullYear() && currentMonth <= today.getMonth());
 
   return (
-    <div className="bg-paper border border-forest/15 rounded-[4px] p-5 sm:p-6 shadow-xs select-none">
+    <div className="bg-paper border border-forest/15 rounded-[4px] p-4 sm:p-6 shadow-xs select-none">
       {/* Calendar Header */}
-      <div className="flex items-center justify-between mb-5 pb-3 border-b border-forest/10">
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-forest/10">
         <div className="flex items-center gap-2">
           <CalendarIcon className="w-4 h-4 text-forest" />
           <h3 className="font-display text-base sm:text-lg text-deep-forest font-medium">
@@ -124,13 +130,16 @@ export function CustomBookingCalendar({
 
           const isoString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
           const isSelected = selectedDate === isoString;
-          const isToday = thisDate.getTime() === today.getTime();
-          const isPast = thisDate.getTime() < today.getTime();
-          const isFutureBeyondLimit = thisDate.getTime() > maxDate.getTime();
+          const isToday = minDate ? isoString === minDate : thisDate.getTime() === today.getTime();
+          const isPast = minDate ? isoString < minDate : thisDate.getTime() < today.getTime();
+          const isFutureBeyondLimit = propMaxDate
+            ? isoString > propMaxDate
+            : thisDate.getTime() > calculatedMaxDate.getTime();
           const isSunday = thisDate.getDay() === 0;
+          const isBlocked = disabledDates.includes(isoString);
+          const isUnavailable = availableDates && !availableDates.includes(isoString);
 
-          // Sundays require prior residential admission / emergency reservation
-          const isDisabled = isPast || isFutureBeyondLimit || isSunday;
+          const isDisabled = isPast || isFutureBeyondLimit || isSunday || isBlocked || Boolean(isUnavailable);
 
           return (
             <button
@@ -150,10 +159,10 @@ export function CustomBookingCalendar({
             >
               <span>{dayNum}</span>
 
-              {/* Sunday note dot */}
+              {/* Closed Sunday note */}
               {isSunday && !isPast && (
                 <span className="text-[8px] font-mono text-clay/70 scale-90 leading-none">
-                  By Appt
+                  Closed
                 </span>
               )}
 
@@ -166,8 +175,8 @@ export function CustomBookingCalendar({
         })}
       </div>
 
-      {/* Calendar Legend & Sunday Rule Note */}
-      <div className="mt-5 pt-3 border-t border-forest/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-ink/70">
+      {/* Calendar Legend */}
+      <div className="mt-4 pt-3 border-t border-forest/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-ink/70">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-[2px] bg-forest" />
@@ -179,16 +188,15 @@ export function CustomBookingCalendar({
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-[2px] bg-clay/20 border border-clay/30" />
-            <span>Sunday (By Appt Only)</span>
+            <span>Sunday (Closed)</span>
           </div>
         </div>
 
         <div className="flex items-center gap-1 text-ink/60">
-          <AlertCircle className="w-3 h-3 text-clay shrink-0" />
-          <span>Sundays reserved for residential Panchakarma.</span>
+          <AlertCircle className="w-3 h-3 text-forest/50 shrink-0" />
+          <span>Next 14 days bookable online (IST).</span>
         </div>
       </div>
     </div>
   );
 }
-

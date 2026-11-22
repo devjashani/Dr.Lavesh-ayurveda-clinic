@@ -187,3 +187,77 @@
 
 - **વોટ્સએપ સંદેશ સુવાક્ય:** _“રોગમુક્તં શરીરં સ્યાત્ પ્રસન્નં મન એવ ચ”_ (Wishing you radiant health and vitality.)
 - **ઈમેઈલ સૂચના:** CRITICAL PRE-CONSULTATION INSTRUCTIONS (નાડી પરીક્ષા પૂર્વ નિયમ)
+
+---
+
+## ૯. સિંગલ પેજ બુકિંગ પૃષ્ઠ ૧ (/book) — ગુજરાતી સમીક્ષા
+
+| અંગ્રેજી સંદર્ભ | ગુજરાતી લખાણ | સ્થાન / વપરાશ |
+|---|---|---|
+| 1 Details & Slot · 2 Review & Pay | ૧ વિગતો અને સ્લોટ · ૨ સમીક્ષા અને ચુકવણી | ૨-સ્ટેપ ઇન્ડિકેટર હેડર |
+| Consultation Mode | પરામર્શ પદ્ધતિ | પદ્ધતિ પસંદગી કાર્ડ |
+| Video Consultation | વિડિઓ પરામર્શ | કાર્ડ ૧ (પસંદ કરેલ ડિફોલ્ટ) |
+| Consult Dr. Lavesh Bohra over a secure video call. | સુરક્ષિત વિડિઓ કૉલ દ્વારા ડૉ. લવેશ બોહરા સાથે સીધો પરામર્શ કરો. | વિડિઓ પરામર્શ વર્ણન |
+| In-Person Consultation | રૂબરૂ ક્લિનિક મુલાકાત | કાર્ડ ૨ (અક્ષમ) |
+| Currently unavailable | હાલમાં ઉપલબ્ધ નથી | અક્ષમ પદ્ધતિ બેજ |
+| Patient Details | દર્દીની વિગતો | દર્દી માહિતી કાર્ડ |
+| Full Name | પૂરું નામ | નામ લેબલ |
+| WhatsApp Number (+91) | વોટ્સએપ નંબર (+૯૧) | મોબાઈલ લેબલ |
+| Used only to contact you about this booking. | માત્ર આ બુકિંગ સંબંધિત સંપર્ક માટે જ વપરાશે. | વોટ્સએપ હેલ્પર લખાણ |
+| Email Address (Optional) | ઈમેલ એડ્રેસ (વૈકલ્પિક) | ઈમેલ લેબલ |
+| Age | ઉંમર | ઉંમર લેબલ |
+| Biological Gender | જાતિ | જાતિ લેબલ |
+| Primary health complaint & how long you have had it | મુખ્ય સ્વાસ્થ્ય સમસ્યા અને તે કેટલા સમયથી છે | મુખ્ય સમસ્યા લેબલ |
+| Upload prior reports (optional) | અગાઉના રિપોર્ટ્સ અપલોડ કરો (વૈકલ્પિક) | રિપોર્ટ અપલોડ લેબલ |
+| Optional. Shared only with your doctor for this consultation. | વૈકલ્પિક. આ પરામર્શ માટે માત્ર તમારા ડૉક્ટર સાથે જ શેર કરવામાં આવશે. | રિપોર્ટ સૂચના |
+| Choose Files (PDF, JPG, PNG max 4MB) | ફાઈલ પસંદ કરો (PDF, JPG, PNG મહત્તમ 4MB) | અપલોડ બટન |
+| Morning Slots | સવારના સ્લોટ્સ | સવાર સ્લોટ સેક્શન |
+| Evening Slots | સાંજના સ્લોટ્સ | સાંજ સ્લોટ સેક્શન |
+| No slots available on this day; try another date. | આ દિવસે કોઈ સ્લોટ ઉપલબ્ધ નથી; કૃપા કરીને અન્ય તારીખ પસંદ કરો. | ખાલી સ્લોટ સ્થિતિ |
+| The selected time slot is no longer available. Please choose another time. | પસંદ કરેલ સ્લોટ હવે ઉપલબ્ધ નથી. કૃપા કરીને અન્ય સમય પસંદ કરો. | સ્લોટ ઉપલબ્ધ ન હોવાની સૂચના |
+| Continue to Review & Pay | સમીક્ષા અને ચુકવણી (₹૪૯૯) | આગળ વધો બટન (સિંગલ લાઇન) |
+
+---
+
+## ૧૦. બુકિંગ સમીક્ષા પૃષ્ઠ ૨ (/book/review) — ગુજરાતી સમીક્ષા
+
+| અંગ્રેજી સંદર્ભ | ગુજરાતી લખાણ | સ્થાન / વપરાશ |
+|---|---|---|
+| Review Appointment Details & Confirm | પરામર્શની વિગતો ચકાસો અને કન્ફર્મ કરો | સમીક્ષા પૃષ્ઠ મુખ્ય શીર્ષક |
+| Session Summary | પરામર્શ સારાંશ | સારાંશ કાર્ડ શીર્ષક |
+| Patient Profile | દર્દીની પ્રોફાઇલ | પ્રોફાઇલ કાર્ડ શીર્ષક |
+| Attending Vaidya | ચિકિત્સક વૈદ્ય | વૈદ્ય લેબલ |
+| Dr. Lavesh Bohra | ડૉ. લવેશ બોહરા | માત્ર વૈદ્યનું નામ |
+| Mode | પદ્ધતિ | મોડ લેબલ |
+| Online Video | ઓનલાઇન વિડિઓ | વિડિઓ મોડ નામ |
+| Date & Slot | તારીખ અને સમય સ્લોટ | સ્લોટ લેબલ |
+| Consultation Fee | પરામર્શ ફી | ફી લેબલ |
+| Edit details or time slot | વિગતો અથવા સમય સ્લોટમાં ફેરફાર કરો | એડિટ લિંક (/book પર પાછા જવા માટે) |
+| Payment is completed online via Razorpay. | ચુકવણી રેઝરપે (Razorpay) દ્વારા ઓનલાઇન પૂર્ણ કરવામાં આવે છે. | તટસ્થ ચુકવણી લાઇન |
+| I consent to the Ayurvedic diagnostic evaluation and agree to the clinic consultation terms. I understand that classical pulse examination assesses subtle tissue energetics (Dhatus) in coordination with modern medical investigations. | હું આયુર્વેદિક નિદાન મૂલ્યાંકન માટે સંમતિ આપું છું અને ક્લિનિકના પરામર્શ નિયમો સાથે સહમત થાઉં છું. હું સમજું છું કે શાસ્ત્રીય નાડી પરીક્ષા આધુનિક તબીબી તપાસ સાથે સુસંગત રહીને સૂક્ષ્મ ધાતુઓ અને ઊર્જાનું મૂલ્યાંકન કરે છે. | ચોક્કસ સંમતિ ચેકબોક્સ લખાણ |
+| Pay ₹499 securely | સુરક્ષિત ₹૪૯૯ ચૂકવો | ચુકવણી બટન (સિંગલ લાઇન) |
+| Payments secured by Razorpay | રેઝરપે (Razorpay) દ્વારા સુરક્ષિત ચુકવણી | સુરક્ષા લેબલ |
+| Terms | નિયમો | નિયમાવલી લિંક |
+| Privacy | ગોપનીયતા | ગોપનીયતા લિંક |
+| Refund Policy | રિફંડ નીતિ | રિફંડ નીતિ લિંક |
+
+---
+
+## ૧૧. બુકિંગ કન્ફર્મેશન પૃષ્ઠ (/book/confirmed) — ગુજરાતી સમીક્ષા
+
+| અંગ્રેજી સંદર્ભ | ગુજરાતી લખાણ | સ્થાન / વપરાશ |
+|---|---|---|
+| Official Token · Confirmed | ટોકન પત્રમ્ · કન્ફર્મ થયેલ | સફળતા બેજ |
+| Your Video Consultation is Confirmed | તમારું વિડીયો કન્સલ્ટેશન કન્ફર્મ થયું છે | મુખ્ય શીર્ષક |
+| Confirmation receipt and consultation guidelines have been dispatched to {whatsappNumber}. | કન્સલ્ટેશન વિગતો અને રસીદ આપના WhatsApp નંબર {whatsappNumber} પર મોકલેલ છે. | ગૌણ સૂચના |
+| Video Consultation Window | વિડીયો કૉલ વિન્ડો | વિડીયો કૉલ કાર્ડ શીર્ષક |
+| Secure Encrypted Video Session | સુરક્ષિત ઓનલાઇન વિડીયો કન્સલ્ટેશન | સબહેડર |
+| Slot Locked | સ્લોટ લૉક | સુરક્ષિત સ્થિતિ |
+| The secure consultation link (Google Meet) will be sent to your WhatsApp 10 minutes prior to your scheduled slot. | વિડીયો કૉલ લિંક (Google Meet) આપના સ્લોટ સમયના ૧૦ મિનિટ પહેલાં આપના WhatsApp પર મોકલવામાં આવશે. | લિંક વિતરણ સૂચના |
+| Keep prior laboratory tests, MRI/CBC reports, and active prescriptions handy. | છેલ્લા મેડિકલ રિપોર્ટ્સ અને હાલની દવાઓની યાદી તૈયાર રાખો. | પૂર્વ તૈયારી |
+| Ensure a quiet room and stable internet connectivity. | શાંત ઓરડો અને સ્થિર ઇન્ટરનેટ કનેક્શન સુનિશ્ચિત કરો. | પૂર્વ તૈયારી |
+| Technical Support Desk | સહાયતા હેલ્પલાઇન | હેલ્પલાઇન લેબલ |
+| Print / Download Receipt | રસીદ પ્રિન્ટ / ડાઉનલોડ કરો | પ્રિન્ટ બટન |
+| Add to Google Calendar | Google કેલેન્ડરમાં ઉમેરો | કેલેન્ડર બટન |
+| Share on WhatsApp | WhatsApp પર શેર કરો | શેરિંગ બટન |
+| Return to Homepage | મુખ્ય પૃષ્ઠ પર પાછા જાઓ | હોમ લિંક |

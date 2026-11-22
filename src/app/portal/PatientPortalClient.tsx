@@ -497,8 +497,7 @@ export function PatientPortalClient() {
               <div className="p-4 rounded-[4px] bg-cream border border-forest/10 text-xs font-body text-ink/80 flex items-start gap-3">
                 <Sparkles className="w-4 h-4 text-turmeric shrink-0 mt-0.5" />
                 <div>
-                  <strong>Pre-Pulse Fasting Rule:</strong> Arrive on an empty stomach or allow 2.5 hours
-                  after a light meal for clear Nadi Pariksha. Avoid coffee, tea, and heavy exertion.
+                  <strong>Pre-Consultation Advice:</strong> Avoid coffee, tea, and heavy exertion prior to your session.
                 </div>
               </div>
 
@@ -700,10 +699,10 @@ export function PatientPortalClient() {
                       Vankal Ayurveda
                     </h3>
                     <p className="font-mono text-[10px] text-ink/60">
-                      Address: to be added · Registration No.: to be added
+                      Address: to be added
                     </p>
                     <p className="font-mono text-[10px] text-forest mt-0.5">
-                      Physician: Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University · Registration No.: to be added
+                      Physician: Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University
                     </p>
                   </div>
                   <div className="text-right font-mono text-xs">

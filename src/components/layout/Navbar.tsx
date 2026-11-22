@@ -9,7 +9,6 @@ import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { useBookingSheet } from '@/lib/context/BookingSheetContext';
 
 export const navLinks = [
   { href: '/', label: 'Home', sanskrit: 'મુખ્ય' },
@@ -27,7 +26,6 @@ export function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
-  const { openBookingSheet } = useBookingSheet();
 
   const lastScrollY = useRef(0);
 
@@ -120,12 +118,12 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
           isVisible ? 'translate-y-0' : '-translate-y-full',
           'pt-[calc(env(safe-area-inset-top,0px)+0.75rem)] pb-3 px-5 min-[390px]:px-6 sm:px-8 lg:px-12 pl-safe pr-safe',
           isScrolled || isMobileMenuOpen
-            ? 'max-xl:bg-paper/95 max-xl:backdrop-blur-md max-xl:border-b max-xl:border-forest/10 max-xl:shadow-2xs'
-            : 'max-xl:bg-transparent'
+            ? 'bg-paper/85 backdrop-blur-[12px] border-b border-forest/10 shadow-[0_2px_12px_rgba(20,41,28,0.06)]'
+            : 'bg-transparent border-b border-transparent'
         )}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">

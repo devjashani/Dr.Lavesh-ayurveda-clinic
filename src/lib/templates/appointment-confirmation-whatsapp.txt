@@ -1,5 +1,4 @@
 🌿 *VANKAL AYURVEDA — APPOINTMENT CONFIRMATION* 🌿
-Registration No.: to be added
 
 Namaste *{{patient_name}}* ji,
 
@@ -18,10 +17,9 @@ Your clinical consultation is confirmed. Here are your booking details:
 💻 *Online Consultation:* Your joining details and link will be shared via WhatsApp prior to the appointment.
 {{/if}}
 
-⚠️ *Important Preparation for Pulse Diagnosis:*
-• Arrive on an empty stomach or 2.5 hours after a light meal.
-• Avoid tea, coffee, smoking, or intense exercise before your pulse reading.
-• Please carry your previous laboratory and radiological reports.
+⚠️ *Consultation Notes:*
+• Please keep your previous laboratory and medical reports ready.
+• Ensure a quiet environment with stable internet connection for your video session.
 
 For help, queries, or rescheduling, reply directly to this WhatsApp message or contact our team (+91 9016432576).
 

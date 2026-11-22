@@ -79,7 +79,7 @@ export function FinalCta() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12 pt-8 border-t border-forest/40 text-xs text-paper/70">
             <div className="flex items-center justify-center gap-2">
               <ShieldCheck className="w-4 h-4 text-turmeric shrink-0" />
-              <span>Registration No.: to be added</span>
+              <span>Registered Ayurvedic Practitioner</span>
             </div>
 
             <div className="flex items-center justify-center gap-2">

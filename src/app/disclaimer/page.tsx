@@ -102,7 +102,7 @@ export default function DisclaimerPage() {
               4. Practitioner Registration & Pharmacopoeial Compliance
             </h2>
             <p>
-              Vankal Ayurveda is led by Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University, Registered Ayurvedic Practitioner (Registration No.: to be added). All classical formulations recommended follow the standards of the Ayurvedic Pharmacopoeia of India (API).
+              Vankal Ayurveda is led by Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University, Registered Ayurvedic Practitioner. All classical formulations recommended follow the standards of the Ayurvedic Pharmacopoeia of India (API).
             </p>
           </section>
 

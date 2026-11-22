@@ -1,1291 +1,827 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Container } from '@/components/ui/Container';
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
-import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
-import { StepProgress } from '@/components/booking/StepProgress';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import {
+  Video,
+  Building,
+  Upload,
+  Trash2,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  ArrowRight,
+  FileText,
+  Loader2,
+  Calendar as CalendarIcon,
+} from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { BOOKING_CONFIG, BookingDraft } from '@/lib/config/booking';
 import { CustomBookingCalendar } from '@/components/booking/CustomBookingCalendar';
 import { SlotPicker } from '@/components/booking/SlotPicker';
-import { AppointmentVoucher } from '@/components/booking/AppointmentVoucher';
-import { doctors } from '@/lib/data/doctors';
-import { treatments } from '@/lib/data/treatments';
-import { useLanguage } from '@/lib/i18n/LanguageContext';
-import {
-  createAppointment,
-  Appointment,
-  CreateAppointmentInput,
-} from '@/lib/services/appointments';
-import {
-  Calendar as CalendarIcon,
-  Clock,
-  ShieldCheck,
-  CheckCircle2,
-  User,
-  Phone,
-  Mail,
-  MapPin,
-  FileText,
-  Sparkles,
-  ArrowRight,
-  ArrowLeft,
-  MessageCircle,
-  AlertCircle,
-  Printer,
-  Compass,
-  Building,
-  Video,
-  UploadCloud,
-  FileCheck,
-  X,
-  HeartPulse,
-  Activity,
-  Layers,
-} from 'lucide-react';
+import { DayScheduleResponse, DaySlotResponse } from '@/app/api/slots/route';
+import { supabase } from '@/lib/supabase';
 
-export interface BookingService {
-  id: string;
+// Schema for Patient Details Validation
+const patientDetailsSchema = z.object({
+  fullName: z
+    .string()
+    .trim()
+    .min(2, 'Full name must be at least 2 characters')
+    .max(60, 'Full name cannot exceed 60 characters'),
+  whatsappNumber: z
+    .string()
+    .trim()
+    .regex(/^[6-9]\d{9}$/, 'Please enter a valid 10-digit Indian mobile number starting with 6–9'),
+  email: z
+    .string()
+    .trim()
+    .email('Please enter a valid email address')
+    .or(z.literal(''))
+    .optional(),
+  age: z
+    .number({ message: 'Please enter a valid age' })
+    .int('Age must be a whole number')
+    .min(1, 'Age must be between 1 and 120')
+    .max(120, 'Age must be between 1 and 120'),
+  gender: z.enum(['Female', 'Male', 'Other'], {
+    message: 'Please select a gender',
+  }),
+  primaryComplaint: z
+    .string()
+    .trim()
+    .min(10, 'Please describe your primary complaint (at least 10 characters)')
+    .max(600, 'Primary complaint cannot exceed 600 characters'),
+});
+
+type PatientFormData = z.infer<typeof patientDetailsSchema>;
+
+export interface UploadedReportItem {
+  id: string; // Storage path or ID
   name: string;
-  sanskrit: string;
-  category: string;
-  tagline: string;
-  duration: string;
-  feeEstimate: string;
-  icon: any;
+  size: number;
+  progress: number;
+  status: 'uploading' | 'complete' | 'error';
+  error?: string;
 }
 
-export const BOOKING_SERVICES: BookingService[] = [
-  {
-    id: 'nadi-pariksha',
-    name: 'Nadi Pariksha & Consultation',
-    sanskrit: 'નાડી પરીક્ષા અને મૌલિક નિદાન',
-    category: 'Diagnostic',
-    tagline: 'Precision 8-fold radial pulse diagnosis evaluating 7 tissue layers (Dhatus) and Agni.',
-    duration: '45 Mins',
-    feeEstimate: '₹1,200',
-    icon: Activity,
-  },
-  {
-    id: 'panchakarma',
-    name: 'Panchakarma Bio-Cleansing',
-    sanskrit: 'પંચકર્મ શોધન ચિકિત્સા',
-    category: 'Systemic Detox',
-    tagline: 'Intensive cellular detoxification: internal oleation (Snehana), Swedana, and Karma.',
-    duration: '7 to 21 Days',
-    feeEstimate: '₹2,500 / session',
-    icon: Sparkles,
-  },
-  {
-    id: 'spine-joint',
-    name: 'Spine & Joint Restoration',
-    sanskrit: 'સંધિ અને મેરુદંડ ચિકિત્સા',
-    category: 'Musculoskeletal',
-    tagline: 'Targeted Kati, Janu, and Greeva Basti reservoirs for sciatica, arthritis & disc bulges.',
-    duration: '50 Mins',
-    feeEstimate: '₹1,800',
-    icon: Compass,
-  },
-  {
-    id: 'skin-hair',
-    name: 'Skin & Hair Clinical Care',
-    sanskrit: 'ત્વચા અને કેશ વિકાર',
-    category: 'Dermatological',
-    tagline: 'Deep blood purification (Rakta Shodhana) for psoriasis, chronic eczema, and hair loss.',
-    duration: '40 Mins',
-    feeEstimate: '₹1,200',
-    icon: Layers,
-  },
-  {
-    id: 'womens-health',
-    name: "Women's Health & Stri Roga",
-    sanskrit: 'સ્ત્રીરોગ અને પ્રસુતિ તંત્ર',
-    category: 'Endocrinology',
-    tagline: 'Restorative protocols for PCOD, hormonal dysregulation, cycle health & Garbh Sanskar.',
-    duration: '45 Mins',
-    feeEstimate: '₹950',
-    icon: HeartPulse,
-  },
-  {
-    id: 'digestive-metabolic',
-    name: 'Digestive & Metabolic Agni Care',
-    sanskrit: 'અગ્નિ અને ગ્રહણી ચિકિત્સા',
-    category: 'Gastroenterology',
-    tagline: 'Deepana-Pachana therapy for chronic IBS, ulcerative colitis, GERD, and fatty liver.',
-    duration: '40 Mins',
-    feeEstimate: '₹1,200',
-    icon: Sparkles,
-  },
-  {
-    id: 'stress-sleep',
-    name: 'Stress, Insomnia & Sleep Care',
-    sanskrit: 'શિરોધારા અને અનિદ્રા શમન',
-    category: 'Neuro-Psychological',
-    tagline: 'Rhythmic warm Brahmi oil Shirodhara and herbal nervines calming Prana Vayu.',
-    duration: '50 Mins',
-    feeEstimate: '₹2,200',
-    icon: Clock,
-  },
-];
+export type { BookingDraft };
 
-const SESSION_STORAGE_KEY = 'vankal_booking_session';
+const DRAFT_STORAGE_KEY = 'vankal_booking_draft';
 
-const stepVariants = {
-  enter: (dir: number) => ({
-    x: dir > 0 ? 36 : -36,
-    opacity: 0,
-    filter: 'blur(4px)',
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    filter: 'blur(0px)',
-  },
-  exit: (dir: number) => ({
-    x: dir > 0 ? -36 : 36,
-    opacity: 0,
-    filter: 'blur(4px)',
-  }),
-};
+/**
+ * Formats date and time into a friendly string:
+ * "Sat, 22 Nov · 4:30 PM"
+ */
+function formatFriendlyDateTime(
+  dateStr: string,
+  slotStart: string,
+  lang: 'EN' | 'GU' = 'EN'
+): string {
+  if (!dateStr || !slotStart) return '';
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dateObj = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+
+  const locale = lang === 'GU' ? 'gu-IN' : 'en-IN';
+  const weekday = new Intl.DateTimeFormat(locale, {
+    timeZone: 'Asia/Kolkata',
+    weekday: 'short',
+  }).format(dateObj);
+  const month = new Intl.DateTimeFormat(locale, {
+    timeZone: 'Asia/Kolkata',
+    month: 'short',
+  }).format(dateObj);
+
+  // Convert "HH:mm" to 12h
+  const [hStr, mStr] = slotStart.split(':');
+  let h = parseInt(hStr, 10);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  const time12 = `${h}:${mStr} ${ampm}`;
+
+  return `${weekday}, ${d} ${month} · ${time12}`;
+}
 
 export function BookClient() {
-  const searchParams = useSearchParams();
-  const { language, t } = useLanguage();
+  const router = useRouter();
+  const { t, language } = useLanguage();
 
-  // URL query params
-  const paramDosha = searchParams.get('dosha');
-  const paramTherapy = searchParams.get('therapy');
-  const paramPackage = searchParams.get('package');
-  const paramConcern = searchParams.get('concern');
-  const paramDoctor = searchParams.get('doctor');
+  // Mode state (Video is selected by default; In-Person is disabled)
+  const selectedMode = 'online';
 
-  // Step state: 1 to 6
-  const [step, setStep] = useState<number>(1);
-  const [direction, setDirection] = useState<1 | -1>(1);
+  // Schedule state from GET /api/slots
+  const [scheduleDays, setScheduleDays] = useState<DayScheduleResponse[]>([]);
+  const [serverNow, setServerNow] = useState<string>('');
+  const [isLoadingSlots, setIsLoadingSlots] = useState<boolean>(true);
+  const [slotNotice, setSlotNotice] = useState<string | null>(null);
 
-  // Form selections
-  const [selectedServiceId, setSelectedServiceId] = useState<string>('nadi-pariksha');
-  const [selectedDoctorId, setSelectedDoctorId] = useState<string>(paramDoctor || 'dr-lavesh-bohra');
-  const [selectedMode, setSelectedMode] = useState<'in-clinic' | 'online'>('in-clinic');
+  // Selected date & slot
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedSlot, setSelectedSlot] = useState<string>('');
 
-  // Patient Details
-  const [fullName, setFullName] = useState<string>('');
-  const [whatsappNumber, setWhatsappNumber] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [age, setAge] = useState<string>('');
-  const [gender, setGender] = useState<'Female' | 'Male' | 'Other'>('Female');
-  const [chiefComplaint, setChiefComplaint] = useState<string>('');
-  const [attachedFileName, setAttachedFileName] = useState<string>('');
-  const [knownDosha, setKnownDosha] = useState<string>('');
-  const [consentAgreed, setConsentAgreed] = useState<boolean>(false);
+  // Report files state
+  const [uploadedReports, setUploadedReports] = useState<UploadedReportItem[]>([]);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
-  // Validation errors
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [bookingError, setBookingError] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  // React Hook Form for Patient Details
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm<PatientFormData>({
+    resolver: zodResolver(patientDetailsSchema),
+    mode: 'onChange',
+  });
 
-  // Confirmed appointment result
-  const [confirmedAppointment, setConfirmedAppointment] = useState<Appointment | null>(null);
+  const complaintValue = watch('primaryComplaint') || '';
 
-  // 1. Initialize from URL params or sessionStorage
-  useEffect(() => {
-    // Check sessionStorage first
-    if (typeof window !== 'undefined') {
-      try {
-        const raw = sessionStorage.getItem(SESSION_STORAGE_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (parsed.selectedServiceId) setSelectedServiceId(parsed.selectedServiceId);
-          if (parsed.selectedDoctorId) setSelectedDoctorId(parsed.selectedDoctorId);
-          if (parsed.selectedMode) setSelectedMode(parsed.selectedMode);
-          if (parsed.selectedDate) setSelectedDate(parsed.selectedDate);
-          if (parsed.selectedSlot) setSelectedSlot(parsed.selectedSlot);
-          if (parsed.fullName) setFullName(parsed.fullName);
-          if (parsed.whatsappNumber) setWhatsappNumber(parsed.whatsappNumber);
-          if (parsed.email) setEmail(parsed.email);
-          if (parsed.age) setAge(parsed.age);
-          if (parsed.gender) setGender(parsed.gender);
-          if (parsed.chiefComplaint) setChiefComplaint(parsed.chiefComplaint);
-          if (parsed.step && parsed.step < 6) setStep(parsed.step);
-        }
-      } catch (e) {
-        console.warn('Could not read sessionStorage:', e);
-      }
-    }
-
-    // Process URL Query Parameters override
-    if (paramDoctor && doctors.some((d) => d.slug === paramDoctor || d.id === paramDoctor)) {
-      setSelectedDoctorId(paramDoctor);
-    }
-
-    if (paramDosha) {
-      setKnownDosha(paramDosha);
-    } else if (typeof window !== 'undefined') {
-      try {
-        const savedDosha = localStorage.getItem('vankal_dosha_result');
-        if (savedDosha) {
-          const parsed = JSON.parse(savedDosha);
-          if (parsed?.typeName) {
-            setKnownDosha(parsed.typeName);
-          }
-        }
-      } catch (e) {
-        console.warn('Could not read localStorage dosha:', e);
-      }
-    }
-
-    if (paramPackage) {
-      setSelectedServiceId('panchakarma');
-      const slugs = paramPackage.split(',');
-      const names = slugs
-        .map((s) => treatments.find((t) => t.slug === s)?.name || s)
-        .join(', ');
-      setChiefComplaint((prev) => prev || `Panchakarma Package Request: ${names}`);
-    } else if (paramTherapy) {
-      const therapy = treatments.find((t) => t.slug === paramTherapy);
-      if (therapy) {
-        if (therapy.slug.includes('basti') || therapy.category === 'Spine & Joint') {
-          setSelectedServiceId('spine-joint');
-        } else if (therapy.slug.includes('shirodhara')) {
-          setSelectedServiceId('stress-sleep');
-        } else if (therapy.category === 'Panchakarma') {
-          setSelectedServiceId('panchakarma');
-        } else if (therapy.category === 'Skin & Hair') {
-          setSelectedServiceId('skin-hair');
-        }
-        setChiefComplaint((prev) => prev || `Therapy Consultation: ${therapy.name} (${therapy.sanskritName})`);
-      }
-    } else if (paramConcern) {
-      if (paramConcern.toLowerCase().includes('spine') || paramConcern.toLowerCase().includes('sciatica') || paramConcern.toLowerCase().includes('arthritis')) {
-        setSelectedServiceId('spine-joint');
-      } else if (paramConcern.toLowerCase().includes('skin') || paramConcern.toLowerCase().includes('psoriasis')) {
-        setSelectedServiceId('skin-hair');
-      } else if (paramConcern.toLowerCase().includes('pcod') || paramConcern.toLowerCase().includes('women')) {
-        setSelectedServiceId('womens-health');
-      } else if (paramConcern.toLowerCase().includes('ibs') || paramConcern.toLowerCase().includes('gut') || paramConcern.toLowerCase().includes('acidity')) {
-        setSelectedServiceId('digestive-metabolic');
-      } else if (paramConcern.toLowerCase().includes('insomnia') || paramConcern.toLowerCase().includes('stress')) {
-        setSelectedServiceId('stress-sleep');
-      }
-      setChiefComplaint((prev) => prev || `Health Inquiry: ${paramConcern}`);
-    }
-  }, [paramDosha, paramTherapy, paramPackage, paramConcern, paramDoctor]);
-
-  // Set default initial date (tomorrow, or Monday if Sunday)
-  useEffect(() => {
-    if (!selectedDate) {
-      const d = new Date();
-      d.setDate(d.getDate() + 1);
-      if (d.getDay() === 0) d.setDate(d.getDate() + 1); // skip Sunday
-      setSelectedDate(d.toISOString().split('T')[0]);
-    }
-  }, [selectedDate]);
-
-  // Persist session state whenever user changes fields (unless confirmed)
-  useEffect(() => {
-    if (step < 6 && typeof window !== 'undefined') {
-      try {
-        const stateToSave = {
-          step,
-          selectedServiceId,
-          selectedDoctorId,
-          selectedMode,
-          selectedDate,
-          selectedSlot,
-          fullName,
-          whatsappNumber,
-          email,
-          age,
-          gender,
-          chiefComplaint,
-        };
-        sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(stateToSave));
-      } catch (e) {
-        console.warn('Failed to save booking state:', e);
-      }
-    }
-  }, [
-    step,
-    selectedServiceId,
-    selectedDoctorId,
-    selectedMode,
-    selectedDate,
-    selectedSlot,
-    fullName,
-    whatsappNumber,
-    email,
-    age,
-    gender,
-    chiefComplaint,
-  ]);
-
-  // Active service object
-  const currentService = useMemo(() => {
-    return BOOKING_SERVICES.find((s) => s.id === selectedServiceId) || BOOKING_SERVICES[0];
-  }, [selectedServiceId]);
-
-  // Active doctor object
-  const currentDoctor = useMemo(() => {
-    return doctors.find((d) => d.slug === selectedDoctorId || d.id === selectedDoctorId) || doctors[0];
-  }, [selectedDoctorId]);
-
-  // Step Validation Helpers
-  const validateStep1 = () => {
-    if (!selectedServiceId) {
-      setErrors({ service: 'Please select a consultation service or clinical concern' });
-      return false;
-    }
-    setErrors({});
-    return true;
-  };
-
-  const validateStep2 = () => {
-    if (!selectedDoctorId) {
-      setErrors({ doctor: 'Please choose an attending physician' });
-      return false;
-    }
-    if (!selectedMode) {
-      setErrors({ mode: 'Please select consultation mode (In-Clinic or Online)' });
-      return false;
-    }
-    setErrors({});
-    return true;
-  };
-
-  const validateStep3 = () => {
-    const errs: Record<string, string> = {};
-    if (!selectedDate) errs.date = 'Please select an appointment date on the calendar';
-    if (!selectedSlot) errs.slot = 'Please select a morning or evening time slot';
-    setErrors(errs);
-    return Object.keys(errs).length === 0;
-  };
-
-  const validateStep4 = () => {
-    const errs: Record<string, string> = {};
-    if (!fullName.trim() || fullName.trim().length < 3) {
-      errs.fullName = 'Full name must be at least 3 characters';
-    }
-    // Indian WhatsApp mobile validation: 10 digits starting with 6-9
-    const cleanPhone = whatsappNumber.replace(/\D/g, '').slice(-10);
-    if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
-      errs.whatsappNumber = 'Please enter a valid 10-digit Indian WhatsApp mobile number';
-    }
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errs.email = 'Please enter a valid email address';
-    }
-    const ageNum = parseInt(age, 10);
-    if (!age || isNaN(ageNum) || ageNum < 1 || ageNum > 115) {
-      errs.age = 'Please enter a valid age between 1 and 115';
-    }
-    if (!chiefComplaint.trim() || chiefComplaint.trim().length < 10) {
-      errs.chiefComplaint = 'Please describe your health concern or symptoms (min 10 characters)';
-    }
-
-    setErrors(errs);
-    return Object.keys(errs).length === 0;
-  };
-
-  const validateStep5 = () => {
-    if (!consentAgreed) {
-      setErrors({ consent: 'Please confirm your consent to the clinical consultation terms' });
-      return false;
-    }
-    setErrors({});
-    return true;
-  };
-
-  // Step Navigation handlers
-  const handleNextStep = () => {
-    setDirection(1);
-    if (step === 1 && validateStep1()) setStep(2);
-    else if (step === 2 && validateStep2()) setStep(3);
-    else if (step === 3 && validateStep3()) setStep(4);
-    else if (step === 4 && validateStep4()) setStep(5);
-  };
-
-  const handlePrevStep = () => {
-    if (step > 1) {
-      setDirection(-1);
-      setErrors({});
-      setBookingError('');
-      setStep((s) => s - 1);
-    }
-  };
-
-  // Final Submission Handler with Supabase-ready service layer & double-booking prevention
-  const handleConfirmBooking = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateStep5()) return;
-
-    setIsSubmitting(true);
-    setBookingError('');
-
+  // 1. Fetch live slots from API
+  const fetchSlots = useCallback(async () => {
     try {
-      const input: CreateAppointmentInput = {
-        serviceId: currentService.id,
-        serviceName: currentService.name,
-        serviceCategory: currentService.category,
-        doctorId: currentDoctor.slug,
-        doctorName: currentDoctor.name,
-        mode: selectedMode,
-        date: selectedDate,
-        slot: selectedSlot,
-        patientName: fullName.trim(),
-        whatsappNumber: whatsappNumber.trim().startsWith('+91')
-          ? whatsappNumber.trim()
-          : `+91 ${whatsappNumber.trim()}`,
-        email: email.trim() || `${fullName.toLowerCase().replace(/\s+/g, '')}@vankal-patient.local`,
-        age: parseInt(age, 10),
-        gender,
-        chiefComplaint: chiefComplaint.trim(),
-        medicalReportFileName: attachedFileName || undefined,
-        knownDosha: knownDosha || undefined,
+      const res = await fetch('/api/slots', { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to fetch slots');
+      const data = await res.json();
+      if (data.success && data.days) {
+        setScheduleDays(data.days);
+        if (data.serverNow) setServerNow(data.serverNow);
+      }
+    } catch (err) {
+      console.warn('Slot fetch error:', err);
+    } finally {
+      setIsLoadingSlots(false);
+    }
+  }, []);
+
+  // 2. Initial mount: load saved draft if present, fetch slots, setup interval & visibility listener
+  useEffect(() => {
+    // Restore saved draft only after mount to prevent hydration mismatch
+    try {
+      const saved = sessionStorage.getItem(DRAFT_STORAGE_KEY);
+      if (saved) {
+        const parsed: Partial<BookingDraft> = JSON.parse(saved);
+        if (parsed.patientName) setValue('fullName', parsed.patientName, { shouldValidate: true });
+        if (parsed.patientWhatsapp) {
+          const rawPhone = parsed.patientWhatsapp.replace(/^\+91/, '');
+          setValue('whatsappNumber', rawPhone, { shouldValidate: true });
+        }
+        if (parsed.patientEmail) setValue('email', parsed.patientEmail, { shouldValidate: true });
+        if (parsed.patientAge) setValue('age', parsed.patientAge, { shouldValidate: true });
+        if (parsed.patientGender) setValue('gender', parsed.patientGender, { shouldValidate: true });
+        if (parsed.primaryComplaint) setValue('primaryComplaint', parsed.primaryComplaint, { shouldValidate: true });
+        if (parsed.date) setSelectedDate(parsed.date);
+        if (parsed.slotStart) setSelectedSlot(parsed.slotStart);
+        if (parsed.reportFileIds && parsed.reportFileNames) {
+          const restored: UploadedReportItem[] = parsed.reportFileIds.map((id, idx) => ({
+            id,
+            name: parsed.reportFileNames?.[idx] || `Report-${idx + 1}`,
+            size: 0,
+            progress: 100,
+            status: 'complete',
+          }));
+          setUploadedReports(restored);
+        }
+      }
+    } catch (e) {
+      console.warn('Could not read draft from sessionStorage:', e);
+    }
+
+    fetchSlots();
+
+    // Refresh every 60 seconds
+    const interval = setInterval(fetchSlots, 60000);
+
+    // Refresh on tab focus and visibilitychange
+    const handleFocus = () => fetchSlots();
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        fetchSlots();
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, [fetchSlots, setValue]);
+
+  // 3. Keep slot selection synced with latest schedule
+  useEffect(() => {
+    if (!scheduleDays.length) return;
+
+    // Check if the currently selected slot became unavailable
+    if (selectedDate && selectedSlot) {
+      const day = scheduleDays.find((d) => d.date === selectedDate);
+      const slot = day?.slots.find((s) => s.start === selectedSlot);
+      if (!slot || slot.status !== 'available') {
+        setSelectedSlot('');
+        setSlotNotice(
+          t.booking.slotUnavailableGentle ||
+            'The selected time slot is no longer available. Please choose another time.'
+        );
+      }
+    }
+
+    // Auto-select the first date that has an available slot if not selected
+    if (!selectedDate) {
+      const firstOpenDay = scheduleDays.find(
+        (d) => d.isOpen && d.slots.some((s) => s.status === 'available')
+      );
+      if (firstOpenDay) {
+        setSelectedDate(firstOpenDay.date);
+      }
+    }
+  }, [scheduleDays, selectedDate, selectedSlot, t.booking.slotUnavailableGentle]);
+
+  // Available dates for calendar (days where isOpen is true)
+  const availableDates = useMemo(() => {
+    return scheduleDays.filter((d) => d.isOpen).map((d) => d.date);
+  }, [scheduleDays]);
+
+  const disabledDates = useMemo(() => {
+    return scheduleDays.filter((d) => !d.isOpen).map((d) => d.date);
+  }, [scheduleDays]);
+
+  const serverToday = useMemo(() => {
+    if (!serverNow) return undefined;
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date(serverNow));
+  }, [serverNow]);
+
+  const serverMaxDate = useMemo(() => {
+    if (!scheduleDays.length) return undefined;
+    return scheduleDays[scheduleDays.length - 1].date;
+  }, [scheduleDays]);
+
+  // Current day's slots
+  const currentDaySlots: DaySlotResponse[] = useMemo(() => {
+    if (!selectedDate || !scheduleDays.length) return [];
+    const day = scheduleDays.find((d) => d.date === selectedDate);
+    return day?.slots || [];
+  }, [selectedDate, scheduleDays]);
+
+  // File Upload to Supabase Storage
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const newFiles = Array.from(files);
+    if (uploadedReports.length + newFiles.length > 3) {
+      setUploadError('Maximum 3 files allowed.');
+      return;
+    }
+
+    setUploadError(null);
+
+    for (const file of newFiles) {
+      // 4MB limit = 4 * 1024 * 1024 bytes
+      if (file.size > 4 * 1024 * 1024) {
+        setUploadError(`File "${file.name}" exceeds 4MB limit.`);
+        continue;
+      }
+
+      const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        setUploadError(`File "${file.name}" is not a valid PDF or image.`);
+        continue;
+      }
+
+      const tempId = `temp-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+      const newReport: UploadedReportItem = {
+        id: tempId,
+        name: file.name,
+        size: file.size,
+        progress: 25,
+        status: 'uploading',
       };
 
-      const result = await createAppointment(input);
+      setUploadedReports((prev) => [...prev, newReport]);
 
-      if (!result.success || !result.appointment) {
-        setBookingError(result.error || 'This slot was just reserved. Please choose another slot.');
-        setIsSubmitting(false);
-        // Step back to slot selection
-        setStep(3);
-        return;
+      try {
+        const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const storagePath = `reports/${Date.now()}_${sanitizedName}`;
+
+        const { data, error } = await supabase.storage
+          .from('medical-reports')
+          .upload(storagePath, file, {
+            cacheControl: '3600',
+            upsert: false,
+          });
+
+        if (error) {
+          setUploadedReports((prev) =>
+            prev.map((r) =>
+              r.id === tempId ? { ...r, status: 'error', error: error.message } : r
+            )
+          );
+        } else {
+          const finalId = data?.path || storagePath;
+          setUploadedReports((prev) =>
+            prev.map((r) =>
+              r.id === tempId ? { ...r, id: finalId, status: 'complete', progress: 100 } : r
+            )
+          );
+        }
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Upload failed';
+        setUploadedReports((prev) =>
+          prev.map((r) =>
+            r.id === tempId ? { ...r, status: 'error', error: message } : r
+          )
+        );
       }
+    }
 
-      // Success: Save confirmed appointment and advance to Step 6
-      setConfirmedAppointment(result.appointment);
-      setIsSubmitting(false);
-      setDirection(1);
-      setStep(6);
+    e.target.value = '';
+  };
 
-      // Clear pending draft from sessionStorage
-      if (typeof window !== 'undefined') {
-        sessionStorage.removeItem(SESSION_STORAGE_KEY);
+  const handleRemoveReport = async (reportId: string) => {
+    setUploadedReports((prev) => prev.filter((r) => r.id !== reportId));
+    try {
+      if (!reportId.startsWith('temp-')) {
+        await supabase.storage.from('medical-reports').remove([reportId]);
       }
-    } catch (err: any) {
-      console.error('Booking error:', err);
-      setBookingError('An unexpected network error occurred while reserving your slot. Please try again.');
-      setIsSubmitting(false);
+    } catch {
+      // Ignore cleanup error
     }
   };
 
-  // Handle file attachment simulation
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 15 * 1024 * 1024) {
-        setErrors((prev) => ({ ...prev, file: 'File exceeds 15 MB limit' }));
-        return;
-      }
-      setAttachedFileName(file.name);
-      setErrors((prev) => {
-        const copy = { ...prev };
-        delete copy.file;
-        return copy;
-      });
+  // Form Submission -> Save Draft & Navigate to /book/review
+  const onSubmit = (formData: PatientFormData) => {
+    if (!selectedDate || !selectedSlot) return;
+
+    const currentSlotObj = currentDaySlots.find((s) => s.start === selectedSlot);
+    const slotEnd = currentSlotObj?.end || '';
+    const slotLabel = currentSlotObj?.label || `${selectedSlot} – ${slotEnd}`;
+
+    const draft: BookingDraft = {
+      serviceId: BOOKING_CONFIG.service.id,
+      serviceName: BOOKING_CONFIG.service.name,
+      fee: BOOKING_CONFIG.service.feeInr,
+      feePaise: BOOKING_CONFIG.service.feePaise,
+      doctorId: BOOKING_CONFIG.doctorId,
+      doctorName: BOOKING_CONFIG.doctorName,
+      mode: 'online',
+      date: selectedDate,
+      slotStart: selectedSlot,
+      slotEnd,
+      slotLabel,
+      patientName: formData.fullName,
+      patientWhatsapp: `+91${formData.whatsappNumber}`,
+      patientEmail: formData.email || '',
+      patientAge: formData.age,
+      patientGender: formData.gender,
+      primaryComplaint: formData.primaryComplaint,
+      reportFileIds: uploadedReports.filter((r) => r.status === 'complete').map((r) => r.id),
+      reportFileNames: uploadedReports.filter((r) => r.status === 'complete').map((r) => r.name),
+      createdAt: new Date().toISOString(),
+    };
+
+    try {
+      sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+    } catch (e) {
+      console.warn('Failed saving draft to sessionStorage:', e);
     }
+
+    router.push('/book/review');
   };
 
-  const handleBookAnother = () => {
-    setConfirmedAppointment(null);
-    setDirection(-1);
-    setStep(1);
-    setFullName('');
-    setWhatsappNumber('');
-    setEmail('');
-    setAge('');
-    setChiefComplaint('');
-    setAttachedFileName('');
-    setConsentAgreed(false);
-  };
+  const isContinueEnabled = isValid && Boolean(selectedDate) && Boolean(selectedSlot) && selectedMode === 'online';
+
+  const friendlySummary = formatFriendlyDateTime(selectedDate, selectedSlot, language);
 
   return (
-    <div className="pt-28 md:pt-36 pb-24 bg-cream min-h-screen">
-      <Container size="default">
-        {/* Breadcrumb Header */}
-        <div className="mb-8">
-          <nav aria-label="Breadcrumb" className="text-xs font-mono text-ink/60 mb-3">
-            <Link href="/" className="hover:text-forest transition-colors">
-              Home
-            </Link>
-            <span className="mx-2">/</span>
-            <span className="text-forest font-medium">Appointment Desk</span>
-          </nav>
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-36 lg:pb-16 overflow-x-hidden">
+      {/* Tiny 2-Step Indicator */}
+      <div className="flex items-center gap-2 font-mono text-xs text-forest/70 uppercase tracking-wider mb-8">
+        <span className="inline-flex items-center gap-1.5 font-semibold text-deep-forest">
+          <span className="w-5 h-5 rounded-full bg-forest text-paper flex items-center justify-center text-[11px] font-mono">
+            1
+          </span>
+          {t.booking.step1Title}
+        </span>
+        <span className="text-forest/30">·</span>
+        <span className="inline-flex items-center gap-1.5 text-ink/40">
+          <span className="w-5 h-5 rounded-full border border-forest/20 text-ink/50 flex items-center justify-center text-[11px] font-mono">
+            2
+          </span>
+          {t.booking.step2Title}
+        </span>
+      </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <div className="flex items-center gap-2 mb-1.5">
-                <Badge variant="sage" className="text-[10px]">
-                  Registration No.: to be added
-                </Badge>
-                {knownDosha && (
-                  <Badge variant="turmeric" className="text-[10px]">
-                    Prakriti Detected: {knownDosha}
-                  </Badge>
-                )}
+      {/* Main 2-Column Desktop / Single Column Mobile Layout */}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+          {/* LEFT COLUMN (~56%): Consultation Mode & Patient Details */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
+            {/* 1. Consultation Mode Card */}
+            <div className="bg-paper border border-forest/15 rounded-[4px] p-5 sm:p-7 shadow-xs">
+              <h2 className="font-display text-lg text-deep-forest font-medium mb-4 flex items-center gap-2">
+                <Video className="w-4 h-4 text-forest" />
+                <span>{t.booking.modeTitle}</span>
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Active Video Consultation Card */}
+                <div
+                  className="p-4 sm:p-5 rounded-[3px] border-2 border-forest bg-cream/70 text-deep-forest shadow-xs relative flex flex-col justify-between select-none"
+                  role="radio"
+                  aria-checked="true"
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2 font-display text-base font-medium text-deep-forest">
+                      <Video className="w-4 h-4 text-turmeric" />
+                      <span>{t.booking.videoConsult}</span>
+                    </div>
+                    <CheckCircle2 className="w-5 h-5 text-forest shrink-0" />
+                  </div>
+
+                  <p className="font-body text-xs text-ink/75 leading-relaxed mb-4">
+                    {t.booking.videoConsultDesc}
+                  </p>
+
+                  <div className="pt-2 border-t border-forest/10 flex items-center justify-between">
+                    <span className="font-mono text-xs text-forest/70 uppercase">
+                      {t.booking.consultFee}
+                    </span>
+                    <span className="font-display text-lg font-semibold text-deep-forest">
+                      {t.booking.fee499}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Disabled In-Person Consultation Card */}
+                <div
+                  className="p-4 sm:p-5 rounded-[3px] border border-forest/10 bg-cream/30 text-ink/40 opacity-55 cursor-not-allowed select-none flex flex-col justify-between"
+                  aria-disabled="true"
+                  tabIndex={-1}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2 font-display text-base font-medium">
+                      <Building className="w-4 h-4" />
+                      <span>{t.booking.inPersonConsult}</span>
+                    </div>
+                    <span className="font-mono text-[9px] uppercase px-1.5 py-0.5 rounded bg-clay/10 text-clay border border-clay/20 font-semibold tracking-wider">
+                      {t.booking.currentlyUnavailable}
+                    </span>
+                  </div>
+
+                  <p className="font-body text-xs text-ink/50 leading-relaxed mb-4">
+                    In-clinic OPD appointments are temporarily unavailable.
+                  </p>
+
+                  <div className="pt-2 border-t border-forest/5 flex items-center justify-between">
+                    <span className="font-mono text-xs text-ink/40 uppercase">Mode</span>
+                    <span className="font-mono text-xs text-ink/40">In-Clinic</span>
+                  </div>
+                </div>
               </div>
-              <h1 className="font-display text-display-h1 text-deep-forest tracking-tight leading-[1.08]">
-                {t.booking.title}
-              </h1>
             </div>
 
-            <div className="hidden md:flex items-center gap-2 text-xs font-mono text-forest">
-              <ShieldCheck className="w-4 h-4 text-forest" />
-              <span>Unhurried 40+ Min Diagnostic Assessment</span>
+            {/* 2. Patient Details Card */}
+            <div className="bg-paper border border-forest/15 rounded-[4px] p-5 sm:p-7 shadow-xs space-y-5">
+              <h2 className="font-display text-lg text-deep-forest font-medium border-b border-forest/10 pb-3">
+                {t.booking.patientDetailsTitle}
+              </h2>
+
+              {/* Full Name */}
+              <div>
+                <label htmlFor="patientFullName" className="block font-mono text-xs uppercase text-deep-forest/80 mb-1 font-medium">
+                  {t.booking.fullNameLabel} *
+                </label>
+                <input
+                  id="patientFullName"
+                  type="text"
+                  placeholder={t.booking.fullNamePlaceholder}
+                  {...register('fullName')}
+                  className="w-full min-h-[48px] px-3.5 py-2.5 rounded-[3px] bg-cream text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest focus-visible:ring-2 focus-visible:ring-forest"
+                />
+                {errors.fullName && (
+                  <p role="alert" aria-live="polite" className="font-body text-xs text-clay mt-1">{errors.fullName.message}</p>
+                )}
+              </div>
+
+              {/* WhatsApp Number with +91 Prefix */}
+              <div>
+                <label htmlFor="patientWhatsapp" className="block font-mono text-xs uppercase text-deep-forest/80 mb-1 font-medium">
+                  {t.booking.whatsappLabel} *
+                </label>
+                <div className="flex">
+                  <span className="inline-flex items-center px-3 min-h-[48px] rounded-l-[3px] border border-r-0 border-forest/15 bg-forest/5 text-deep-forest font-mono text-sm font-semibold select-none">
+                    +91
+                  </span>
+                  <input
+                    id="patientWhatsapp"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel-national"
+                    placeholder={t.booking.whatsappPlaceholder}
+                    {...register('whatsappNumber')}
+                    className="flex-1 min-h-[48px] px-3.5 py-2.5 rounded-r-[3px] bg-cream text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest focus-visible:ring-2 focus-visible:ring-forest"
+                  />
+                </div>
+                <p className="font-mono text-[11px] text-ink/60 mt-1">
+                  {t.booking.whatsappHelper}
+                </p>
+                {errors.whatsappNumber && (
+                  <p role="alert" aria-live="polite" className="font-body text-xs text-clay mt-1">{errors.whatsappNumber.message}</p>
+                )}
+              </div>
+
+              {/* Email Address (Optional) */}
+              <div>
+                <label htmlFor="patientEmail" className="block font-mono text-xs uppercase text-deep-forest/80 mb-1 font-medium">
+                  {t.booking.emailLabel}
+                </label>
+                <input
+                  id="patientEmail"
+                  type="email"
+                  inputMode="email"
+                  placeholder={t.booking.emailPlaceholder}
+                  {...register('email')}
+                  className="w-full min-h-[48px] px-3.5 py-2.5 rounded-[3px] bg-cream text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest focus-visible:ring-2 focus-visible:ring-forest"
+                />
+                {errors.email && (
+                  <p role="alert" aria-live="polite" className="font-body text-xs text-clay mt-1">{errors.email.message}</p>
+                )}
+              </div>
+
+              {/* Age & Gender (Row) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="patientAge" className="block font-mono text-xs uppercase text-deep-forest/80 mb-1 font-medium">
+                    {t.booking.ageShortLabel} (1–120) *
+                  </label>
+                  <input
+                    id="patientAge"
+                    type="number"
+                    min="1"
+                    max="120"
+                    placeholder={t.booking.agePlaceholder}
+                    {...register('age', { valueAsNumber: true })}
+                    className="w-full min-h-[48px] px-3.5 py-2.5 rounded-[3px] bg-cream text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest focus-visible:ring-2 focus-visible:ring-forest"
+                  />
+                  {errors.age && (
+                    <p role="alert" aria-live="polite" className="font-body text-xs text-clay mt-1">{errors.age.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="patientGender" className="block font-mono text-xs uppercase text-deep-forest/80 mb-1 font-medium">
+                    {t.booking.genderLabel} *
+                  </label>
+                  <select
+                    id="patientGender"
+                    defaultValue=""
+                    {...register('gender')}
+                    className="w-full min-h-[48px] px-3.5 py-2.5 rounded-[3px] bg-cream text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest focus-visible:ring-2 focus-visible:ring-forest cursor-pointer"
+                  >
+                    <option value="" disabled>
+                      {t.booking.genderSelectPlaceholder}
+                    </option>
+                    <option value="Female">{t.booking.female}</option>
+                    <option value="Male">{t.booking.male}</option>
+                    <option value="Other">{t.booking.other}</option>
+                  </select>
+                  {errors.gender && (
+                    <p role="alert" aria-live="polite" className="font-body text-xs text-clay mt-1">{errors.gender.message}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Primary Complaint */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label htmlFor="primaryComplaint" className="block font-mono text-xs uppercase text-deep-forest/80 font-medium">
+                    {t.booking.complaintLabel} *
+                  </label>
+                  <span className="font-mono text-[10px] text-ink/50">
+                    {complaintValue.length}/600
+                  </span>
+                </div>
+                <textarea
+                  id="primaryComplaint"
+                  rows={4}
+                  maxLength={600}
+                  placeholder={t.booking.complaintPlaceholder}
+                  {...register('primaryComplaint')}
+                  className="w-full px-3.5 py-3 rounded-[3px] bg-cream text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest focus-visible:ring-2 focus-visible:ring-forest min-h-[100px]"
+                />
+                {errors.primaryComplaint && (
+                  <p role="alert" aria-live="polite" className="font-body text-xs text-clay mt-1">
+                    {errors.primaryComplaint.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Reports Upload (Optional) */}
+              <div className="pt-2 border-t border-forest/10">
+                <label className="block font-mono text-xs uppercase text-deep-forest/80 mb-1 font-medium">
+                  {t.booking.reportsLabel}
+                </label>
+                <p className="font-body text-xs text-ink/65 mb-3">
+                  {t.booking.reportsDesc}
+                </p>
+
+                {/* Upload Picker Button */}
+                {uploadedReports.length < 3 && (
+                  <label className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[48px] rounded-[3px] border border-dashed border-forest/30 bg-cream/50 text-deep-forest font-mono text-xs hover:bg-cream hover:border-forest cursor-pointer transition-colors">
+                    <Upload className="w-4 h-4 text-forest" />
+                    <span>{t.booking.uploadButton}</span>
+                    <input
+                      type="file"
+                      multiple
+                      accept=".pdf,image/jpeg,image/png,image/webp"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+
+                {uploadError && (
+                  <p className="font-body text-xs text-clay mt-2 flex items-center gap-1.5">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{uploadError}</span>
+                  </p>
+                )}
+
+                {/* Uploaded Files List */}
+                {uploadedReports.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    {uploadedReports.map((report) => (
+                      <div
+                        key={report.id}
+                        className="flex items-center justify-between p-2.5 rounded-[3px] bg-cream border border-forest/15 text-xs font-mono"
+                      >
+                        <div className="flex items-center gap-2 truncate">
+                          <FileText className="w-4 h-4 text-forest shrink-0" />
+                          <span className="truncate max-w-[180px] sm:max-w-xs text-deep-forest">
+                            {report.name}
+                          </span>
+                          {report.status === 'uploading' && (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin text-turmeric shrink-0" />
+                          )}
+                          {report.status === 'complete' && (
+                            <span className="text-[10px] text-forest/70 font-sans">
+                              ✓ {t.booking.uploadSuccess}
+                            </span>
+                          )}
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveReport(report.id)}
+                          className="text-clay/80 hover:text-clay p-1 rounded transition-colors cursor-pointer"
+                          aria-label="Remove file"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN (~44%): Date, Slot, Summary (Sticky on Desktop) */}
+          <div className="lg:col-span-5 lg:sticky lg:top-24 flex flex-col gap-6 self-start">
+            {/* Slot Notification Banner (Gentle notice when slot becomes unavailable) */}
+            {slotNotice && (
+              <div className="p-3 bg-amber-50 border border-amber-300 rounded-[3px] text-xs font-body text-amber-900 flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <span>{slotNotice}</span>
+                  <button
+                    type="button"
+                    onClick={() => setSlotNotice(null)}
+                    className="block font-mono text-[10px] underline uppercase mt-1 cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Calendar */}
+            <CustomBookingCalendar
+              selectedDate={selectedDate}
+              onSelectDate={(date) => {
+                setSelectedDate(date);
+                setSelectedSlot('');
+                setSlotNotice(null);
+              }}
+              minDate={serverToday}
+              maxDate={serverMaxDate}
+              maxDaysAhead={14}
+              availableDates={availableDates}
+              disabledDates={disabledDates}
+            />
+
+            {/* Slot Picker */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <h3 className="font-display text-sm font-medium text-deep-forest flex items-center gap-1.5">
+                  <Clock className="w-4 h-4 text-forest" />
+                  <span>{t.booking.dateTimeTitle}</span>
+                </h3>
+              </div>
+
+              <SlotPicker
+                slots={currentDaySlots}
+                selectedSlot={selectedSlot}
+                onSelectSlot={(slot) => {
+                  setSelectedSlot(slot);
+                  setSlotNotice(null);
+                }}
+                isLoading={isLoadingSlots}
+                t={{
+                  morningSlots: t.booking.morningSlots,
+                  eveningSlots: t.booking.eveningSlots,
+                  noSlotsForDay: t.booking.noSlotsForDay,
+                }}
+              />
+            </div>
+
+            {/* Summary Box & Continue (Desktop) */}
+            <div className="hidden lg:block bg-paper border border-forest/15 rounded-[4px] p-5 shadow-xs space-y-4">
+              <div className="pb-3 border-b border-forest/10">
+                <span className="font-mono text-[10px] uppercase text-forest/70 block mb-1">
+                  Appointment Summary
+                </span>
+                {selectedDate && selectedSlot ? (
+                  <p className="font-display text-sm text-deep-forest font-medium">
+                    {friendlySummary} · {t.booking.videoConsult} · {t.booking.fee499}
+                  </p>
+                ) : (
+                  <p className="font-body text-xs text-ink/50 italic">
+                    {t.booking.summaryPlaceholder}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center justify-between text-xs font-mono">
+                <span className="text-ink/60">Total Consultation Fee</span>
+                <span className="font-display text-base font-semibold text-deep-forest">
+                  ₹499
+                </span>
+              </div>
+
+              <button
+                type="submit"
+                disabled={!isContinueEnabled}
+                className="w-full min-h-[48px] py-3.5 px-6 rounded-[3px] bg-forest text-paper font-sans text-sm font-medium hover:bg-forest/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+              >
+                <span className="whitespace-nowrap">{t.booking.continueBtn}</span>
+                <ArrowRight className="w-4 h-4 shrink-0" />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* 6-Step Visual Progress Bar */}
-        <StepProgress
-          currentStep={step}
-          onStepClick={(s) => {
-            if (s < step && step < 6) {
-              setDirection(s > step ? 1 : -1);
-              setStep(s);
-            }
-          }}
-        />
-
-        {/* Double-booking / System Error Banner */}
-        {bookingError && (
-          <div className="mb-6 p-4 rounded-[4px] bg-clay/10 border-l-4 border-clay flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-clay shrink-0 mt-0.5" />
-            <div className="text-xs font-body text-ink/80 leading-relaxed">
-              <span className="font-mono uppercase font-semibold text-clay block mb-0.5">
-                Slot Collision Notice
-              </span>
-              {bookingError}
+        {/* Mobile Sticky Bottom Bar (1024px and below) */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-paper/95 backdrop-blur-md border-t border-forest/15 p-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] shadow-lg">
+          <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
+            <div className="flex-1 min-w-0">
+              {selectedDate && selectedSlot ? (
+                <div className="truncate">
+                  <p className="font-mono text-[11px] text-deep-forest font-medium truncate">
+                    {friendlySummary}
+                  </p>
+                  <span className="font-display text-xs font-semibold text-forest">
+                    ₹499 (Video)
+                  </span>
+                </div>
+              ) : (
+                <p className="font-body text-xs text-ink/60 leading-tight">
+                  {t.booking.summaryPlaceholder}
+                </p>
+              )}
             </div>
-          </div>
-        )}
 
-        <AnimatePresence mode="wait" custom={direction}>
-          {/* STEP 1: CONCERN & SERVICE */}
-          {step === 1 && (
-            <motion.div
-              key="step1"
-              custom={direction}
-              variants={stepVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="space-y-6"
+            <button
+              type="submit"
+              disabled={!isContinueEnabled}
+              className="min-h-[48px] py-2.5 px-5 rounded-[3px] bg-forest text-paper font-sans text-xs sm:text-sm font-medium hover:bg-forest/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-1.5 shrink-0 shadow-xs cursor-pointer whitespace-nowrap"
             >
-            <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
-              <div className="max-w-2xl mb-6">
-                <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 1 of 5 · {language === 'GU' ? 'સેવા પસંદગી' : 'Service Selection'}
-                </span>
-                <h2 className="font-display text-2xl text-deep-forest font-medium">
-                  Select Your Primary Clinical Concern or Service
-                </h2>
-                <p className="font-body text-xs sm:text-sm text-ink/75 mt-1 leading-relaxed">
-                  Choose the specialized therapeutic department most aligned with your current health
-                  symptoms. Your attending Vaidya will refine this during radial pulse palpation.
-                </p>
-              </div>
-
-              {errors.service && (
-                <p className="font-body text-xs text-clay mb-4 font-medium">{errors.service}</p>
-              )}
-
-              {/* Service Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {BOOKING_SERVICES.map((srv) => {
-                  const isSelected = selectedServiceId === srv.id;
-                  const Icon = srv.icon;
-
-                  return (
-                    <div
-                      key={srv.id}
-                      onClick={() => {
-                        setSelectedServiceId(srv.id);
-                        setErrors({});
-                      }}
-                      className={`p-5 rounded-[4px] border transition-all cursor-pointer flex flex-col justify-between ${
-                        isSelected
-                          ? 'bg-cream border-forest ring-2 ring-forest/30 shadow-xs'
-                          : 'bg-paper border-forest/15 hover:border-forest/40 hover:bg-cream/40'
-                      }`}
-                    >
-                      <div>
-                        <div className="flex items-center justify-between gap-2 mb-2">
-                          <span className="font-mono text-[10px] text-forest/70 uppercase tracking-wider font-semibold">
-                            {srv.category}
-                          </span>
-                          <span className="font-mono text-xs text-clay font-medium">
-                            {srv.feeEstimate}
-                          </span>
-                        </div>
-
-                        <div className="flex items-start gap-3 mb-2">
-                          <div
-                            className={`p-2 rounded-[3px] shrink-0 mt-0.5 ${
-                              isSelected ? 'bg-forest text-paper' : 'bg-cream text-forest border border-forest/15'
-                            }`}
-                          >
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <h3 className="font-display text-base text-deep-forest font-medium">
-                              {srv.name}
-                            </h3>
-                            <span className="font-sanskrit text-xs text-sage block">
-                              {srv.sanskrit}
-                            </span>
-                          </div>
-                        </div>
-
-                        <p className="font-body text-xs text-ink/75 leading-relaxed mt-2">
-                          {srv.tagline}
-                        </p>
-                      </div>
-
-                      <div className="mt-4 pt-3 border-t border-forest/10 flex items-center justify-between text-xs font-mono text-ink/60">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-turmeric" />
-                          {srv.duration}
-                        </span>
-                        <div className="flex items-center gap-1.5 text-forest font-medium">
-                          {isSelected ? (
-                            <span className="flex items-center gap-1 text-forest">
-                              <CheckCircle2 className="w-4 h-4 text-turmeric" /> Selected
-                            </span>
-                          ) : (
-                            <span className="text-ink/40">Click to Select</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Step 1 Actions */}
-              <div className="mt-8 pt-5 border-t border-forest/10 flex justify-end">
-                <Button onClick={handleNextStep} variant="primary" className="min-h-[44px]">
-                  {language === 'GU' ? 'વૈદ્ય અને માધ્યમ પસંદ કરો' : 'Continue to Doctor & Mode'}
-                  <ArrowRight className="w-3.5 h-3.5 ml-2" />
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 2: DOCTOR & MODE */}
-        {step === 2 && (
-          <motion.div
-            key="step2"
-            custom={direction}
-            variants={stepVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-6"
-          >
-            <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
-              <div className="max-w-2xl mb-6">
-                <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 2 of 5 · {language === 'GU' ? 'ચિકિત્સક અને પદ્ધતિ' : 'Doctor & Mode'}
-                </span>
-                <h2 className="font-display text-2xl text-deep-forest font-medium">
-                  Choose Attending Vaidya & Consultation Mode
-                </h2>
-                <p className="font-body text-xs sm:text-sm text-ink/75 mt-1 leading-relaxed">
-                  Select your attending physician and choose between an in-person or online video consultation.
-                </p>
-              </div>
-
-              {/* Consultation Mode Selector */}
-              <div className="mb-8">
-                <label className="block font-mono text-xs uppercase tracking-wider text-deep-forest font-medium mb-3">
-                  Consultation Mode:
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div
-                    onClick={() => setSelectedMode('in-clinic')}
-                    className={`p-4 rounded-[4px] border cursor-pointer transition-all ${
-                      selectedMode === 'in-clinic'
-                        ? 'bg-cream border-forest ring-2 ring-forest/30 shadow-xs'
-                        : 'bg-paper border-forest/15 hover:border-forest/35'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5 mb-1.5 font-display text-base text-deep-forest font-medium">
-                      <Building className="w-4 h-4 text-forest" />
-                      <span>In-Person Consultation</span>
-                      {selectedMode === 'in-clinic' && (
-                        <CheckCircle2 className="w-4 h-4 text-turmeric ml-auto" />
-                      )}
-                    </div>
-                    <p className="font-body text-xs text-ink/75 leading-relaxed">
-                      Address: to be added. Individual Ayurvedic consultation and lifestyle assessment conducted in an unhurried, calm environment.
-                    </p>
-                  </div>
-
-                  <div
-                    onClick={() => setSelectedMode('online')}
-                    className={`p-4 rounded-[4px] border cursor-pointer transition-all ${
-                      selectedMode === 'online'
-                        ? 'bg-cream border-forest ring-2 ring-forest/30 shadow-xs'
-                        : 'bg-paper border-forest/15 hover:border-forest/35'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5 mb-1.5 font-display text-base text-deep-forest font-medium">
-                      <Video className="w-4 h-4 text-forest" />
-                      <span>Online Video Consultation</span>
-                      {selectedMode === 'online' && (
-                        <CheckCircle2 className="w-4 h-4 text-turmeric ml-auto" />
-                      )}
-                    </div>
-                    <p className="font-body text-xs text-ink/75 leading-relaxed">
-                      Encrypted HD video intake. Includes digital prescription generation and temperature-controlled
-                      herbal medicine dispatch to your home across India.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Doctor Cards Selector */}
-              <div className="space-y-3">
-                <label className="block font-mono text-xs uppercase tracking-wider text-deep-forest font-medium">
-                  Select Attending Physician:
-                </label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {doctors.map((doc) => {
-                    const isSelected = selectedDoctorId === doc.slug || selectedDoctorId === doc.id;
-
-                    return (
-                      <div
-                        key={doc.id}
-                        onClick={() => setSelectedDoctorId(doc.slug)}
-                        className={`p-4 rounded-[4px] border cursor-pointer transition-all flex flex-col justify-between ${
-                          isSelected
-                            ? 'bg-cream border-forest ring-2 ring-forest/30 shadow-xs'
-                            : 'bg-paper border-forest/15 hover:border-forest/35'
-                        }`}
-                      >
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-mono text-[10px] text-forest/70 uppercase">
-                              Registered Practitioner
-                            </span>
-                            <span className="font-mono text-xs font-semibold text-deep-forest">
-                              ₹{doc.consultationFee}
-                            </span>
-                          </div>
-
-                          <div className="w-12 h-14 rounded-t-full rounded-b-[2px] bg-forest/10 border border-forest/20 flex items-center justify-center font-sanskrit text-forest/60 text-lg mb-2">
-                            ૐ
-                          </div>
-
-                          <h3 className="font-display text-base text-deep-forest font-medium leading-snug">
-                            {doc.name}
-                          </h3>
-                          <span className="font-sanskrit text-xs text-sage block mb-1">
-                            {doc.sanskritTitle}
-                          </span>
-                          <p className="font-body text-xs text-forest/90 font-medium mb-2">
-                            {doc.title}
-                          </p>
-                          <p className="font-body text-[11px] text-ink/70 line-clamp-2 leading-relaxed">
-                            {doc.bio}
-                          </p>
-                        </div>
-
-                        <div className="mt-3 pt-2.5 border-t border-forest/10 flex items-center justify-between text-[11px] font-mono">
-                          <span className="text-ink/50">{doc.ayushRegistrationNo}</span>
-                          {isSelected ? (
-                            <span className="text-forest font-semibold flex items-center gap-1">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-turmeric" /> Selected
-                            </span>
-                          ) : (
-                            <span className="text-ink/40">Select</span>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Step 2 Actions */}
-              <div className="mt-8 pt-5 border-t border-forest/10 flex items-center justify-between">
-                <Button onClick={handlePrevStep} variant="secondary" className="min-h-[44px]">
-                  <ArrowLeft className="w-3.5 h-3.5 mr-2" />
-                  {t.booking.backBtn}
-                </Button>
-                <Button onClick={handleNextStep} variant="primary" className="min-h-[44px]">
-                  {language === 'GU' ? 'તારીખ અને સમય પસંદ કરો' : 'Continue to Date & Slot'}
-                  <ArrowRight className="w-3.5 h-3.5 ml-2" />
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 3: DATE & TIME SLOT */}
-        {step === 3 && (
-          <motion.div
-            key="step3"
-            custom={direction}
-            variants={stepVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-6"
-          >
-            <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
-              <div className="max-w-2xl mb-6">
-                <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 3 of 5 · {language === 'GU' ? 'તારીખ અને સમય' : 'Date & Time'}
-                </span>
-                <h2 className="font-display text-2xl text-deep-forest font-medium">
-                  Select Appointment Date & Time Slot
-                </h2>
-                <p className="font-body text-xs sm:text-sm text-ink/75 mt-1 leading-relaxed">
-                  Choose a date from our interactive calendar. Morning slots are ideal for fasting
-                  radial pulse diagnosis. Reserved slots are disabled automatically.
-                </p>
-              </div>
-
-              {(errors.date || errors.slot) && (
-                <div className="p-3 mb-4 rounded-[3px] bg-clay/10 border border-clay/20 text-xs text-clay">
-                  {errors.date || errors.slot}
-                </div>
-              )}
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                {/* Left: Custom Calendar (6 cols) */}
-                <div className="lg:col-span-6 space-y-3">
-                  <span className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium block">
-                    1. Select Date:
-                  </span>
-                  <CustomBookingCalendar
-                    selectedDate={selectedDate}
-                    onSelectDate={(d) => {
-                      setSelectedDate(d);
-                      setErrors({});
-                    }}
-                  />
-                </div>
-
-                {/* Right: Slot Picker (6 cols) */}
-                <div className="lg:col-span-6 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium block">
-                      2. Available Slots for {selectedDate}:
-                    </span>
-                    <Badge variant="sage" className="text-[10px]">
-                      {currentDoctor.name}
-                    </Badge>
-                  </div>
-
-                  <SlotPicker
-                    selectedDate={selectedDate}
-                    selectedDoctorId={currentDoctor.slug}
-                    selectedSlot={selectedSlot}
-                    onSelectSlot={(s) => {
-                      setSelectedSlot(s);
-                      setErrors({});
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Step 3 Actions */}
-              <div className="mt-8 pt-5 border-t border-forest/10 flex items-center justify-between">
-                <Button onClick={handlePrevStep} variant="secondary" className="min-h-[44px]">
-                  <ArrowLeft className="w-3.5 h-3.5 mr-2" />
-                  {t.booking.backBtn}
-                </Button>
-                <Button onClick={handleNextStep} variant="primary" className="min-h-[44px]">
-                  {language === 'GU' ? 'દર્દીની વિગત ભરો' : 'Continue to Patient Details'}
-                  <ArrowRight className="w-3.5 h-3.5 ml-2" />
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 4: PATIENT DETAILS & ATTACHMENT */}
-        {step === 4 && (
-          <motion.div
-            key="step4"
-            custom={direction}
-            variants={stepVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-6"
-          >
-            <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
-              <div className="max-w-2xl mb-6">
-                <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 4 of 5 · {language === 'GU' ? 'દર્દીની વિગત' : 'Patient Details'}
-                </span>
-                <h2 className="font-display text-2xl text-deep-forest font-medium">
-                  Patient Health Details & Clinical Notes
-                </h2>
-                <p className="font-body text-xs sm:text-sm text-ink/75 mt-1 leading-relaxed">
-                  Provide patient demographic information and a description of your primary symptoms.
-                  You may also upload past medical reports or blood panels (optional).
-                </p>
-              </div>
-
-              <div className="space-y-5 max-w-3xl">
-                {/* Full Name & WhatsApp Number */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block font-mono text-xs uppercase text-deep-forest font-medium mb-1">
-                      Patient Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="e.g. Ramesh Chandra Sharma"
-                      className="w-full px-3.5 py-2.5 rounded-[3px] bg-cream text-xs sm:text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest"
-                    />
-                    {errors.fullName && (
-                      <p className="font-body text-[11px] text-clay mt-1">{errors.fullName}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block font-mono text-xs uppercase text-deep-forest font-medium mb-1">
-                      WhatsApp Mobile Number (+91) *
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-xs text-ink/60">
-                        +91
-                      </span>
-                      <input
-                        type="tel"
-                        value={whatsappNumber.replace('+91', '').trim()}
-                        onChange={(e) => setWhatsappNumber(e.target.value)}
-                        placeholder="9829012345"
-                        maxLength={10}
-                        className="w-full pl-12 pr-3.5 py-2.5 rounded-[3px] bg-cream text-xs sm:text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest"
-                      />
-                    </div>
-                    {errors.whatsappNumber ? (
-                      <p className="font-body text-[11px] text-clay mt-1">{errors.whatsappNumber}</p>
-                    ) : (
-                      <p className="font-body text-[10px] text-ink/50 mt-1">
-                        We send token confirmation and pre-pulse fasting instructions via WhatsApp.
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Email, Age, Gender */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block font-mono text-xs uppercase text-deep-forest font-medium mb-1">
-                      Email Address (Optional)
-                    </label>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="ramesh@example.com"
-                      className="w-full px-3.5 py-2.5 rounded-[3px] bg-cream text-xs sm:text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest"
-                    />
-                    {errors.email && (
-                      <p className="font-body text-[11px] text-clay mt-1">{errors.email}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block font-mono text-xs uppercase text-deep-forest font-medium mb-1">
-                      Patient Age *
-                    </label>
-                    <input
-                      type="number"
-                      min={1}
-                      max={115}
-                      value={age}
-                      onChange={(e) => setAge(e.target.value)}
-                      placeholder="e.g. 48"
-                      className="w-full px-3.5 py-2.5 rounded-[3px] bg-cream text-xs sm:text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest"
-                    />
-                    {errors.age && (
-                      <p className="font-body text-[11px] text-clay mt-1">{errors.age}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block font-mono text-xs uppercase text-deep-forest font-medium mb-1">
-                      Gender *
-                    </label>
-                    <select
-                      value={gender}
-                      onChange={(e) => setGender(e.target.value as any)}
-                      className="w-full px-3.5 py-2.5 rounded-[3px] bg-cream text-xs sm:text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest"
-                    >
-                      <option value="Female">Female</option>
-                      <option value="Male">Male</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Primary Complaint / Symptoms */}
-                <div>
-                  <label className="block font-mono text-xs uppercase text-deep-forest font-medium mb-1">
-                    Primary Health Complaint & Chronicity *
-                  </label>
-                  <textarea
-                    rows={4}
-                    value={chiefComplaint}
-                    onChange={(e) => setChiefComplaint(e.target.value)}
-                    placeholder="Describe your current symptoms, how long you have experienced them, any ongoing allopathic medications, and previous treatments..."
-                    className="w-full px-3.5 py-2.5 rounded-[3px] bg-cream text-xs sm:text-sm font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest resize-none"
-                  />
-                  {errors.chiefComplaint && (
-                    <p className="font-body text-[11px] text-clay mt-1">{errors.chiefComplaint}</p>
-                  )}
-                </div>
-
-                {/* Optional File Upload for Prior Reports */}
-                <div>
-                  <label className="block font-mono text-xs uppercase text-deep-forest font-medium mb-1">
-                    Upload Prior Diagnostic Reports (Optional)
-                  </label>
-                  <div className="border-2 border-dashed border-forest/20 rounded-[4px] p-4 bg-cream/50 text-center hover:bg-cream transition-colors relative">
-                    <input
-                      type="file"
-                      accept=".pdf,.jpg,.jpeg,.png"
-                      onChange={handleFileChange}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                    {attachedFileName ? (
-                      <div className="flex items-center justify-center gap-2 text-xs font-mono text-forest">
-                        <FileCheck className="w-4 h-4 text-turmeric" />
-                        <span className="font-medium">{attachedFileName}</span>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setAttachedFileName('');
-                          }}
-                          className="p-1 hover:text-clay"
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="space-y-1">
-                        <UploadCloud className="w-6 h-6 text-forest/60 mx-auto" />
-                        <p className="font-body text-xs text-ink/70">
-                          Click or drag prior blood tests, MRIs, or discharge summaries (PDF/JPG up to 15 MB)
-                        </p>
-                        <span className="font-mono text-[10px] text-ink/40">
-                          Files are encrypted and accessible only to your attending physician.
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  {errors.file && (
-                    <p className="font-body text-[11px] text-clay mt-1">{errors.file}</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Step 4 Actions */}
-              <div className="mt-8 pt-5 border-t border-forest/10 flex items-center justify-between">
-                <Button onClick={handlePrevStep} variant="secondary" className="min-h-[44px]">
-                  <ArrowLeft className="w-3.5 h-3.5 mr-2" />
-                  {t.booking.backBtn}
-                </Button>
-                <Button onClick={handleNextStep} variant="primary" className="min-h-[44px]">
-                  {language === 'GU' ? 'સમીક્ષા અને પુષ્ટિ' : 'Review & Confirm'}
-                  <ArrowRight className="w-3.5 h-3.5 ml-2" />
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 5: REVIEW & CONSENT */}
-        {step === 5 && (
-          <motion.div
-            key="step5"
-            custom={direction}
-            variants={stepVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-6"
-          >
-            <div className="bg-paper border border-forest/15 rounded-[4px] p-6 sm:p-8 shadow-xs">
-              <div className="max-w-2xl mb-6">
-                <span className="font-mono text-xs uppercase tracking-wider text-forest font-semibold block mb-1">
-                  Step 5 of 5 · {language === 'GU' ? 'સમીક્ષા અને સંમતિ' : 'Review & Consent'}
-                </span>
-                <h2 className="font-display text-2xl text-deep-forest font-medium">
-                  Review Appointment Details & Confirm
-                </h2>
-                <p className="font-body text-xs sm:text-sm text-ink/75 mt-1 leading-relaxed">
-                  Verify your consultation parameters before generating your official Vankal token voucher.
-                </p>
-              </div>
-
-              {/* Summary Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                {/* Consultation Details */}
-                <div className="p-5 rounded-[4px] bg-cream border border-forest/10 space-y-3 text-xs font-body">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-forest font-semibold block">
-                    Session Summary
-                  </span>
-                  <div className="flex justify-between py-1 border-b border-forest/5">
-                    <span className="text-ink/60">Service</span>
-                    <span className="font-medium text-deep-forest">{currentService.name}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-forest/5">
-                    <span className="text-ink/60">Attending Vaidya</span>
-                    <span className="font-medium text-deep-forest">{currentDoctor.name}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-forest/5">
-                    <span className="text-ink/60">Mode</span>
-                    <span className="font-medium text-forest">
-                      {selectedMode === 'in-clinic' ? 'In-Person Consultation' : 'Online Video Call'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-forest/5">
-                    <span className="text-ink/60">Date & Slot</span>
-                    <span className="font-mono font-medium text-deep-forest">
-                      {selectedDate} at {selectedSlot}
-                    </span>
-                  </div>
-                  <div className="flex justify-between py-1">
-                    <span className="text-ink/60">Consultation Fee</span>
-                    <span className="font-mono font-semibold text-deep-forest text-sm">
-                      ₹{currentDoctor.consultationFee}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Patient Summary */}
-                <div className="p-5 rounded-[4px] bg-cream border border-forest/10 space-y-3 text-xs font-body">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-forest font-semibold block">
-                    Patient Profile
-                  </span>
-                  <div className="flex justify-between py-1 border-b border-forest/5">
-                    <span className="text-ink/60">Name</span>
-                    <span className="font-medium text-deep-forest">{fullName}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-forest/5">
-                    <span className="text-ink/60">WhatsApp</span>
-                    <span className="font-mono text-deep-forest">+91 {whatsappNumber.replace('+91', '').trim()}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-forest/5">
-                    <span className="text-ink/60">Age / Gender</span>
-                    <span className="text-deep-forest">{age} yrs · {gender}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-forest/5">
-                    <span className="text-ink/60">Attached Reports</span>
-                    <span className="font-mono text-forest">{attachedFileName || 'None'}</span>
-                  </div>
-                  <div className="py-1">
-                    <span className="text-ink/60 block mb-0.5">Health Note:</span>
-                    <p className="italic text-ink/80 line-clamp-2">"{chiefComplaint}"</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Fasting Reminder Notice */}
-              <div className="p-4 rounded-[4px] bg-mist/60 border border-forest/20 mb-6 flex items-start gap-3">
-                <Sparkles className="w-5 h-5 text-forest shrink-0 mt-0.5" />
-                <div className="text-xs font-body text-ink/80 leading-relaxed">
-                  <span className="font-mono uppercase font-semibold text-deep-forest block mb-0.5">
-                    Pre-Consultation Clinical Advice:
-                  </span>
-                  For maximum radial pulse accuracy, please fast or maintain at least 2.5 hours gap after eating.
-                  Avoid coffee, tea, and heavy exercise. Payment is collected at the clinic reception or via UPI
-                  prior to video link activation.
-                </div>
-              </div>
-
-              {/* Consent Checkbox */}
-              <div className="p-4 rounded-[4px] bg-paper border border-forest/15 mb-6">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={consentAgreed}
-                    onChange={(e) => {
-                      setConsentAgreed(e.target.checked);
-                      setErrors({});
-                    }}
-                    className="mt-1 h-4 w-4 rounded border-forest/30 text-forest focus:ring-forest cursor-pointer"
-                  />
-                  <span className="font-body text-xs text-ink/80 leading-relaxed">
-                    I consent to the Ayurvedic diagnostic evaluation and agree to the clinic consultation terms.
-                    I understand that classical pulse examination assesses subtle tissue energetics (Dhatus) in
-                    coordination with modern medical investigations.
-                  </span>
-                </label>
-                {errors.consent && (
-                  <p className="font-body text-[11px] text-clay mt-1.5 pl-7">{errors.consent}</p>
-                )}
-              </div>
-
-              {/* Step 5 Actions */}
-              <div className="mt-8 pt-5 border-t border-forest/10 flex items-center justify-between">
-                <Button onClick={handlePrevStep} variant="secondary" disabled={isSubmitting} className="min-h-[44px]">
-                  <ArrowLeft className="w-3.5 h-3.5 mr-2" />
-                  {t.booking.backBtn}
-                </Button>
-                <Button
-                  onClick={handleConfirmBooking}
-                  variant="primary"
-                  disabled={isSubmitting}
-                  className="bg-turmeric text-deep-forest hover:bg-turmeric/90 min-h-[44px]"
-                >
-                  {isSubmitting ? (
-                    language === 'GU' ? 'સ્લોટ બુક થઈ રહ્યો છે...' : 'Reserving Slot...'
-                  ) : (
-                    <>
-                      {t.booking.submitBtn}
-                      <CheckCircle2 className="w-4 h-4 ml-2" />
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 6: CONFIRMATION VOUCHER */}
-        {step === 6 && confirmedAppointment && (
-          <motion.div
-            key="step6"
-            custom={direction}
-            variants={stepVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <AppointmentVoucher
-              appointment={confirmedAppointment}
-              onBookAnother={handleBookAnother}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-      </Container>
+              <span className="whitespace-nowrap">{t.booking.continueBtn}</span>
+              <ArrowRight className="w-4 h-4 shrink-0" />
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   );
 }

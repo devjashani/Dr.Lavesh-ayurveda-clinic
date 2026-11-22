@@ -93,7 +93,7 @@ export function AppointmentVoucher({
     const endDateTime = `${dateFormatted}T${(parseInt(startTimeStr, 10) + 4500).toString().padStart(6, '0')}`;
 
     const details = encodeURIComponent(
-      `Appointment Token: ${appointment.tokenNumber}\nPatient: ${appointment.patientName}\nDoctor: ${appointment.doctorName}\nService: ${appointment.serviceName}\nMode: ${appointment.mode}\n\nPreparation: Please arrive 2.5 hours after food or fasting for accurate pulse reading.`
+      `Appointment Token: ${appointment.tokenNumber}\nPatient: ${appointment.patientName}\nDoctor: ${appointment.doctorName}\nService: ${appointment.serviceName}\nMode: ${appointment.mode}`
     );
     const location = encodeURIComponent(
       appointment.mode === 'in-clinic'
@@ -107,7 +107,7 @@ export function AppointmentVoucher({
   // Format WhatsApp Share text
   const formatWhatsAppShareUrl = () => {
     const text = encodeURIComponent(
-      `Namaste, my Ayurvedic consultation at Vankal Ayurveda is confirmed!\n\n🏷️ Token: ${appointment.tokenNumber}\n🩺 Doctor: ${appointment.doctorName}\n📋 Service: ${appointment.serviceName}\n🗓️ Date: ${appointment.date} at ${appointment.slot}\n📍 Mode: ${appointment.mode === 'in-clinic' ? 'In-Clinic' : 'Online Video'}\n\nRegistration No.: to be added`
+      `Namaste, my Ayurvedic consultation at Vankal Ayurveda is confirmed!\n\n🏷️ Token: ${appointment.tokenNumber}\n🩺 Doctor: ${appointment.doctorName}\n📋 Service: ${appointment.serviceName}\n🗓️ Date: ${appointment.date} at ${appointment.slot}\n📍 Mode: ${appointment.mode === 'in-clinic' ? 'In-Clinic' : 'Online Video'}`
     );
     return `https://wa.me/?text=${text}`;
   };
@@ -154,9 +154,6 @@ export function AppointmentVoucher({
               <span className="font-display font-medium text-lg text-deep-forest">
                 VANKAL AYURVEDA
               </span>
-              <Badge variant="sage" className="text-[10px]">
-                Registration No.: to be added
-              </Badge>
             </div>
             <p className="font-mono text-xs text-ink/60 mt-0.5">
               Address: to be added
@@ -231,14 +228,13 @@ export function AppointmentVoucher({
           </div>
         </div>
 
-        {/* Nadi Pariksha Clinical Preparation Checklist */}
+        {/* Consultation Preparation Checklist */}
         <div className="pt-5 space-y-2">
           <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-deep-forest">
             <Sparkles className="w-3.5 h-3.5 text-turmeric" />
-            <span>Pre-Consultation Instructions (નાડી પરીક્ષા પૂર્વ નિયમ):</span>
+            <span>Pre-Consultation Instructions:</span>
           </div>
           <ul className="text-xs font-body text-ink/75 space-y-1 list-disc pl-5">
-            <li>Maintain fasting or a minimum 2.5-hour gap after a light meal for clear pulse diagnosis.</li>
             <li>Avoid caffeine, tea, cigarettes, and strenuous exercise prior to your appointment.</li>
             <li>Bring all past medical tests (CBC, MRI, thyroid, ultrasound) and active prescriptions.</li>
             {appointment.mode === 'online' && (

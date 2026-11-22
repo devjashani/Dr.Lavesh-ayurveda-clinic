@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ShieldCheck, Sparkles, Clock, CheckCircle2, Calendar, Phone, ArrowRight, User, X } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { useBookingSheet } from '@/lib/context/BookingSheetContext';
 import { Reveal, RevealText, Magnetic } from '@/components/motion';
 import { useInViewWithPause } from '@/lib/motion';
 import { cn } from '@/lib/utils';
@@ -17,7 +16,6 @@ import { IMAGES } from '@/lib/config/images';
 
 export function HeroSection() {
   const { language, t } = useLanguage();
-  const { openBookingSheet } = useBookingSheet();
   const { ref: heroRef, isActive: isHeroActive } = useInViewWithPause<HTMLElement>(0.05);
 
   const [formData, setFormData] = useState({
@@ -166,9 +164,7 @@ export function HeroSection() {
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
                 <Button
                   id="hero-mobile-book-btn"
-                  type="button"
-                  onClick={openBookingSheet}
-                  data-booking-trigger="true"
+                  href="/book"
                   variant="primary"
                   size="md"
                   showArrow

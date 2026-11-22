@@ -11,7 +11,6 @@ import { PageTransition } from '@/components/layout/PageTransition';
 import { IntroPreloader } from '@/components/layout/IntroPreloader';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 import { BookingSheetProvider } from '@/lib/context/BookingSheetContext';
-import { BottomSheetBooking } from '@/components/booking/BottomSheetBooking';
 import { JsonLd } from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
@@ -140,9 +139,6 @@ export default function RootLayout({
 
               {/* WhatsApp & Mobile Floating Actions */}
               <FloatingActions />
-
-              {/* Global Mobile Bottom Sheet Booking Form */}
-              <BottomSheetBooking />
             </MotionProvider>
           </BookingSheetProvider>
         </LanguageProvider>

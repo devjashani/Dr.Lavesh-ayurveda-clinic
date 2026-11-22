@@ -76,7 +76,7 @@ export const mockPatientData: PatientPortalData = {
   address: 'B-12, Tilak Nagar, Jaipur, Rajasthan',
   attendingPhysician: 'Dr. Lavesh Bohra',
   physicianSlug: 'dr-lavesh-bohra',
-  ayushRegistrationNo: 'Registration No.: to be added',
+  ayushRegistrationNo: '',
   primaryDiagnosis: 'Rheumatoid Arthritis with Synovial Effusion',
   sanskritDiagnosis: 'આમવાત — રસ-અસ્થિ ધાતુગત સામ વાત',
   prakriti: 'Vata-Pitta (વાત-પિત્ત)',
