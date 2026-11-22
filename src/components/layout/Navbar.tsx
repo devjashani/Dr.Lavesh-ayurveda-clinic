@@ -350,42 +350,8 @@ export function Navbar() {
               })}
             </motion.nav>
 
-            {/* Bottom Actions: Preserved Language Selection & Book Button */}
-            <div className="relative z-10 space-y-4 pt-4 pb-1 border-t border-forest/15 mt-auto">
-              <div className="flex items-center justify-between gap-3 px-1 sm:px-2">
-                <span className="text-xs font-mono uppercase tracking-wider text-forest/80 font-semibold pl-1.5 sm:pl-2">
-                  {language === 'GU' ? 'ભાષા પસંદ કરો' : 'Select Language'}
-                </span>
-                <div className="flex items-center bg-cream/90 rounded-full p-1 border border-forest/15 text-xs font-medium shrink-0 shadow-2xs">
-                  <button
-                    type="button"
-                    onClick={() => setLanguage('EN')}
-                    aria-label="Switch to English"
-                    className={cn(
-                      'px-3.5 py-1.5 rounded-full min-h-[38px] transition-colors cursor-pointer active:scale-[0.97]',
-                      language === 'EN'
-                        ? 'bg-deep-forest text-cream font-semibold shadow-xs'
-                        : 'text-ink/70 hover:text-deep-forest'
-                    )}
-                  >
-                    English
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setLanguage('GU')}
-                    aria-label="Switch to Gujarati"
-                    className={cn(
-                      'px-3.5 py-1.5 rounded-full min-h-[38px] transition-colors cursor-pointer active:scale-[0.97]',
-                      language === 'GU'
-                        ? 'bg-deep-forest text-cream font-semibold shadow-xs'
-                        : 'text-ink/70 hover:text-deep-forest'
-                    )}
-                  >
-                    ગુજરાતી
-                  </button>
-                </div>
-              </div>
-
+            {/* Bottom Actions: Book Consultation Button & Brand Tag */}
+            <div className="relative z-10 space-y-3 pt-3 pb-1 border-t border-forest/15 mt-auto">
               <div className="px-0 sm:px-1">
                 <Link
                   href="/book"
