@@ -148,15 +148,22 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
   const [isJoining, setIsJoining] = useState(false);
   const [statusBanner, setStatusBanner] = useState<string | null>(null);
 
+  // Audio Playback & Activity State
+  const [audioAutoplayBlocked, setAudioAutoplayBlocked] = useState(false);
+  const [localAudioLevel, setLocalAudioLevel] = useState(0);
+  const [remoteAudioLevel, setRemoteAudioLevel] = useState(0);
+
   // Refs for Video Containers & Local Hardware Streams
   const previewVideoRef = useRef<HTMLVideoElement | null>(null);
   const previewStreamRef = useRef<MediaStream | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const localVideoContainerRef = useRef<HTMLDivElement | null>(null);
   const remoteVideoContainerRef = useRef<HTMLDivElement | null>(null);
+  const remoteAudioFallbackRef = useRef<HTMLAudioElement | null>(null);
 
   // Agora Instance Refs (Client only, never server)
   const agoraClientRef = useRef<IAgoraRTCClient | null>(null);
+  const agoraRtcModuleRef = useRef<any>(null);
   const localAudioTrackRef = useRef<IMicrophoneAudioTrack | null>(null);
   const localVideoTrackRef = useRef<ICameraVideoTrack | null>(null);
   const tokenDataRef = useRef<TokenResponse | null>(null);
@@ -535,18 +542,37 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
 
       // Dynamic import of Agora RTC SDK strictly inside browser execution
       const AgoraRTC = (await import('agora-rtc-sdk-ng')).default;
+      agoraRtcModuleRef.current = AgoraRTC;
       AgoraRTC.setLogLevel(3); // Warnings & Errors only
 
-      // Listen for browser autoplay policy rejections globally
-      if (typeof (AgoraRTC as any).onAudioAutoplayFailed === 'function') {
-        (AgoraRTC as any).onAudioAutoplayFailed = () => {
-          console.warn('[Agora RTC] Audio autoplay blocked by browser policy.');
-          setStatusBanner('Audio paused by browser. Tap anywhere to enable sound.');
-        };
-      }
+      // Listen for browser autoplay policy rejections globally (e.g., Chrome Incognito)
+      AgoraRTC.onAudioAutoplayFailed = () => {
+        console.warn('[Agora RTC] Audio autoplay blocked by browser policy.');
+        setAudioAutoplayBlocked(true);
+      };
+      AgoraRTC.onAutoplayFailed = () => {
+        console.warn('[Agora RTC] Media autoplay blocked by browser policy.');
+        setAudioAutoplayBlocked(true);
+      };
 
       const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
       agoraClientRef.current = client;
+
+      // Enable volume indicators to detect real-time speaking activity
+      try {
+        client.enableAudioVolumeIndicator();
+        client.on('volume-indicator', (volumes) => {
+          volumes.forEach((vol) => {
+            if (vol.uid === uid || vol.uid === 0) {
+              setLocalAudioLevel(vol.level);
+            } else {
+              setRemoteAudioLevel(vol.level);
+            }
+          });
+        });
+      } catch (volErr) {
+        console.warn('[Agora RTC] Volume indicator setup error:', volErr);
+      }
 
       // 1. REGISTER AGORA EVENT HANDLERS *BEFORE* JOINING
       // (Crucial: registering before join guarantees no published tracks are missed)
@@ -571,16 +597,23 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
               }
             } catch (audioPlayErr) {
               console.warn('[Agora RTC] Remote audio play blocked by browser policy:', audioPlayErr);
-              setStatusBanner('Tap anywhere to enable audio');
-              const unlockAudio = () => {
-                try {
-                  user.audioTrack?.play();
-                } catch {}
-                window.removeEventListener('click', unlockAudio);
-                window.removeEventListener('touchstart', unlockAudio);
-              };
-              window.addEventListener('click', unlockAudio);
-              window.addEventListener('touchstart', unlockAudio);
+              setAudioAutoplayBlocked(true);
+            }
+
+            // Dual redundancy fallback: also bind raw MediaStreamTrack to HTML5 audio element
+            try {
+              const rawTrack = user.audioTrack?.getMediaStreamTrack();
+              if (rawTrack && remoteAudioFallbackRef.current) {
+                remoteAudioFallbackRef.current.srcObject = new MediaStream([rawTrack]);
+                remoteAudioFallbackRef.current.volume = 1.0;
+                remoteAudioFallbackRef.current.muted = false;
+                remoteAudioFallbackRef.current.play().catch((playErr) => {
+                  console.warn('[Agora RTC] HTML5 audio fallback autoplay blocked:', playErr);
+                  setAudioAutoplayBlocked(true);
+                });
+              }
+            } catch (fallbackErr) {
+              console.warn('[Agora RTC] Fallback audio binding error:', fallbackErr);
             }
           }
 
@@ -600,6 +633,7 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
       client.on('user-left', () => {
         setRemoteConnected(false);
         setRemoteVideoActive(false);
+        setRemoteAudioLevel(0);
         setStatusBanner(role === 'patient' ? ct.waitingForDoctor : ct.waitingForPatient);
       });
 
@@ -646,8 +680,20 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
               existingUser.audioTrack.play();
             }
             setRemoteConnected(true);
+
+            // Dual redundancy fallback
+            const rawTrack = existingUser.audioTrack?.getMediaStreamTrack();
+            if (rawTrack && remoteAudioFallbackRef.current) {
+              remoteAudioFallbackRef.current.srcObject = new MediaStream([rawTrack]);
+              remoteAudioFallbackRef.current.volume = 1.0;
+              remoteAudioFallbackRef.current.muted = false;
+              remoteAudioFallbackRef.current.play().catch(() => {
+                setAudioAutoplayBlocked(true);
+              });
+            }
           } catch (e) {
             console.warn('[Agora RTC] Error playing existing user audio:', e);
+            setAudioAutoplayBlocked(true);
           }
         }
         if (existingUser.hasVideo) {
@@ -668,30 +714,55 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
       let audioTrack: IMicrophoneAudioTrack | null = null;
       let videoTrack: ICameraVideoTrack | null = null;
 
-      // Tier 1: Try specific mic device with Acoustic Echo Cancellation, Noise Suppression, and AGC
-      if (selectedMicId) {
-        try {
-          audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-            microphoneId: selectedMicId,
-            AEC: true,
-            ANS: true,
-            AGC: true,
-          });
-        } catch (aErr) {
-          console.warn('[Agora RTC] Specific microphone acquisition failed, falling back to default:', aErr);
-        }
-      }
+      const isMobile = typeof navigator !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      // Tier 2: Try default microphone
-      if (!audioTrack) {
+      if (isMobile) {
+        // Mobile browsers: avoid passing microphoneId string which causes OverconstrainedError or mute on iOS Safari
         try {
           audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+            encoderConfig: 'speech_standard',
             AEC: true,
             ANS: true,
             AGC: true,
           });
-        } catch (aErr2) {
-          console.error('[Agora RTC] Default microphone acquisition failed:', aErr2);
+        } catch (mErr1) {
+          console.warn('[Agora RTC] Mobile AEC mic creation failed, trying fallback:', mErr1);
+          try {
+            audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+              encoderConfig: 'speech_standard',
+            });
+          } catch (mErr2) {
+            console.warn('[Agora RTC] Mobile plain mic creation failed, trying default:', mErr2);
+            audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+          }
+        }
+      } else {
+        // Desktop browsers: prioritize selected microphone device if chosen
+        if (selectedMicId) {
+          try {
+            audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+              microphoneId: selectedMicId,
+              encoderConfig: 'speech_standard',
+              AEC: true,
+              ANS: true,
+              AGC: true,
+            });
+          } catch (dErr1) {
+            console.warn('[Agora RTC] Selected mic acquisition failed, falling back:', dErr1);
+          }
+        }
+        if (!audioTrack) {
+          try {
+            audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+              encoderConfig: 'speech_standard',
+              AEC: true,
+              ANS: true,
+              AGC: true,
+            });
+          } catch (dErr2) {
+            console.warn('[Agora RTC] Default AEC mic acquisition failed, falling back to basic:', dErr2);
+            audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+          }
         }
       }
 
@@ -723,8 +794,13 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
       // Ensure tracks are unmuted and enabled initially
       if (audioTrack) {
         audioTrack.setEnabled(true);
+        audioTrack.setVolume(100);
         if (typeof (audioTrack as any).setMuted === 'function') {
           (audioTrack as any).setMuted(false);
+        }
+        const mediaStreamTrack = audioTrack.getMediaStreamTrack();
+        if (mediaStreamTrack) {
+          mediaStreamTrack.enabled = true;
         }
       }
 
@@ -810,16 +886,79 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
         localVideoTrackRef.current.close();
         localVideoTrackRef.current = null;
       }
+      if (remoteAudioFallbackRef.current) {
+        remoteAudioFallbackRef.current.srcObject = null;
+      }
       if (agoraClientRef.current) {
         agoraClientRef.current.leave().catch(() => {});
         agoraClientRef.current = null;
       }
+
+      setAudioAutoplayBlocked(false);
+      setLocalAudioLevel(0);
+      setRemoteAudioLevel(0);
 
       if (reason) setErrorMessage(reason);
       setPhase('ended');
     },
     []
   );
+
+  // Resume / Unlock Audio Playback across all Agora tracks and AudioContext
+  const resumeAudioPlayback = useCallback(() => {
+    const AgoraRTC = agoraRtcModuleRef.current;
+    if (AgoraRTC && typeof AgoraRTC.resumeAudioContext === 'function') {
+      AgoraRTC.resumeAudioContext().catch(() => {});
+    }
+
+    if (agoraClientRef.current) {
+      agoraClientRef.current.remoteUsers.forEach((user) => {
+        if (user.audioTrack) {
+          try {
+            user.audioTrack.setVolume(100);
+            user.audioTrack.play();
+          } catch (e) {
+            console.warn('[Agora RTC] Error playing remote audio track:', e);
+          }
+        }
+      });
+    }
+
+    if (remoteAudioFallbackRef.current && remoteAudioFallbackRef.current.paused) {
+      remoteAudioFallbackRef.current.play().catch(() => {});
+    }
+
+    setAudioAutoplayBlocked(false);
+  }, []);
+
+  // Monitor real-time local and remote audio levels to detect voice activity
+  useEffect(() => {
+    if (phase !== 'in_call') return;
+
+    const interval = setInterval(() => {
+      // 1. Check local audio level
+      if (localAudioTrackRef.current) {
+        try {
+          const lvl = Math.round(localAudioTrackRef.current.getVolumeLevel() * 100);
+          setLocalAudioLevel((prev) => (lvl > 0 ? lvl : Math.max(0, prev - 10)));
+        } catch {}
+      }
+
+      // 2. Check remote audio track & level
+      const remoteUser = agoraClientRef.current?.remoteUsers.find((u) => u.audioTrack);
+      if (remoteUser?.audioTrack) {
+        try {
+          const rLvl = Math.round(remoteUser.audioTrack.getVolumeLevel() * 100);
+          setRemoteAudioLevel((prev) => (rLvl > 0 ? rLvl : Math.max(0, prev - 10)));
+          if (rLvl > 3 && !remoteUser.audioTrack.isPlaying) {
+            setAudioAutoplayBlocked(true);
+          }
+        } catch {}
+      }
+    }, 250);
+
+    return () => clearInterval(interval);
+  }, [phase]);
 
   // Tab close & unmount cleanup
   useEffect(() => {
@@ -846,6 +985,10 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
       localAudioTrackRef.current.setEnabled(!nextState);
       if (typeof (localAudioTrackRef.current as any).setMuted === 'function') {
         (localAudioTrackRef.current as any).setMuted(nextState);
+      }
+      const mediaTrack = localAudioTrackRef.current.getMediaStreamTrack();
+      if (mediaTrack) {
+        mediaTrack.enabled = !nextState;
       }
       setIsMuted(nextState);
     }
@@ -1289,7 +1432,11 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
   // ===========================================================================
   if (phase === 'in_call') {
     return (
-      <div className="h-[100dvh] w-full bg-[#07130e] text-white flex flex-col overflow-hidden relative select-none">
+      <div
+        onClick={resumeAudioPlayback}
+        onTouchStart={resumeAudioPlayback}
+        className="h-[100dvh] w-full bg-[#07130e] text-white flex flex-col overflow-hidden relative select-none"
+      >
         {/* Top Floating Status Bar */}
         <header className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/85 via-black/50 to-transparent">
           <div className="flex items-center gap-3">
@@ -1312,8 +1459,11 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
 
           <div className="flex items-center gap-2">
             <div className="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-mono font-medium flex items-center gap-1.5 shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+              <span className={`w-2 h-2 rounded-full transition-colors ${remoteAudioLevel > 5 ? 'bg-emerald-400 animate-ping' : 'bg-amber-400'}`} />
               <span>{role === 'doctor' ? `Attending: ${ct.doctorName}` : booking?.patientName || 'Patient'}</span>
+              {remoteAudioLevel > 5 && (
+                <span className="text-[10px] text-emerald-300 font-bold ml-1">Speaking 🟢</span>
+              )}
             </div>
 
             <a
@@ -1336,6 +1486,22 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
             )}
           </div>
         </header>
+
+        {/* Floating Autoplay Unblock Notification (Crucial for Incognito & Mobile Audio) */}
+        {audioAutoplayBlocked && (
+          <div className="absolute top-16 left-1/2 -translate-x-1/2 z-50 animate-bounce">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                resumeAudioPlayback();
+              }}
+              className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-semibold text-xs font-mono rounded-full shadow-2xl flex items-center gap-2 cursor-pointer border border-amber-300 transition-transform active:scale-95"
+            >
+              <Volume2 className="w-4 h-4 animate-pulse text-black" />
+              <span>Audio Paused by Browser — Tap Here to Hear {role === 'doctor' ? 'Patient' : 'Doctor'}</span>
+            </button>
+          </div>
+        )}
 
         {/* Temporary Notification Banner */}
         {statusBanner && (
@@ -1400,8 +1566,11 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
                 <span className="text-[10px] font-mono">Video Off</span>
               </div>
             )}
-            <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/80 text-[10px] font-mono text-white border border-white/20">
-              You {isMuted && '· Muted'}
+            <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/80 text-[10px] font-mono text-white border border-white/20 flex items-center gap-1.5">
+              <span>You {isMuted ? '· Muted' : ''}</span>
+              {!isMuted && localAudioLevel > 5 && (
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" title="Mic active" />
+              )}
             </div>
           </div>
         </div>
@@ -1552,6 +1721,9 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
             <PhoneOff className="w-6 h-6 text-white" />
           </button>
         </footer>
+
+        {/* Hidden Fallback HTML5 Audio Element for Direct Browser Playback */}
+        <audio ref={remoteAudioFallbackRef} autoPlay playsInline className="hidden" />
       </div>
     );
   }
