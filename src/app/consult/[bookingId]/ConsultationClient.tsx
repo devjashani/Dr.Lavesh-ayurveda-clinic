@@ -537,64 +537,58 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
       const AgoraRTC = (await import('agora-rtc-sdk-ng')).default;
       AgoraRTC.setLogLevel(3); // Warnings & Errors only
 
+      // Listen for browser autoplay policy rejections globally
+      if (typeof (AgoraRTC as any).onAudioAutoplayFailed === 'function') {
+        (AgoraRTC as any).onAudioAutoplayFailed = () => {
+          console.warn('[Agora RTC] Audio autoplay blocked by browser policy.');
+          setStatusBanner('Audio paused by browser. Tap anywhere to enable sound.');
+        };
+      }
+
       const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
       agoraClientRef.current = client;
 
-      // 1. Join RTC Channel
-      await client.join(appId, channelName, token, uid);
-
-      // 2. Create and Publish Local Media Tracks with fallback
-      let audioTrack: IMicrophoneAudioTrack | null = null;
-      let videoTrack: ICameraVideoTrack | null = null;
-
-      try {
-        audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-          microphoneId: selectedMicId || undefined,
-        });
-      } catch (aErr) {
-        console.warn('Microphone track error:', aErr);
-      }
-
-      try {
-        videoTrack = await AgoraRTC.createCameraVideoTrack({
-          cameraId: selectedCameraId || undefined,
-          encoderConfig: '720p_2',
-        });
-      } catch (vErr) {
-        console.warn('Camera track error with specific ID, falling back to default:', vErr);
-        try {
-          videoTrack = await AgoraRTC.createCameraVideoTrack({
-            encoderConfig: '720p_2',
-          });
-        } catch (vErr2) {
-          console.error('Camera track completely failed:', vErr2);
-        }
-      }
-
-      localAudioTrackRef.current = audioTrack;
-      localVideoTrackRef.current = videoTrack;
-
-      const tracksToPublish = [audioTrack, videoTrack].filter(Boolean) as (IMicrophoneAudioTrack | ICameraVideoTrack)[];
-      if (tracksToPublish.length > 0) {
-        await client.publish(tracksToPublish);
-      }
-
-      // 3. Register Agora RTC Event Handlers
+      // 1. REGISTER AGORA EVENT HANDLERS *BEFORE* JOINING
+      // (Crucial: registering before join guarantees no published tracks are missed)
       client.on('user-published', async (user, mediaType) => {
-        await client.subscribe(user, mediaType);
-        if (mediaType === 'video') {
-          setRemoteVideoActive(true);
-          setRemoteConnected(true);
-          if (remoteVideoContainerRef.current) {
-            user.videoTrack?.play(remoteVideoContainerRef.current);
+        try {
+          await client.subscribe(user, mediaType);
+
+          if (mediaType === 'video') {
+            setRemoteVideoActive(true);
+            setRemoteConnected(true);
+            if (remoteVideoContainerRef.current) {
+              user.videoTrack?.play(remoteVideoContainerRef.current);
+            }
           }
+
+          if (mediaType === 'audio') {
+            setRemoteConnected(true);
+            try {
+              if (user.audioTrack) {
+                user.audioTrack.setVolume(100);
+                user.audioTrack.play();
+              }
+            } catch (audioPlayErr) {
+              console.warn('[Agora RTC] Remote audio play blocked by browser policy:', audioPlayErr);
+              setStatusBanner('Tap anywhere to enable audio');
+              const unlockAudio = () => {
+                try {
+                  user.audioTrack?.play();
+                } catch {}
+                window.removeEventListener('click', unlockAudio);
+                window.removeEventListener('touchstart', unlockAudio);
+              };
+              window.addEventListener('click', unlockAudio);
+              window.addEventListener('touchstart', unlockAudio);
+            }
+          }
+
+          setStatusBanner(role === 'patient' ? ct.doctorConnected : ct.patientConnected);
+          setTimeout(() => setStatusBanner(null), 3500);
+        } catch (subErr) {
+          console.error('[Agora RTC] Error subscribing to remote track:', subErr);
         }
-        if (mediaType === 'audio') {
-          user.audioTrack?.play();
-          setRemoteConnected(true);
-        }
-        setStatusBanner(role === 'patient' ? ct.doctorConnected : ct.patientConnected);
-        setTimeout(() => setStatusBanner(null), 3500);
       });
 
       client.on('user-unpublished', (user, mediaType) => {
@@ -638,6 +632,107 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
           // Graceful handling
         }
       });
+
+      // 2. JOIN RTC CHANNEL
+      await client.join(appId, channelName, token, uid);
+
+      // Check if any participants are already in the channel and subscribe immediately
+      for (const existingUser of client.remoteUsers) {
+        if (existingUser.hasAudio) {
+          try {
+            await client.subscribe(existingUser, 'audio');
+            if (existingUser.audioTrack) {
+              existingUser.audioTrack.setVolume(100);
+              existingUser.audioTrack.play();
+            }
+            setRemoteConnected(true);
+          } catch (e) {
+            console.warn('[Agora RTC] Error playing existing user audio:', e);
+          }
+        }
+        if (existingUser.hasVideo) {
+          try {
+            await client.subscribe(existingUser, 'video');
+            setRemoteVideoActive(true);
+            setRemoteConnected(true);
+            if (remoteVideoContainerRef.current) {
+              existingUser.videoTrack?.play(remoteVideoContainerRef.current);
+            }
+          } catch (e) {
+            console.warn('[Agora RTC] Error playing existing user video:', e);
+          }
+        }
+      }
+
+      // 3. CREATE LOCAL MEDIA TRACKS WITH MULTI-TIER FALLBACK
+      let audioTrack: IMicrophoneAudioTrack | null = null;
+      let videoTrack: ICameraVideoTrack | null = null;
+
+      // Tier 1: Try specific mic device with Acoustic Echo Cancellation, Noise Suppression, and AGC
+      if (selectedMicId) {
+        try {
+          audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+            microphoneId: selectedMicId,
+            AEC: true,
+            ANS: true,
+            AGC: true,
+          });
+        } catch (aErr) {
+          console.warn('[Agora RTC] Specific microphone acquisition failed, falling back to default:', aErr);
+        }
+      }
+
+      // Tier 2: Try default microphone
+      if (!audioTrack) {
+        try {
+          audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+            AEC: true,
+            ANS: true,
+            AGC: true,
+          });
+        } catch (aErr2) {
+          console.error('[Agora RTC] Default microphone acquisition failed:', aErr2);
+        }
+      }
+
+      // Camera acquisition with fallback
+      if (selectedCameraId) {
+        try {
+          videoTrack = await AgoraRTC.createCameraVideoTrack({
+            cameraId: selectedCameraId,
+            encoderConfig: '720p_2',
+          });
+        } catch (vErr) {
+          console.warn('[Agora RTC] Specific camera acquisition failed, falling back to default:', vErr);
+        }
+      }
+
+      if (!videoTrack) {
+        try {
+          videoTrack = await AgoraRTC.createCameraVideoTrack({
+            encoderConfig: '720p_2',
+          });
+        } catch (vErr2) {
+          console.error('[Agora RTC] Default camera acquisition failed:', vErr2);
+        }
+      }
+
+      localAudioTrackRef.current = audioTrack;
+      localVideoTrackRef.current = videoTrack;
+
+      // Ensure tracks are unmuted and enabled initially
+      if (audioTrack) {
+        audioTrack.setEnabled(true);
+        if (typeof (audioTrack as any).setMuted === 'function') {
+          (audioTrack as any).setMuted(false);
+        }
+      }
+
+      const tracksToPublish = [audioTrack, videoTrack].filter(Boolean) as (IMicrophoneAudioTrack | ICameraVideoTrack)[];
+      if (tracksToPublish.length > 0) {
+        await client.publish(tracksToPublish);
+        console.log(`[Agora RTC] Successfully published ${tracksToPublish.length} local track(s). Audio: ${Boolean(audioTrack)}, Video: ${Boolean(videoTrack)}`);
+      }
 
       // Play local video in PiP container after component renders
       setPhase('in_call');
@@ -749,6 +844,9 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
     if (localAudioTrackRef.current) {
       const nextState = !isMuted;
       localAudioTrackRef.current.setEnabled(!nextState);
+      if (typeof (localAudioTrackRef.current as any).setMuted === 'function') {
+        (localAudioTrackRef.current as any).setMuted(nextState);
+      }
       setIsMuted(nextState);
     }
   };
