@@ -28,7 +28,7 @@ CREATE TABLE doctors (
   title VARCHAR(255) NOT NULL,
   ayush_registration VARCHAR(100) NOT NULL,
   experience_years INT NOT NULL,
-  consultation_fee INT NOT NULL DEFAULT 1200,
+  consultation_fee INT NOT NULL DEFAULT 499,
   degrees TEXT[] NOT NULL DEFAULT '{}',
   specialties TEXT[] NOT NULL DEFAULT '{}',
   languages TEXT[] NOT NULL DEFAULT '{English, Hindi, Sanskrit}',
@@ -92,7 +92,7 @@ CREATE TABLE appointments (
   known_dosha VARCHAR(50),
   pulse_gati VARCHAR(100),
   internal_clinical_notes TEXT,
-  fee_amount INT NOT NULL DEFAULT 1200,
+  fee_amount INT NOT NULL DEFAULT 499,
   payment_status VARCHAR(50) NOT NULL DEFAULT 'unpaid' CHECK (payment_status IN ('unpaid', 'paid', 'partially_paid', 'refunded')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
@@ -206,7 +206,7 @@ VALUES
   'Chief Ayurvedic Physician & Panchakarma Specialist',
   'AYUSH-RJ-1999-4081',
   24,
-  1200,
+  499,
   ARRAY['BAMS (NIA Jaipur)', 'MD (Ayurveda Kayachikitsa)', 'PhD (Panchakarma Protocols)'],
   ARRAY['Nadi Pariksha (Precision Radial Pulse Diagnosis)', 'Classical Panchakarma Bio-Cleansing', 'Chronic Degenerative Spine & Joint Disorders', 'Autoimmune Gut Pathology & Metabolic Syndrome'],
   ARRAY['English', 'Hindi', 'Rajasthani', 'Sanskrit'],
@@ -255,7 +255,7 @@ VALUES
 -- Seed Appointment
 INSERT INTO appointments (token_number, patient_name, whatsapp_number, email, age, gender, doctor_slug, doctor_name, service_id, service_name, service_category, mode, appointment_date, slot_time, status, chief_complaint, fee_amount, payment_status)
 VALUES 
-('AAR-2026-0421', 'Col. Vikramaditya Rathore', '+91 98290 12345', 'rathore.vikram@gmail.com', 58, 'Male', 'dr-lavesh-bohra', 'Dr. Lavesh Bohra', 'nadi-pariksha', 'Nadi Pariksha & Pulse Assessment', 'Consultation', 'in-clinic', CURRENT_DATE + INTERVAL '1 day', '10:30 AM', 'confirmed', 'Lumbosacral radiculopathy radiating to left calf. VAS pain 6/10.', 1200, 'paid');
+('AAR-2026-0421', 'Col. Vikramaditya Rathore', '+91 98290 12345', 'rathore.vikram@gmail.com', 58, 'Male', 'dr-lavesh-bohra', 'Dr. Lavesh Bohra', 'nadi-pariksha', 'Nadi Pariksha & Pulse Assessment', 'Consultation', 'in-clinic', CURRENT_DATE + INTERVAL '1 day', '10:30 AM', 'confirmed', 'Lumbosacral radiculopathy radiating to left calf. VAS pain 6/10.', 499, 'paid');
 
 -- Seed Prescription
 INSERT INTO prescriptions (rx_number, patient_name, doctor_slug, doctor_name, doctor_registration, prescription_date, diagnosis, sanskrit_diagnosis, pulse_finding, medicines, pathya_diet, dinacharya_advice, follow_up_date)

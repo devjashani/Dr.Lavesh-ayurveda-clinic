@@ -56,7 +56,7 @@ export function FinalCta() {
               icon={<Calendar className="w-4 h-4 text-deep-forest" />}
               iconPosition="left"
             >
-              Schedule Consultation (₹1,200)
+              Schedule Consultation (₹499)
             </Button>
           </Magnetic>
 
