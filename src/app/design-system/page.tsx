@@ -116,16 +116,14 @@ export default function DesignSystemPage() {
                   style={{ backgroundColor: c.hex }}
                 >
                   <span
-                    className={`font-mono text-[11px] font-semibold tracking-wider ${
-                      c.textDark ? 'text-ink/80' : 'text-cream'
-                    }`}
+                    className={`font-mono text-[11px] font-semibold tracking-wider ${c.textDark ? 'text-ink/80' : 'text-cream'
+                      }`}
                   >
                     {c.hex}
                   </span>
                   <span
-                    className={`text-xs font-medium tracking-wide ${
-                      c.textDark ? 'text-ink/70' : 'text-cream/80'
-                    }`}
+                    className={`text-xs font-medium tracking-wide ${c.textDark ? 'text-ink/70' : 'text-cream/80'
+                      }`}
                   >
                     {c.token}
                   </span>

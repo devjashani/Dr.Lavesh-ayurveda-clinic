@@ -139,11 +139,10 @@ export function TreatmentsDirectory({ treatments }: TreatmentsDirectoryProps) {
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`relative text-xs px-3.5 py-1.5 rounded-full transition-colors font-medium cursor-pointer ${
-                    isActive
+                  className={`relative text-xs px-3.5 py-1.5 rounded-full transition-colors font-medium cursor-pointer ${isActive
                       ? 'text-cream font-semibold'
                       : 'text-forest/80 hover:text-deep-forest hover:bg-forest/5'
-                  }`}
+                    }`}
                 >
                   {isActive && (
                     <motion.span
@@ -198,10 +197,10 @@ export function TreatmentsDirectory({ treatments }: TreatmentsDirectoryProps) {
                 const colSpanClass = isFeatured
                   ? 'lg:col-span-12'
                   : index % 3 === 0
-                  ? 'lg:col-span-7'
-                  : index % 3 === 1
-                  ? 'lg:col-span-5'
-                  : 'lg:col-span-6';
+                    ? 'lg:col-span-7'
+                    : index % 3 === 1
+                      ? 'lg:col-span-5'
+                      : 'lg:col-span-6';
 
                 return (
                   <motion.article
