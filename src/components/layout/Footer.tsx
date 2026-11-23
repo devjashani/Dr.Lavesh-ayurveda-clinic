@@ -7,11 +7,17 @@ import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
 import { RotatingSeal } from '@/components/ui/RotatingSeal';
 import { ArrowRight, Check } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { usePathname } from 'next/navigation';
 
 export function Footer() {
+  const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { language, t } = useLanguage();
+
+  if (pathname?.startsWith('/consult') || pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();

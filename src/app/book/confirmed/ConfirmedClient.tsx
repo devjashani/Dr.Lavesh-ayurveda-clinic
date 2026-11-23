@@ -21,6 +21,7 @@ import {
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { calculateCallWindow } from '@/lib/config/call';
 
 interface ConfirmedBookingData {
   id: string;
@@ -40,6 +41,7 @@ interface ConfirmedBookingData {
   feeAmount: number;
   feeFormatted: string;
   status: string;
+  isTestMode?: boolean;
   razorpayPaymentId?: string;
   razorpayOrderId?: string;
   paidAt?: string;
@@ -142,64 +144,68 @@ export function ConfirmedClient() {
   const [serverOffsetMs, setServerOffsetMs] = useState<number>(0);
   const [nowMs, setNowMs] = useState<number>(Date.now());
 
-  // Video call state
-  const [joiningCall, setJoiningCall] = useState<boolean>(false);
-  const [videoLinkError, setVideoLinkError] = useState<string | null>(null);
+  // Fetch confirmed booking details
+  useEffect(() => {
+    let isMounted = true;
 
-  // Fetch Booking data and sync Server Time
-  const fetchBooking = useCallback(async () => {
-    if (!bookingId) {
-      setError(
-        language === 'GU'
-          ? 'કોઈ એપોઇન્ટમેન્ટ સંદર્ભ મળ્યો નથી. કૃપા કરીને નવી એપોઇન્ટમેન્ટ બુક કરો.'
-          : 'No appointment reference provided. Please schedule a consultation.'
-      );
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await fetch(`/api/bookings/${bookingId}`);
-      const data = await res.json();
-
-      if (res.ok && data.success && data.booking) {
-        if (data.serverTime) {
-          const sTime = new Date(data.serverTime).getTime();
-          setServerOffsetMs(sTime - Date.now());
+    async function fetchBookingDetails() {
+      if (!bookingId) {
+        if (isMounted) {
+          setError(
+            language === 'GU'
+              ? 'કોઈ બુકિંગ સંદર્ભ મળ્યો નથી. કૃપા કરીને નવી મુલાકાત બુક કરો.'
+              : 'No booking reference provided. Please schedule a new consultation.'
+          );
+          setLoading(false);
         }
-        setBooking(data.booking);
-      } else {
-        setError(
-          data.message ||
-            (language === 'GU'
-              ? 'એપોઇન્ટમેન્ટ વિગતો લાવવામાં સમસ્યા આવી.'
-              : 'Could not load appointment details.')
-        );
+        return;
       }
-    } catch (err) {
-      console.error('Error fetching confirmed booking:', err);
-      setError(
-        language === 'GU'
-          ? 'સર્વર સાથે સંપર્ક કરવામાં ભૂલ થઈ.'
-          : 'Network error retrieving appointment record.'
-      );
-    } finally {
-      setLoading(false);
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await fetch(`/api/bookings/${bookingId}`);
+        const data = await res.json();
+
+        if (!isMounted) return;
+
+        if (res.ok && data.success && data.booking) {
+          setBooking(data.booking);
+          if (data.serverTime) {
+            const serverMs = new Date(data.serverTime).getTime();
+            setServerOffsetMs(serverMs - Date.now());
+            setNowMs(serverMs);
+          }
+        } else {
+          setError(
+            data.message ||
+              (language === 'GU'
+                ? 'એપોઇન્ટમેન્ટ રેકોર્ડ મળ્યો નથી'
+                : 'Appointment record not found')
+          );
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(
+            err instanceof Error ? err.message : 'Failed to load booking details'
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
     }
+
+    fetchBookingDetails();
+
+    return () => {
+      isMounted = false;
+    };
   }, [bookingId, language]);
 
-  useEffect(() => {
-    fetchBooking();
-
-    // Re-check booking and sync server time every 30 seconds
-    const interval30s = setInterval(() => {
-      fetchBooking();
-    }, 30000);
-
-    return () => clearInterval(interval30s);
-  }, [fetchBooking]);
-
-  // Local second timer synced to server time
+  // Live countdown clock ticker
   useEffect(() => {
     const timer = setInterval(() => {
       setNowMs(Date.now() + serverOffsetMs);
@@ -207,41 +213,15 @@ export function ConfirmedClient() {
     return () => clearInterval(timer);
   }, [serverOffsetMs]);
 
-  // Handle Video Call join click
-  const handleJoinVideoCall = async () => {
-    if (!booking) return;
-    setJoiningCall(true);
-    setVideoLinkError(null);
-
-    try {
-      const res = await fetch(`/api/bookings/${booking.id}/video-link`);
-      const data = await res.json();
-
-      if (res.ok && data.success && data.joinUrl) {
-        window.open(data.joinUrl, '_blank', 'noopener,noreferrer');
-      } else {
-        setVideoLinkError(
-          data.message ||
-            (language === 'GU'
-              ? 'વિડિઓ કૉલ લિંક હજી સક્રિય નથી થઈ.'
-              : 'Video call link is not active yet.')
-        );
-      }
-    } catch (err) {
-      console.error('Error opening video call:', err);
-      setVideoLinkError(
-        language === 'GU'
-          ? 'વિડિઓ કૉલ શરૂ કરવામાં ક્ષતિ આવી.'
-          : 'Network error connecting to video consultation.'
-      );
-    } finally {
-      setJoiningCall(false);
-    }
-  };
-
   // Google Calendar URL formatting (IST)
   const getGoogleCalendarUrl = () => {
     if (!booking) return '#';
+    const origin =
+      typeof window !== 'undefined'
+        ? window.location.origin
+        : 'https://vankalayurveda.com';
+    const consultUrl = `${origin}/consult/${booking.id}`;
+
     const title = encodeURIComponent(
       `Vankal Ayurveda: Video Consultation with ${booking.doctorName}`
     );
@@ -252,9 +232,9 @@ export function ConfirmedClient() {
     const endDateTime = `${dateFormatted}T${ehStr.padStart(2, '0')}${emStr.padStart(2, '0')}00`;
 
     const details = encodeURIComponent(
-      `Appointment Token: ${booking.tokenNumber}\nBooking ID: ${booking.id}\nPatient: ${booking.patientName}\nDoctor: ${booking.doctorName}\nService: Video Consultation (₹499 Paid)\nMode: Online Video Call\n\nVideo call link activates 10 minutes prior to slot.`
+      `Appointment Token: ${booking.tokenNumber}\nBooking ID: ${booking.id}\nDoctor: ${booking.doctorName}\nService: Video Consultation (₹499 Paid)\nConsultation Room: ${consultUrl}\n\nOpen this link 10 minutes before your slot. Keep your registered mobile number handy.`
     );
-    const location = encodeURIComponent('Online Video Consultation · Vankal Ayurveda');
+    const location = encodeURIComponent(consultUrl);
 
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDateTime}/${endDateTime}&details=${details}&location=${location}`;
   };
@@ -263,6 +243,12 @@ export function ConfirmedClient() {
   const handleDownloadIcs = () => {
     if (!booking) return;
     try {
+      const origin =
+        typeof window !== 'undefined'
+          ? window.location.origin
+          : 'https://vankalayurveda.com';
+      const consultUrl = `${origin}/consult/${booking.id}`;
+
       const startUtc = new Date(`${booking.date}T${booking.slotStart}:00+05:30`)
         .toISOString()
         .replace(/[-:]/g, '')
@@ -284,8 +270,9 @@ export function ConfirmedClient() {
         `DTSTART:${startUtc}`,
         `DTEND:${endUtc}`,
         `SUMMARY:Vankal Ayurveda: Video Consultation with ${booking.doctorName}`,
-        `DESCRIPTION:Booking ID: ${booking.id}\\nToken: ${booking.tokenNumber}\\nPatient: ${booking.patientName}\\nService: Video Consultation (INR 499 Paid)\\nVideo link activates 10 minutes before slot.`,
-        'LOCATION:Online Video Call · Vankal Ayurveda',
+        `DESCRIPTION:Booking ID: ${booking.id}\\nToken: ${booking.tokenNumber}\\nService: Video Consultation (INR 499 Paid)\\nRoom: ${consultUrl}\\n\\nOpen this link 10 minutes before your slot. Keep your registered mobile number handy.`,
+        `LOCATION:${consultUrl}`,
+        `URL:${consultUrl}`,
         'STATUS:CONFIRMED',
         'END:VEVENT',
         'END:VCALENDAR',
@@ -305,16 +292,17 @@ export function ConfirmedClient() {
     }
   };
 
-  // Format WhatsApp Share text (strictly booking ID, date/time and link; no medical complaints)
+  // Format WhatsApp Share text (strictly booking ID, date/time and consult link; no medical complaints)
   const getWhatsAppShareUrl = () => {
     if (!booking) return '#';
     const friendlyTime = formatFriendlyDateTime(booking.date, booking.slotStart, language);
-    const link =
+    const origin =
       typeof window !== 'undefined'
-        ? window.location.href
-        : `https://vankalayurveda.com/book/confirmed?booking=${booking.id}`;
+        ? window.location.origin
+        : 'https://vankalayurveda.com';
+    const consultUrl = `${origin}/consult/${booking.id}`;
     const text = encodeURIComponent(
-      `Namaste, my Ayurvedic Video Consultation at Vankal Ayurveda is confirmed!\n\n🏷️ Token: ${booking.tokenNumber}\n🩺 Doctor: ${booking.doctorName}\n📋 Service: Video Consultation\n🗓️ Date: ${friendlyTime}\n💳 Amount Paid: ₹499\n🔗 Booking Receipt: ${link}`
+      `Namaste, my Ayurvedic Video Consultation at Vankal Ayurveda is confirmed!\n\n🏷️ Token: ${booking.tokenNumber}\n🩺 Doctor: ${booking.doctorName}\n📋 Service: Video Consultation\n🗓️ Date: ${friendlyTime}\n💳 Amount Paid: ₹499\n\n🔗 Video Consultation Room:\n${consultUrl}\n\nOpen this link 10 minutes before your slot. Keep your registered mobile number handy.`
     );
     return `https://wa.me/?text=${text}`;
   };
@@ -376,21 +364,33 @@ export function ConfirmedClient() {
     );
   }
 
-  // Calculate Slot & Server Timing
-  const slotStartMs = new Date(`${booking.date}T${booking.slotStart}:00+05:30`).getTime();
-  const slotEndMs = new Date(
-    `${booking.date}T${booking.slotEnd || booking.slotStart}:00+05:30`
-  ).getTime();
-  const activationMs = slotStartMs - 10 * 60 * 1000; // 10 minutes prior to slot
+  // Check if test booking mode is active
+  const isTestBooking = Boolean(
+    booking.isTestMode ||
+    booking.razorpayOrderId?.startsWith('order_test_') ||
+    booking.razorpayPaymentId?.startsWith('pay_test_') ||
+    booking.tokenNumber?.includes('TEST') ||
+    booking.whatsappNumber === '9016432576' ||
+    booking.whatsappNumber === '9876543210'
+  );
 
-  const isPreActivation = nowMs < activationMs;
-  const isWindowActive = nowMs >= activationMs && nowMs <= slotEndMs;
-  const isPostSlot = nowMs > slotEndMs;
+  // Calculate Slot & Server Timing using shared call window logic
+  const callWindow = calculateCallWindow(
+    booking.date,
+    booking.slotStart,
+    booking.slotEnd,
+    'patient',
+    nowMs
+  );
+
+  const isPreActivation = isTestBooking ? false : callWindow.isTooEarly;
+  const isWindowActive = isTestBooking ? true : callWindow.isInWindow;
+  const isPostSlot = isTestBooking ? false : callWindow.isEnded;
 
   // Format Countdown String
   let countdownText = '';
   if (isPreActivation) {
-    const diffSec = Math.max(0, Math.floor((activationMs - nowMs) / 1000));
+    const diffSec = Math.max(0, Math.floor((callWindow.windowStartMs - nowMs) / 1000));
     const days = Math.floor(diffSec / 86400);
     const hours = Math.floor((diffSec % 86400) / 3600);
     const minutes = Math.floor((diffSec % 3600) / 60);
@@ -447,13 +447,18 @@ export function ConfirmedClient() {
           </div>
 
           <div className="flex items-center gap-2">
-            {isWindowActive && (
+            {isTestBooking ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-amber-100 text-amber-900 border border-amber-300">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                {language === 'GU' ? 'ટેસ્ટ મોડ · ત્વરિત પ્રવેશ' : 'Test Mode · Instant Access'}
+              </span>
+            ) : isWindowActive ? (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-100 text-emerald-800 border border-emerald-300 animate-pulse">
                 <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
                 {language === 'GU' ? 'કન્સલ્ટેશન સક્રિય છે' : 'Session Active Now'}
               </span>
-            )}
-            {isPreActivation && (
+            ) : null}
+            {!isTestBooking && isPreActivation && (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono text-forest/80 bg-forest/10 border border-forest/20">
                 <Clock className="w-3 h-3 text-forest" />
                 <span suppressHydrationWarning>
@@ -461,7 +466,7 @@ export function ConfirmedClient() {
                 </span>
               </span>
             )}
-            {isPostSlot && (
+            {!isTestBooking && isPostSlot && (
               <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-mono text-ink/50 bg-ink/5 border border-ink/15">
                 {language === 'GU' ? 'સ્લોટ પૂર્ણ થયો' : 'Slot Concluded'}
               </span>
@@ -472,49 +477,73 @@ export function ConfirmedClient() {
         {/* Video Call Instructions & Gated Join Button */}
         <div className="space-y-3">
           <div className="text-xs font-body text-ink/80 leading-relaxed">
-            {isWindowActive ? (
+            {isTestBooking ? (
+              <p className="text-forest font-medium">
+                {language === 'GU'
+                  ? 'ટેસ્ટ મોડ સક્રિય છે. તમે સીધા વિડીયો પરામર્શ રૂમમાં જોડાઈ શકો છો.'
+                  : 'Test mode is active. You can enter the video consultation room immediately.'}
+              </p>
+            ) : isWindowActive ? (
               <p className="text-emerald-900 font-medium">
                 {language === 'GU'
-                  ? 'ડૉ. લવેશ બોહરા સાથેનો તમારો વિડીયો કૉલ શરૂ થઈ ગયો છે. સલામત સત્રમાં જોડાવા માટે નીચે બટન પર ક્લિક કરો.'
+                  ? 'ડૉ. લવેશ બોહરા સાથેનો તમારો વિડીયો કૉલ શરૂ થઈ ગયો છે. પરામર્શ રૂમમાં જોડાવા માટે નીચે ક્લિક કરો.'
                   : 'Your video consultation room with Dr. Lavesh Bohra is active. Click below to join the secure session.'}
               </p>
             ) : isPostSlot ? (
               <p className="text-ink/60">
                 {language === 'GU'
-                  ? 'આ પરામર્શ સમય પૂર્ણ થઈ ગયો છે. નવી મુલાકાત માટે મુખ્ય પૃષ્ઠ પર જાઓ.'
-                  : 'This scheduled consultation window has ended. If you missed your appointment, please contact the clinic desk.'}
+                  ? 'આ પરામર્શ સમય પૂર્ણ થઈ ગયો છે.'
+                  : 'This consultation window has ended.'}
               </p>
             ) : (
               <p>
                 {language === 'GU'
-                  ? `સુરક્ષા પ્રોટોકોલ અનુસાર વિડીયો લિંક આપના સ્લોટ સમયના ૧૦ મિનિટ પહેલાં (${booking.slot}) સક્રિય થશે.`
-                  : `For privacy and clinic schedule adherence, your secure video link activates exactly 10 minutes before your slot (${booking.slot}).`}
+                  ? 'વિડીયો પરામર્શ આ વેબસાઇટ પર જ યોજાય છે. તમારા સ્લોટ સમયના ૧૦ મિનિટ પહેલાં આ પેજ પરથી જોડાઈ શકો છો.'
+                  : 'The video consultation takes place on this website. Join from your booking page 10 minutes before your slot.'}
               </p>
             )}
           </div>
 
-          {videoLinkError && (
-            <div className="p-2.5 bg-terracotta/10 border border-terracotta/30 text-terracotta text-xs rounded-[4px] flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>{videoLinkError}</span>
-            </div>
-          )}
-
           <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-3">
             {isWindowActive ? (
-              <Button
-                onClick={handleJoinVideoCall}
-                disabled={joiningCall}
-                variant="primary"
-                className="w-full sm:w-auto text-xs py-3 px-6 bg-forest hover:bg-deep-forest text-sand font-medium cursor-pointer"
+              <Link
+                href={`/consult/${booking.id}?role=patient`}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-xs sm:text-sm py-3 px-6 rounded-[3px] bg-forest hover:bg-deep-forest text-sand font-medium cursor-pointer transition-colors shadow-xs"
               >
-                {joiningCall ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <Video className="w-4 h-4 mr-2 text-turmeric" />
-                )}
-                {language === 'GU' ? 'હમણાં વિડીયો કૉલમાં જોડાઓ' : 'Join Video Call Now'}
-              </Button>
+                <Video className="w-4 h-4 text-turmeric shrink-0" />
+                <span>
+                  {language === 'GU'
+                    ? isTestBooking
+                      ? 'વિડીયો કૉલમાં જોડાઓ (ટેસ્ટ મોડ)'
+                      : 'હમણાં વિડીયો કૉલમાં જોડાઓ'
+                    : isTestBooking
+                    ? 'Join Video Call (Test Mode)'
+                    : 'Join Video Call Now'}
+                </span>
+              </Link>
+            ) : isPostSlot ? (
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-ink/70">
+                  {language === 'GU'
+                    ? 'આ પરામર્શ સમય પૂર્ણ થઈ ગયો છે.'
+                    : 'This consultation window has ended.'}
+                </p>
+                <div className="flex items-center gap-3 text-xs font-mono">
+                  <Link
+                    href="/contact"
+                    className="text-forest hover:text-deep-forest underline underline-offset-2 font-medium"
+                  >
+                    {language === 'GU' ? 'ક્લિનિક સંપર્ક કરો' : 'Contact Clinic'}
+                  </Link>
+                  <span className="text-forest/30">·</span>
+                  <a
+                    href="tel:+919016432576"
+                    className="text-forest hover:text-deep-forest underline underline-offset-2 font-medium"
+                  >
+                    +91 9016432576
+                  </a>
+                </div>
+              </div>
             ) : (
               <div className="space-y-1">
                 <Button

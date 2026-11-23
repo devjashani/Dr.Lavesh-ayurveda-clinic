@@ -14,7 +14,8 @@ Your clinical consultation is confirmed. Here are your booking details:
 {{#if is_in_clinic}}
 📍 *Location:* Vankal Ayurveda (Address: to be added)
 {{else}}
-💻 *Online Consultation:* Your joining details and link will be shared via WhatsApp prior to the appointment.
+💻 *Online Consultation Room:* https://vankalayurveda.com/consult/{{booking_id}}
+The video consultation takes place on this website. Open this link 10 minutes before your slot. Keep your registered mobile number handy.
 {{/if}}
 
 ⚠️ *Consultation Notes:*

@@ -140,6 +140,31 @@ export function ReviewClient() {
         return;
       }
 
+      // Step B: In Test Mode (when Razorpay live keys are not configured), auto-confirm and redirect
+      if (orderData.isTestMode) {
+        const verifyRes = await fetch('/api/payments/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bookingId: orderData.bookingId,
+            razorpay_order_id: orderData.orderId,
+            razorpay_payment_id: `pay_test_${Date.now()}`,
+            razorpay_signature: 'mock_test_signature',
+          }),
+        });
+
+        const verifyData = await verifyRes.json();
+        if (verifyRes.ok && verifyData.success) {
+          sessionStorage.removeItem(DRAFT_STORAGE_KEY);
+          router.push(verifyData.redirectUrl);
+          return;
+        } else {
+          setPaymentError(verifyData.message || 'Payment test confirmation failed.');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
       // Check Razorpay script availability
       if (typeof window === 'undefined' || !window.Razorpay) {
         setPaymentError(
@@ -380,10 +405,15 @@ export function ReviewClient() {
           </div>
         </div>
 
-        {/* 4. Neutral Online Payment Notice */}
-        <div className="p-4 rounded-[4px] bg-cream border border-forest/15 mb-6 flex items-center gap-3 text-xs font-body text-ink/80">
-          <ShieldCheck className="w-5 h-5 text-forest shrink-0" />
-          <span>{t.booking.onlinePaymentNotice}</span>
+        {/* 4. Neutral Online Payment & Video Notice */}
+        <div className="p-4 rounded-[4px] bg-cream border border-forest/15 mb-6 space-y-1.5 text-xs font-body text-ink/80">
+          <div className="flex items-center gap-2 font-medium text-deep-forest">
+            <ShieldCheck className="w-4 h-4 text-forest shrink-0" />
+            <span>{t.booking.onlinePaymentNotice}</span>
+          </div>
+          <p className="text-[11px] text-ink/65 pl-6">
+            {t.booking.videoPlatformNotice}
+          </p>
         </div>
 
         {/* 5. Consent Checkbox (Exact Blueprint Text) */}

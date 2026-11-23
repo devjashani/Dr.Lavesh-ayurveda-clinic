@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   title: 'Consultation Confirmed | VANKAL AYURVEDA',
   description:
     'Your video consultation with Dr. Lavesh Bohra is confirmed. Access your official token, receipt voucher, and video call guidelines.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function BookConfirmedPage() {

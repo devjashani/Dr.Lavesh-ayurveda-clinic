@@ -31,11 +31,15 @@ html.lenis body {
 @theme {
   --color-paper: #F6F1E7;
   --color-cream: #FBF8F1;
+  --color-sand: #F6F1E7;
+  --color-sand-light: #FAF6F0;
   --color-forest: #1F3D2B;
   --color-deep-forest: #14291C;
   --color-sage: #8FA68A;
   --color-turmeric: #D99A2B;
+  --color-turmeric-dark: #A36B15;
   --color-clay: #B5603A;
+  --color-terracotta: #C85A32;
   --color-ink: #1B1B18;
   --color-mist: #E4EADF;
 
@@ -51,11 +55,15 @@ html.lenis body {
 :root {
   --paper: #F6F1E7;
   --cream: #FBF8F1;
+  --sand: #F6F1E7;
+  --sand-light: #FAF6F0;
   --forest: #1F3D2B;
   --deep-forest: #14291C;
   --sage: #8FA68A;
   --turmeric: #D99A2B;
+  --turmeric-dark: #A36B15;
   --clay: #B5603A;
+  --terracotta: #C85A32;
   --ink: #1B1B18;
   --mist: #E4EADF;
 

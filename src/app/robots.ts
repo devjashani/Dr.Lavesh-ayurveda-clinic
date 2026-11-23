@@ -6,10 +6,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin', '/portal'],
+        disallow: ['/admin', '/admin/*', '/consult', '/consult/*', '/portal', '/portal/*'],
       },
     ],
     sitemap: 'https://vankalayurveda.com/sitemap.xml',
   };
 }
-

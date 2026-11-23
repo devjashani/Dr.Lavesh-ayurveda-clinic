@@ -7,9 +7,11 @@ import { Phone, Calendar, MessageCircle, ArrowUp } from 'lucide-react';
 import { Magnetic } from '@/components/motion';
 import { MOTION_TOKENS, usePrefersReducedMotion } from '@/lib/motion';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 export function FloatingActions() {
+  const pathname = usePathname();
   const [scrollY, setScrollY] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isBottomBarVisible, setIsBottomBarVisible] = useState(true);
@@ -63,6 +65,14 @@ export function FloatingActions() {
   const radius = 18;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - scrollProgress * circumference;
+
+  if (
+    pathname?.startsWith('/consult') ||
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/book')
+  ) {
+    return null;
+  }
 
   return (
     <>

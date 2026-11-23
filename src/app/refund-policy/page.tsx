@@ -47,7 +47,7 @@ export default function RefundPolicyPage() {
               1. Video Consultation Rescheduling & Cancellation
             </h2>
             <p>
-              When you reserve a video consultation slot, our clinical system reserves that time exclusively for your diagnostic evaluation.
+              When you reserve a video consultation slot, our clinical system reserves that time exclusively for your diagnostic evaluation. The video consultation takes place on this website. Join from your booking page 10 minutes before your slot.
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li>

@@ -84,6 +84,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-1 text-ink/75">
               <li>All digital medical records and video consultation channels are encrypted in transit (TLS 1.3) and at rest (AES-256).</li>
+              <li>Video consultations are conducted peer-to-peer via Agora RTC with zero audio/video recording or server storage. Live consultation streams are strictly ephemeral and never retained.</li>
               <li>Physical clinical records and files are stored in restricted-access archives accessible only by attending Vaidyas and clinical staff.</li>
               <li>We maintain digital records for a mandatory statutory retention period of 5 years following your last active consultation, after which data may be securely purged upon written patient request.</li>
             </ul>

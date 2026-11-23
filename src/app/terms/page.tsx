@@ -78,7 +78,8 @@ export default function TermsPage() {
             </h2>
             <p>
               Online video consultations are conducted strictly in compliance with the Ministry of AYUSH
-              Telemedicine Practice Guidelines. Video consultations are intended for clinical evaluation,
+              Telemedicine Practice Guidelines. The video consultation takes place on this website. Join from your booking page 10 minutes before your slot.
+              Video consultations are intended for clinical evaluation,
               chronic disease follow-up, and dietary guidance. In situations involving acute trauma, severe
               chest pain, high fever with altered sensorium, or medical emergencies, patients must immediately
               report to a local hospital emergency department.

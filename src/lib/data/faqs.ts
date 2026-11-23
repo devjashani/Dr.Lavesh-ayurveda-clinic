@@ -46,6 +46,12 @@ export const faqs: FAQItem[] = [
     question: 'Can I follow up an online consultation with an in-person visit later?',
     answer: 'Yes, absolutely. Many patients begin with an online consultation to address immediate dietary and routine adjustments. When ready or traveling, they schedule an in-person pulse diagnosis consultation for deeper evaluation.',
   },
+  {
+    id: 'faq-oc-4',
+    category: 'Online consultation',
+    question: 'Where does the video consultation take place, and how do I join?',
+    answer: 'The video consultation takes place on this website. Join from your booking page 10 minutes before your slot. Keep your registered mobile number handy to verify access. No third-party apps like Zoom or Google Meet are required.',
+  },
 
   // Panchakarma
   {

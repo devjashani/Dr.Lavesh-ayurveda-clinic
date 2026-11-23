@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as z from 'zod';
 import { supabaseAdmin } from '@/lib/supabase';
-import { razorpay, RAZORPAY_KEY_ID } from '@/lib/razorpay';
+import { razorpay, RAZORPAY_KEY_ID, isRazorpayLiveConfigured } from '@/lib/razorpay';
 import { BOOKING_CONFIG } from '@/lib/config/booking';
 import { CLINIC_SCHEDULE, getStandardDaySlots } from '@/lib/config/schedule';
 import { isRateLimited } from '@/lib/utils/rateLimit';
@@ -178,7 +178,11 @@ export async function POST(request: NextRequest) {
       ? data.patientWhatsapp
       : `+91${data.patientWhatsapp}`;
 
-    // C. Atomically Insert Pending Booking
+    // C. Atomically Insert Booking (CONFIRMED immediately in test mode, PENDING_PAYMENT in live gateway)
+    const isLiveGateway = isRazorpayLiveConfigured();
+    const nowIso = new Date().toISOString();
+    const initialStatus = isLiveGateway ? 'PENDING_PAYMENT' : 'CONFIRMED';
+
     const { data: newBooking, error: insertError } = await supabaseAdmin
       .from('bookings')
       .insert({
@@ -196,8 +200,9 @@ export async function POST(request: NextRequest) {
         appointment_date: data.date,
         slot_start: data.slotStart,
         slot_end: slotEnd,
-        status: 'PENDING_PAYMENT',
+        status: initialStatus,
         hold_expires_at: holdExpiresAt,
+        paid_at: isLiveGateway ? null : nowIso,
         fee_amount: BOOKING_CONFIG.service.feePaise, // 49900 paise strictly from server
       })
       .select('id')
@@ -219,27 +224,34 @@ export async function POST(request: NextRequest) {
     }
 
     const bookingId = newBooking.id;
-
-    // 5. Create Razorpay Order
     const amount = BOOKING_CONFIG.service.feePaise; // 49900 paise = ₹499 strictly server-side
     const receipt = bookingId.replace(/-/g, '').slice(0, 40);
 
-    const razorpayOrder = await razorpay.orders.create({
-      amount,
-      currency: 'INR',
-      receipt,
-      notes: {
-        bookingId,
-        serviceId: BOOKING_CONFIG.service.id,
-        doctorId: BOOKING_CONFIG.doctorId,
-      },
-    });
+    // 5. Create Razorpay Order (or Mock Order in test mode)
+    let orderId: string;
+
+    if (isLiveGateway) {
+      const razorpayOrder = await razorpay.orders.create({
+        amount,
+        currency: 'INR',
+        receipt,
+        notes: {
+          bookingId,
+          serviceId: BOOKING_CONFIG.service.id,
+          doctorId: BOOKING_CONFIG.doctorId,
+        },
+      });
+      orderId = razorpayOrder.id;
+    } else {
+      orderId = `order_test_${Date.now()}`;
+      console.log(`[Payment Test Mode] Instant test order generated: ${orderId} for booking: ${bookingId}`);
+    }
 
     // 6. Save razorpay_order_id to the booking
     await supabaseAdmin
       .from('bookings')
       .update({
-        razorpay_order_id: razorpayOrder.id,
+        razorpay_order_id: orderId,
         updated_at: new Date().toISOString(),
       })
       .eq('id', bookingId);
@@ -248,10 +260,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       bookingId,
-      orderId: razorpayOrder.id,
+      orderId,
       amount,
       currency: 'INR',
-      keyId: RAZORPAY_KEY_ID,
+      keyId: isLiveGateway ? RAZORPAY_KEY_ID : 'rzp_test_mock',
+      isTestMode: !isLiveGateway,
     });
   } catch (error) {
     // Generic error logging: NEVER log health data or secrets

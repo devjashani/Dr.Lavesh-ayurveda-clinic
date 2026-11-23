@@ -70,6 +70,10 @@ export async function POST(request: NextRequest) {
               updated_at: new Date().toISOString(),
             })
             .eq('id', booking.id);
+
+          console.log(
+            `[CLINICAL ALERT: WEBHOOK CONFIRMED BOOKING] Booking ID: ${booking.id} | Order: ${orderId} | Payment: ${paymentId || 'captured'}`
+          );
         }
       }
     } else if (eventType === 'payment.failed') {

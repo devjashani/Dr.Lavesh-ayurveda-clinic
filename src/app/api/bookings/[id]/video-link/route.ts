@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
+import { calculateCallWindow } from '@/lib/config/call';
+import { isRazorpayLiveConfigured } from '@/lib/razorpay';
 
 export async function GET(
   request: NextRequest,
@@ -40,28 +42,33 @@ export async function GET(
     }
 
     // Verify time window against server time in IST (UTC+05:30)
+    const isTestBooking =
+      !isRazorpayLiveConfigured() ||
+      process.env.NODE_ENV !== 'production';
+
     const nowMs = Date.now();
-    const slotStartIso = `${booking.appointment_date}T${booking.slot_start}:00+05:30`;
-    const slotEndIso = `${booking.appointment_date}T${booking.slot_end || booking.slot_start}:00+05:30`;
+    const windowInfo = calculateCallWindow(
+      booking.appointment_date,
+      booking.slot_start,
+      booking.slot_end,
+      'patient',
+      nowMs
+    );
 
-    const slotStartMs = new Date(slotStartIso).getTime();
-    const slotEndMs = new Date(slotEndIso).getTime();
-    const activationMs = slotStartMs - 10 * 60 * 1000; // 10 minutes prior to slot
-
-    if (nowMs < activationMs) {
+    if (windowInfo.isTooEarly && !isTestBooking) {
       return NextResponse.json(
         {
           success: false,
           code: 'LINK_NOT_YET_ACTIVE',
           message: 'Video call link activates 10 minutes before your slot time.',
           serverTime: new Date(nowMs).toISOString(),
-          activatesAt: new Date(activationMs).toISOString(),
+          activatesAt: windowInfo.windowOpensAt,
         },
         { status: 403 }
       );
     }
 
-    if (nowMs > slotEndMs) {
+    if (windowInfo.isEnded) {
       return NextResponse.json(
         {
           success: false,
@@ -74,13 +81,13 @@ export async function GET(
     }
 
     // Active consultation window!
-    // Returning placeholder video link as per blueprint; listed in TODO.md
+    // Direct link to the internal Agora consultation room
     return NextResponse.json({
       success: true,
-      joinUrl: 'https://meet.google.com/lookup/vankal-dr-bohra',
-      provider: 'google-meet-placeholder',
+      joinUrl: `/consult/${booking.id}`,
+      provider: 'agora-rtc',
       serverTime: new Date(nowMs).toISOString(),
-      expiresAt: new Date(slotEndMs).toISOString(),
+      expiresAt: windowInfo.windowClosesAt,
       message: 'Consultation room is active.',
     });
   } catch (err) {

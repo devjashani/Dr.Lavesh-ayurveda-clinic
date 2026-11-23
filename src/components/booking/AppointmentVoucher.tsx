@@ -92,22 +92,20 @@ export function AppointmentVoucher({
     // Add 45 mins for end time roughly
     const endDateTime = `${dateFormatted}T${(parseInt(startTimeStr, 10) + 4500).toString().padStart(6, '0')}`;
 
+    const consultUrl = `https://vankalayurveda.com/consult/${appointment.tokenNumber}`;
     const details = encodeURIComponent(
-      `Appointment Token: ${appointment.tokenNumber}\nPatient: ${appointment.patientName}\nDoctor: ${appointment.doctorName}\nService: ${appointment.serviceName}\nMode: ${appointment.mode}`
+      `Appointment Token: ${appointment.tokenNumber}\nDoctor: ${appointment.doctorName}\nService: ${appointment.serviceName}\nConsultation Room: ${consultUrl}\n\nOpen this link 10 minutes before your slot. Keep your registered mobile number handy.`
     );
-    const location = encodeURIComponent(
-      appointment.mode === 'in-clinic'
-        ? 'Vankal Ayurveda (Address: to be added)'
-        : 'Online Video Consultation'
-    );
+    const location = encodeURIComponent(consultUrl);
 
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDateTime}/${endDateTime}&details=${details}&location=${location}`;
   };
 
   // Format WhatsApp Share text
   const formatWhatsAppShareUrl = () => {
+    const consultUrl = `https://vankalayurveda.com/consult/${appointment.tokenNumber}`;
     const text = encodeURIComponent(
-      `Namaste, my Ayurvedic consultation at Vankal Ayurveda is confirmed!\n\n🏷️ Token: ${appointment.tokenNumber}\n🩺 Doctor: ${appointment.doctorName}\n📋 Service: ${appointment.serviceName}\n🗓️ Date: ${appointment.date} at ${appointment.slot}\n📍 Mode: ${appointment.mode === 'in-clinic' ? 'In-Clinic' : 'Online Video'}`
+      `Namaste, my Ayurvedic consultation at Vankal Ayurveda is confirmed!\n\n🏷️ Token: ${appointment.tokenNumber}\n🩺 Doctor: ${appointment.doctorName}\n📋 Service: ${appointment.serviceName}\n🗓️ Date: ${appointment.date} at ${appointment.slot}\n\n🔗 Video Consultation Room:\n${consultUrl}\n\nOpen this link 10 minutes before your slot. Keep your registered mobile number handy.`
     );
     return `https://wa.me/?text=${text}`;
   };

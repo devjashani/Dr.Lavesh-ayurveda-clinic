@@ -22,6 +22,9 @@ export const navLinks = [
 
 export function Navbar() {
   const pathname = usePathname();
+  if (pathname?.startsWith('/consult') || pathname?.startsWith('/admin')) {
+    return null;
+  }
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

@@ -23,7 +23,8 @@ PRE-APPOINTMENT CHECKLIST
 
 {{#if is_online}}
 ONLINE CONSULTATION DETAILS:
-Your consultation link and joining details will be shared directly with you via WhatsApp or Email prior to your scheduled session.
+Consultation Room: https://vankalayurveda.com/consult/{{booking_id}}
+The video consultation takes place on this website. Open this link 10 minutes before your slot. Keep your registered mobile number handy.
 {{/if}}
 
 Need immediate assistance?
