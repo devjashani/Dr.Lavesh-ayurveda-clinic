@@ -496,8 +496,43 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
 
     setIsJoining(true);
     stopPreviewTracks(); // Stop preview before Agora takes hardware lock
+    // Brief 150ms buffer to allow OS to release webcam hardware lock
+    await new Promise((r) => setTimeout(r, 150));
 
     try {
+      const { appId, channelName, token, uid } = tokenDataRef.current!;
+
+      // Handle simulation mode if running without real Agora credentials
+      const isMock = !appId || appId === 'placeholder_agora_app_id' || token.startsWith('007_vankal_mock_');
+      if (isMock) {
+        console.warn('[Consultation] Running in local simulation mode (mock token).');
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: selectedCameraId ? { deviceId: { exact: selectedCameraId } } : true,
+            audio: selectedMicId ? { deviceId: { exact: selectedMicId } } : true,
+          });
+          previewStreamRef.current = stream;
+          setPhase('in_call');
+          setTimeout(() => {
+            if (localVideoContainerRef.current) {
+              const vid = document.createElement('video');
+              vid.srcObject = stream;
+              vid.autoplay = true;
+              vid.playsInline = true;
+              vid.muted = true;
+              vid.className = 'w-full h-full object-cover scale-x-[-1]';
+              localVideoContainerRef.current.innerHTML = '';
+              localVideoContainerRef.current.appendChild(vid);
+            }
+          }, 200);
+          return;
+        } catch (mediaErr) {
+          console.warn('[Consultation] Simulation stream fallback failed:', mediaErr);
+          setPhase('in_call');
+          return;
+        }
+      }
+
       // Dynamic import of Agora RTC SDK strictly inside browser execution
       const AgoraRTC = (await import('agora-rtc-sdk-ng')).default;
       AgoraRTC.setLogLevel(3); // Warnings & Errors only
@@ -505,24 +540,44 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
       const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
       agoraClientRef.current = client;
 
-      const { appId, channelName, token, uid } = tokenDataRef.current!;
-
       // 1. Join RTC Channel
       await client.join(appId, channelName, token, uid);
 
-      // 2. Create and Publish Local Media Tracks
-      const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-        microphoneId: selectedMicId || undefined,
-      });
-      const videoTrack = await AgoraRTC.createCameraVideoTrack({
-        cameraId: selectedCameraId || undefined,
-        encoderConfig: '720p_2',
-      });
+      // 2. Create and Publish Local Media Tracks with fallback
+      let audioTrack: IMicrophoneAudioTrack | null = null;
+      let videoTrack: ICameraVideoTrack | null = null;
+
+      try {
+        audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+          microphoneId: selectedMicId || undefined,
+        });
+      } catch (aErr) {
+        console.warn('Microphone track error:', aErr);
+      }
+
+      try {
+        videoTrack = await AgoraRTC.createCameraVideoTrack({
+          cameraId: selectedCameraId || undefined,
+          encoderConfig: '720p_2',
+        });
+      } catch (vErr) {
+        console.warn('Camera track error with specific ID, falling back to default:', vErr);
+        try {
+          videoTrack = await AgoraRTC.createCameraVideoTrack({
+            encoderConfig: '720p_2',
+          });
+        } catch (vErr2) {
+          console.error('Camera track completely failed:', vErr2);
+        }
+      }
 
       localAudioTrackRef.current = audioTrack;
       localVideoTrackRef.current = videoTrack;
 
-      await client.publish([audioTrack, videoTrack]);
+      const tracksToPublish = [audioTrack, videoTrack].filter(Boolean) as (IMicrophoneAudioTrack | ICameraVideoTrack)[];
+      if (tracksToPublish.length > 0) {
+        await client.publish(tracksToPublish);
+      }
 
       // 3. Register Agora RTC Event Handlers
       client.on('user-published', async (user, mediaType) => {
@@ -622,7 +677,14 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
       }, 1000);
     } catch (err) {
       console.error('Error joining Agora call:', err);
-      alert('Could not join video session. Please verify camera & microphone permissions.');
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('Permission') || msg.includes('NotAllowedError')) {
+        alert('Could not access camera or microphone. Please ensure permissions are granted.');
+      } else if (msg.includes('INVALID_VENDOR_KEY') || msg.includes('DYNAMIC_USE_WEB_SECURITY_KEY')) {
+        alert('Agora service authentication error: Invalid App ID or Token.');
+      } else {
+        alert(`Connection failed: ${msg}`);
+      }
       setPhase('waiting');
     } finally {
       setIsJoining(false);

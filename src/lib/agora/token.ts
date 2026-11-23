@@ -2,13 +2,29 @@ import crypto from 'crypto';
 import { RtcTokenBuilder, RtcRole } from 'agora-token';
 import { AGORA_UIDS, CallRole } from '@/lib/config/call';
 
-// Server-only Agora Credentials
-const AGORA_APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID || '';
-const AGORA_APP_CERTIFICATE = process.env.AGORA_APP_CERTIFICATE || '';
+// Server-only Agora Credentials (with verified clinic Agora account fallback)
+export const DEFAULT_AGORA_APP_ID = 'caefe9505875468a8083c24b9e2236d6';
+export const DEFAULT_AGORA_CERTIFICATE = 'df8d1994abe54980aae3607216e34ae6';
+
+export function getAgoraAppId(): string {
+  return (
+    process.env.NEXT_PUBLIC_AGORA_APP_ID ||
+    process.env.AGORA_APP_ID ||
+    DEFAULT_AGORA_APP_ID
+  ).trim();
+}
+
+export function getAgoraCertificate(): string {
+  return (
+    process.env.AGORA_APP_CERTIFICATE ||
+    DEFAULT_AGORA_CERTIFICATE
+  ).trim();
+}
 
 // Internal HMAC secret for signing proof tokens
 const PROOF_SECRET =
   process.env.AGORA_APP_CERTIFICATE ||
+  DEFAULT_AGORA_CERTIFICATE ||
   process.env.RAZORPAY_KEY_SECRET ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   'vankal_internal_call_proof_salt';
@@ -39,8 +55,8 @@ export function buildAgoraToken(
   role: CallRole,
   secondsRemaining: number
 ): GeneratedTokenResult {
-  const appId = (AGORA_APP_ID || '').trim();
-  const appCert = (AGORA_APP_CERTIFICATE || '').trim();
+  const appId = getAgoraAppId();
+  const appCert = getAgoraCertificate();
   const uid = AGORA_UIDS[role];
 
   // Token lifetime in seconds (minimum 60s, maximum up to remaining seconds)
