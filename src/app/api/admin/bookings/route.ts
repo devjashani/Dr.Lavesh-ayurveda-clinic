@@ -3,6 +3,8 @@ import { supabaseAdmin } from '@/lib/supabase';
 import { requireDoctor } from '@/lib/agora/auth';
 import { BOOKING_CONFIG } from '@/lib/config/booking';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     // 1. Require Doctor Auth

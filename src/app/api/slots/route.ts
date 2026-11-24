@@ -3,6 +3,8 @@ import { supabaseAdmin } from '@/lib/supabase';
 import { CLINIC_SCHEDULE, getStandardDaySlots } from '@/lib/config/schedule';
 import { BOOKING_CONFIG } from '@/lib/config/booking';
 
+export const dynamic = 'force-dynamic';
+
 export type SlotStatus = 'available' | 'booked' | 'held' | 'past' | 'too_soon';
 
 export interface DaySlotResponse {
