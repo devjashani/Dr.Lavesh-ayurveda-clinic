@@ -3,8 +3,6 @@ import { supabaseAdmin } from '@/lib/supabase';
 import { getPatientSession } from '@/lib/auth/patientSession';
 import { BOOKING_CONFIG } from '@/lib/config/booking';
 
-export const dynamic = 'force-dynamic';
-
 const NO_CACHE_HEADERS = {
   'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
 };

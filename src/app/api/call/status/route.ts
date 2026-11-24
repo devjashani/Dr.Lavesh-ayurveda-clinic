@@ -4,8 +4,6 @@ import { supabaseAdmin } from '@/lib/supabase';
 import { calculateCallWindow } from '@/lib/config/call';
 import { isRazorpayLiveConfigured } from '@/lib/razorpay';
 
-export const dynamic = 'force-dynamic';
-
 const RECENT_PING_THRESHOLD_MS = 45 * 1000;
 
 export async function GET(request: NextRequest) {
