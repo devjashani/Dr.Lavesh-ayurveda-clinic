@@ -11,7 +11,6 @@ import { Badge } from '@/components/ui/Badge';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
 import { ShieldCheck, Award, Clock, Calendar, CheckCircle2, Phone } from 'lucide-react';
 import { Reveal, RevealText, RevealImage, Magnetic } from '@/components/motion';
-import { BreathingHaloOrnament } from '@/components/ui/BreathingHaloOrnament';
 import { BotanicalLeafSketch } from '@/components/ui/BotanicalLeafSketch';
 import { SectionMarginIndex } from '@/components/ui/SectionMarginIndex';
 
@@ -28,38 +27,38 @@ export function DoctorSection() {
 
       <Container size="default">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column: Large Portrait in Arch Mask with 3. Breathing Ornament */}
+          {/* Left Column: Large Portrait in Arch Mask with Subtle Smooth Hover Zoom */}
           <div className="lg:col-span-5 relative flex justify-center">
-            {/* 3. Tiny "breathing" ornament (scale 1 to 1.04, 7s loop, paused when off-screen) */}
-            <BreathingHaloOrnament />
+            <div className="group w-full max-w-[380px] sm:max-w-[420px]">
+              <RevealImage
+                shape="arch"
+                src={IMAGES.doctorPortrait}
+                alt={t.doctor.imageAlt}
+                parallax={false}
+                className="w-full aspect-[4/5] rounded-t-full rounded-b-[4px] bg-cream border border-forest/20 shadow-[0_12px_36px_rgba(20,41,28,0.08)] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:shadow-[0_20px_44px_rgba(20,41,28,0.14)]"
+                imageClassName="object-cover object-top scale-[1.12] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.18] will-change-transform"
+                sizes="(max-width: 768px) 90vw, 480px"
+                priority={false}
+                placeholder="blur"
+                blurDataURL={IMAGES.doctorPortraitBlur}
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent pointer-events-none" />
 
-            <RevealImage
-              shape="arch"
-              src={IMAGES.doctorPortrait}
-              alt={t.doctor.imageAlt}
-              className="w-full max-w-[380px] sm:max-w-[420px] aspect-[4/5] rounded-t-[160px] rounded-b-[4px] bg-cream border border-forest/20 shadow-[0_12px_36px_rgba(20,41,28,0.08)]"
-              imageClassName="object-cover object-top scale-[1.14] origin-top"
-              sizes="(max-width: 768px) 90vw, 480px"
-              priority={false}
-              placeholder="blur"
-              blurDataURL={IMAGES.doctorPortraitBlur}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent pointer-events-none" />
-
-              <div className="absolute bottom-4 left-5 right-5 text-cream flex items-baseline justify-between z-10">
-                <div>
-                  <span className="text-[10px] uppercase font-mono tracking-widest text-turmeric block">
-                    Ayurvedic Practitioner
-                  </span>
-                  <span className="font-mono text-xs font-semibold">
-                    BAMS (2026), SMIAS
+                <div className="absolute bottom-4 left-5 right-5 text-cream flex items-baseline justify-between z-10">
+                  <div>
+                    <span className="text-[10px] uppercase font-mono tracking-widest text-turmeric block">
+                      Ayurvedic Practitioner
+                    </span>
+                    <span className="font-mono text-xs font-semibold">
+                      BAMS (2026), SMIAS
+                    </span>
+                  </div>
+                  <span className="font-serif italic text-xs text-paper/80">
+                    નોંધાયેલા વૈદ્ય
                   </span>
                 </div>
-                <span className="font-serif italic text-xs text-paper/80">
-                  નોંધાયેલા વૈદ્ય
-                </span>
-              </div>
-            </RevealImage>
+              </RevealImage>
+            </div>
           </div>
 
           {/* Right Column: Physician Biography & Credentials */}

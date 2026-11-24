@@ -80,13 +80,13 @@ export default async function DoctorProfilePage({ params }: PageProps) {
           {/* Left Column: Physician Card & Logistics (4 cols) */}
           <div className="lg:col-span-4 bg-paper border border-forest/15 rounded-[4px] p-6 shadow-xs space-y-6 lg:sticky lg:top-28">
             <div className="text-center">
-              <div className="relative w-40 sm:w-48 aspect-4/5 rounded-t-full rounded-b-[3px] mx-auto overflow-hidden border border-forest/20 shadow-xs bg-cream mb-4">
+              <div className="group relative w-40 sm:w-48 aspect-4/5 rounded-t-full rounded-b-[3px] mx-auto overflow-hidden border border-forest/20 shadow-xs bg-cream mb-4 transition-shadow duration-700 group-hover:shadow-md">
                 <Image
                   src={IMAGES.doctorPortrait}
                   alt="Dr. Lavesh Bohra, Ayurvedic practitioner at VANKAL AYURVEDA"
                   fill
                   sizes="(max-width: 768px) 90vw, 200px"
-                  className="object-cover object-top scale-[1.14] origin-top"
+                  className="object-cover object-top scale-[1.12] origin-top transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.18] will-change-transform"
                   placeholder="blur"
                   blurDataURL={IMAGES.doctorPortraitBlur}
                 />

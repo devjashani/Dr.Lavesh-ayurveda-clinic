@@ -65,13 +65,13 @@ export default function DoctorsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
             {/* Left Portrait & Quick Meta */}
             <div className="lg:col-span-5 flex flex-col items-center sm:items-start text-center sm:text-left">
-              <div className="relative w-56 sm:w-64 md:w-72 aspect-4/5 rounded-t-full rounded-b-[4px] overflow-hidden border border-forest/20 shadow-md bg-cream mb-6">
+              <div className="group relative w-56 sm:w-64 md:w-72 aspect-4/5 rounded-t-full rounded-b-[4px] overflow-hidden border border-forest/20 shadow-md bg-cream mb-6 transition-shadow duration-700 group-hover:shadow-lg">
                 <Image
                   src={IMAGES.doctorPortrait}
                   alt="Dr. Lavesh Bohra, Ayurvedic practitioner at VANKAL AYURVEDA"
                   fill
                   sizes="(max-width: 768px) 90vw, 320px"
-                  className="object-cover object-top scale-[1.14] origin-top"
+                  className="object-cover object-top scale-[1.12] origin-top transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.18] will-change-transform"
                   placeholder="blur"
                   blurDataURL={IMAGES.doctorPortraitBlur}
                 />
