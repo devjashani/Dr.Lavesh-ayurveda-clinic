@@ -228,9 +228,9 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
         }
         if (isMounted) setRole(isDoc ? 'doctor' : 'patient');
 
-        // Check if patient already holds a valid proof cookie
+        // Check if patient already holds a valid proof cookie or patient session
         if (!isDoc) {
-          // Probe token endpoint with empty phone to test proof cookie
+          // Probe token endpoint with empty phone to test patient session or proof cookie
           const probeRes = await fetch('/api/call/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -239,6 +239,11 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
           const probeJson = await probeRes.json();
           if (probeRes.ok && probeJson.success) {
             tokenDataRef.current = probeJson;
+            if (isMounted) setPhase('waiting');
+            return;
+          } else if (probeJson.code === 'TOO_EARLY') {
+            // Verified patient via session or proof cookie; room window opens in advance
+            setCallStatus((prev) => (prev ? { ...prev, isTooEarly: true, windowOpensAt: probeJson.windowOpensAt } : null));
             if (isMounted) setPhase('waiting');
             return;
           }
@@ -456,7 +461,8 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
       if (!res.ok) {
         if (data.code === 'TOO_EARLY') {
           setCallStatus((prev) => (prev ? { ...prev, isTooEarly: true, windowOpensAt: data.windowOpensAt } : null));
-          setGateError(data.message || 'Consultation room has not yet opened.');
+          setPhase('waiting');
+          return;
         } else if (data.code === 'ENDED') {
           setGateError(data.message || 'This consultation window has concluded.');
         } else if (data.code === 'RATE_LIMITED') {

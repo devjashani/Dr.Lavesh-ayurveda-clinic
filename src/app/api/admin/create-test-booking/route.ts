@@ -74,6 +74,7 @@ export async function POST(request: NextRequest) {
         patient_name: 'Dev Jashani (Live Video Test)',
         patient_whatsapp: testPhone,
         patient_email: 'test@vankalayurveda.com',
+        email_normalized: 'test@vankalayurveda.com',
         patient_age: 26,
         patient_gender: 'Male',
         primary_complaint: 'Testing live Agora video consultation between Doctor Console and Patient room.',

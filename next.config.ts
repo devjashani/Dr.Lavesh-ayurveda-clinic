@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+if (process.env.NODE_ENV !== 'production' && !process.env.RESEND_API_KEY?.trim()) {
+  console.log('Email sending is disabled; sign-in codes will print in this terminal.');
+}
+
 const nextConfig: NextConfig = {
   /* config options here */
   images: {

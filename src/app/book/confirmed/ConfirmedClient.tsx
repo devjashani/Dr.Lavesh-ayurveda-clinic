@@ -17,6 +17,7 @@ import {
   Sparkles,
   ExternalLink,
   Lock,
+  ArrowRight,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { Button } from '@/components/ui/Button';
@@ -562,6 +563,16 @@ export function ConfirmedClient() {
                 </p>
               </div>
             )}
+
+            <div className="sm:ml-auto pt-2 sm:pt-0">
+              <Link
+                href="/my-bookings"
+                className="inline-flex items-center gap-1.5 text-xs font-mono text-forest hover:text-deep-forest underline underline-offset-4 transition-colors"
+              >
+                <span>{language === 'GU' ? 'મારા બુકિંગ્સ જુઓ' : 'View my bookings'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
         </div>
 

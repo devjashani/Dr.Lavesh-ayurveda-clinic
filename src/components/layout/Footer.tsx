@@ -131,6 +131,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/my-bookings" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
+                  {language === 'GU' ? 'મારા બુકિંગ્સ જુઓ' : 'View my bookings'}
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-cream transition-colors min-h-[36px] inline-flex items-center">
                   {t.nav.contact}
                 </Link>

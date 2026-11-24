@@ -9,7 +9,7 @@ import { isRateLimited } from '@/lib/utils/rateLimit';
 const createOrderSchema = z.object({
   patientName: z.string().trim().min(2).max(60),
   patientWhatsapp: z.string().trim().regex(/^(\+91)?[6-9]\d{9}$/),
-  patientEmail: z.string().trim().email().or(z.literal('')).optional(),
+  patientEmail: z.string().trim().toLowerCase().email(),
   patientAge: z.coerce.number().int().min(1).max(120),
   patientGender: z.enum(['Female', 'Male', 'Other']),
   primaryComplaint: z.string().trim().min(10).max(600),
@@ -183,30 +183,50 @@ export async function POST(request: NextRequest) {
     const nowIso = new Date().toISOString();
     const initialStatus = isLiveGateway ? 'PENDING_PAYMENT' : 'CONFIRMED';
 
-    const { data: newBooking, error: insertError } = await supabaseAdmin
+    const insertPayload: Record<string, any> = {
+      patient_name: data.patientName,
+      patient_whatsapp: normalizedPhone,
+      patient_email: data.patientEmail,
+      email_normalized: data.patientEmail.trim().toLowerCase(),
+      patient_age: data.patientAge,
+      patient_gender: data.patientGender,
+      primary_complaint: data.primaryComplaint,
+      report_file_ids: data.reportFileIds || [],
+      service_id: BOOKING_CONFIG.service.id,
+      doctor_id: BOOKING_CONFIG.doctorId,
+      doctor_name: BOOKING_CONFIG.doctorName,
+      consultation_mode: 'online',
+      appointment_date: data.date,
+      slot_start: data.slotStart,
+      slot_end: slotEnd,
+      status: initialStatus,
+      hold_expires_at: holdExpiresAt,
+      paid_at: isLiveGateway ? null : nowIso,
+      fee_amount: BOOKING_CONFIG.service.feePaise, // 49900 paise strictly from server
+    };
+
+    let { data: newBooking, error: insertError } = await supabaseAdmin
       .from('bookings')
-      .insert({
-        patient_name: data.patientName,
-        patient_whatsapp: normalizedPhone,
-        patient_email: data.patientEmail || null,
-        patient_age: data.patientAge,
-        patient_gender: data.patientGender,
-        primary_complaint: data.primaryComplaint,
-        report_file_ids: data.reportFileIds || [],
-        service_id: BOOKING_CONFIG.service.id,
-        doctor_id: BOOKING_CONFIG.doctorId,
-        doctor_name: BOOKING_CONFIG.doctorName,
-        consultation_mode: 'online',
-        appointment_date: data.date,
-        slot_start: data.slotStart,
-        slot_end: slotEnd,
-        status: initialStatus,
-        hold_expires_at: holdExpiresAt,
-        paid_at: isLiveGateway ? null : nowIso,
-        fee_amount: BOOKING_CONFIG.service.feePaise, // 49900 paise strictly from server
-      })
+      .insert(insertPayload)
       .select('id')
       .single();
+
+    // Resilient fallback if email_normalized column does not exist yet in DB
+    if (
+      insertError &&
+      (insertError.code === 'PGRST204' ||
+        insertError.code === '42703' ||
+        insertError.message?.includes('email_normalized'))
+    ) {
+      delete insertPayload.email_normalized;
+      const retryResult = await supabaseAdmin
+        .from('bookings')
+        .insert(insertPayload)
+        .select('id')
+        .single();
+      newBooking = retryResult.data;
+      insertError = retryResult.error;
+    }
 
     if (insertError || !newBooking) {
       // Postgres unique constraint conflict (error 23505)

@@ -261,3 +261,44 @@
 | Add to Google Calendar | Google કેલેન્ડરમાં ઉમેરો | કેલેન્ડર બટન |
 | Share on WhatsApp | WhatsApp પર શેર કરો | શેરિંગ બટન |
 | Return to Homepage | મુખ્ય પૃષ્ઠ પર પાછા જાઓ | હોમ લિંક |
+
+
+---
+
+## ૧૨. મારા બુકિંગ્સ દર્દી પોર્ટલ (/my-bookings & /my-bookings/verify) — ગુજરાતી સમીક્ષા
+
+| કળ (Key) | અંગ્રેજી લખાણ | ગુજરાતી અનુવાદ | સ્થાન / વપરાશ |
+|---|---|---|---|
+| `myBookings.navLink` | My Bookings | મારા બુકિંગ્સ | /book હેડર પિલ બટન, ફૂટર |
+| `myBookings.viewMyBookings` | View my bookings | મારા બુકિંગ્સ જુઓ | /book/confirmed લિંક, ફૂટર લિંક |
+| `myBookings.signOutTitle` | Sign in to see your bookings | તમારા બુકિંગ્સ જોવા માટે સાઇન-ઇન કરો | સાઇન-ઇન કાર્ડ શીર્ષક |
+| `myBookings.emailLabel` | Email Address | ઈમેલ એડ્રેસ | ઈમેલ ફીલ્ડ લેબલ |
+| `myBookings.sendCode` | Send code | કોડ મોકલો | સાઇન-ઇન બટન |
+| `myBookings.emailHelper` | We will email you a 6-digit code and a sign-in link. | અમે તમને ૬-અંકનો કોડ અને સાઇન-ઇન લિંક ઈમેલ કરીશું. | સહાયક સૂચના |
+| `myBookings.codeSentSuccess` | If this email has a booking, a code is on its way. | જો આ ઈમેલ પર કોઈ બુકિંગ છે, તો કોડ મોકલાઈ ગયો છે. | જેનરિક સફળતા સંદેશ |
+| `myBookings.emailUnavailable` | Email sign-in is not available yet. You can use the link on your booking confirmation page. | ઈમેલ સાઇન-ઇન સેવા હાલમાં ઉપલબ્ધ નથી. તમે તમારા બુકિંગ કન્ફર્મેશન પેજ પર આપેલી લિંકનો ઉપયોગ કરી શકો છો. | ૫૦૩ સેવા સ્થિતિ |
+| `myBookings.enterCodeTitle` | Enter verification code | ચકાસણી કોડ દાખલ કરો | ૬-અંક ઇનપુટ શીર્ષક |
+| `myBookings.codeHelper` | Enter the 6-digit code sent to your email. | તમારા ઈમેલ પર મોકલેલો ૬-અંકનો કોડ દાખલ કરો. | ૬-અંક સહાયક લખાણ |
+| `myBookings.resendCode` | Resend code | કોડ ફરી મોકલો | ૩૦ સેકન્ડ પછી સક્રિય બટન |
+| `myBookings.useDifferentEmail` | Use a different email | બીજો ઈમેલ વાપરો | ઈમેલ બદલવાની લિંક |
+| `myBookings.headerTitle` | My Bookings | મારા બુકિંગ્સ | પોર્ટલ મુખ્ય હેડર |
+| `myBookings.signedInAs` | Signed in as | સાઇન-ઇન: | દર્દી ઈમેલ સ્થિતિ |
+| `myBookings.signOut` | Sign out | સાઇન આઉટ | સત્ર સમાપ્તિ બટન |
+| `myBookings.tabUpcoming` | Upcoming | આગામી | સક્રિય પરામર્શ ટેબ |
+| `myBookings.tabPast` | Past | ભૂતકાળના | પૂર્ણ પરામર્શ ટેબ |
+| `myBookings.statusConfirmed` | Confirmed | પુષ્ટિ થયેલ | બુકિંગ સ્ટેટસ ચિપ |
+| `myBookings.statusCompleted` | Completed | પૂર્ણ થયેલ | બુકિંગ સ્ટેટસ ચિપ |
+| `myBookings.statusMissed` | Missed | ચૂકી ગયેલ | બુકિંગ સ્ટેટસ ચિપ (NO_SHOW) |
+| `myBookings.videoConsultation` | Video Consultation | વિડિયો પરામર્શ | સેવા નામ |
+| `myBookings.fee499` | ₹499 | ₹૪૯૯ | કન્સલ્ટેશન ફી |
+| `myBookings.joinVideoCall` | Join Video Call | વિડિયો કૉલમાં જોડાઓ | વિડિયો રૂમ લિંક બટન |
+| `myBookings.linkActivatesHelper` | Link activates 10 minutes before your slot | લિંક સ્લોટ સમયના ૧૦ મિનિટ પહેલાં સક્રિય થશે | સમય વિન્ડો સૂચના |
+| `myBookings.receipt` | Receipt | રસીદ | બુકિંગ રસીદ લિંક |
+| `myBookings.addToCalendar` | Add to Calendar | કેલેન્ડરમાં ઉમેરો | .ics કેલેન્ડર ફાઇલ |
+| `myBookings.needChangeSlot` | Need to change your slot? Contact us. | સ્લોટ બદલવો છે? અમારો સંપર્ક કરો. | સંપર્ક લાઇન (/contact) |
+| `myBookings.emptyTitle` | No bookings yet | હજુ સુધી કોઈ બુકિંગ નથી | ખાલી સ્થિતિ શીર્ષક |
+| `myBookings.bookConsultation` | Book a consultation | પરામર્શ બુક કરો | નવી બુકિંગ ક્રિયા |
+| `myBookings.confirmSignInTitle` | Confirm sign in | સાઇન-ઇન પુષ્ટિ કરો | મેજિક લિંક હેડિંગ |
+| `myBookings.confirmSignInBtn` | Confirm sign in | સાઇન-ઇન પુષ્ટિ કરો | સ્પષ્ટ પુષ્ટિ બટન |
+| `myBookings.expiredLinkTitle` | Invalid or expired link | અમાન્ય અથવા સમાપ્ત થયેલ લિંક | મેજિક લિંક ક્ષતિ શીર્ષક |
+| `myBookings.sendNewCode` | Send a new code | નવો કોડ મોકલો | મેજિક લિંક રિડાયરેક્ટ બટન |

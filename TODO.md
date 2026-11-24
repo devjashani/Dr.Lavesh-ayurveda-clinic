@@ -16,11 +16,11 @@ The following verified facts are actively applied across the **VANKAL AYURVEDA**
 |---|---|---|---|---|
 | 1 | **AYUSH Registration Number** | `Registration No.: to be added` | Doctor Profile (`/doctors`), Home Doctor Section, Footer, Receipt Voucher, Templates | Supply official state/central board registration number once allotted. |
 | 2 | **Real OPD Consultation Slot Length & Timings** | `Placeholder: 10:00–13:00 & 17:00–19:00 (20-min slots)` | Schedule config (`schedule.ts`), Slots API (`/api/slots`), Booking Calendar | Confirm exact clinical hours, weekly off-days, and duration per video consultation with Dr. Bohra (e.g., 20 mins vs 30 mins vs 45 mins for initial consultations). |
-| 3 | **Cancellation & Refund Policy Window** | `[Refund window: to be confirmed by clinic]` | Refund Policy (`/refund-policy`), Terms (`/terms`), Review Page | Confirm exact patient cancellation window (e.g. up to 24 hours prior) and refund fee processing terms. |
+| 3 | **Cancellation, Reschedule & Refund Policy Window** | `[Refund window: to be confirmed by clinic]` | Refund Policy (`/refund-policy`), Terms (`/terms`), Review Page, My Bookings (`/my-bookings`) | 1. Confirm exact patient cancellation and reschedule window (e.g. up to 24 hours prior) and refund fee processing terms.<br>2. **Decide cancel/reschedule & refund rules BEFORE adding Cancel or Reschedule buttons in My Bookings.** Currently, patients see "Need to change your slot? Contact us." |
 | 4 | **Agora RTC Video Credentials & Free-Minutes Alert** | `NEXT_PUBLIC_AGORA_APP_ID`, `AGORA_APP_CERTIFICATE` | Agora RTC Token Builder (`/api/call/token`), Client (`agora-rtc-sdk-ng`) | 1. Create project in [Agora Console](https://console.agora.io/) with "App ID + Token" mode.<br>2. **Free Minutes Check:** Agora grants 10,000 free minutes/month across audio/video.<br>3. Set up **Usage Alerts** at 8,000 minutes in Agora Console to prevent unexpected charges. |
 | 5 | **Doctor New-Booking Alert Channel** | `Console "New" Badge + Server Log` | Payment Verify & Webhook Handlers (`/api/payments/*`) | Confirm whether Dr. Bohra prefers real-time new booking alerts via **WhatsApp message** (Twilio/WhatsApp Cloud API) or **Transactional Email** (Resend/SendGrid). |
 | 6 | **Report-Upload Storage Configuration** | `Supabase Bucket: medical-reports` (4MB limit, PDF/JPG/PNG max 3) | Booking Page (`/book`), Storage Policies | Provision production Supabase Storage bucket with signed URL access, RLS policies, and 30-day retention auto-cleanup. |
-| 7 | **Privacy Policy: Zero-Recording & Ephemeral Media** | Active in `/privacy` (TLS 1.3 & AES-256) | Privacy Policy (`/privacy`), Terms (`/terms`) | Stated clearly: *"Video consultations are conducted peer-to-peer via Agora RTC with zero audio/video recording or server storage. Live consultation streams are strictly ephemeral and never retained."* |
+| 7 | **Privacy Policy: Zero-Recording & Patient Session Cookie** | Active in `/privacy` (TLS 1.3 & AES-256) | Privacy Policy (`/privacy`), Terms (`/terms`) | 1. Stated clearly: *"Video consultations are conducted peer-to-peer via Agora RTC with zero audio/video recording or server storage. Live consultation streams are strictly ephemeral and never retained."*<br>2. **Add Privacy Policy line:** Disclose the 14-day `vankal_patient_session` cookie (httpOnly, sameSite=lax, secure) used for passwordless patient sign-in to view confirmed bookings and join consultations, along with ephemeral 10-minute HMAC OTP challenges. |
 | 8 | **Clinic Physical Address** | `Address: to be added` | Contact Page (`/contact`), Footer, Receipt Voucher, Google SEO JSON-LD | Supply physical location (city, area, address, landmarks) for in-clinic OPD references. |
 | 9 | **Clinic Official Email & Phone** | `Phone: +91 9016432576` · `Email: care@vankalayurveda.com` | Header, Footer, Contact Page, Support Desks | Verify primary customer-facing calling number and clinical support email inbox. |
 | 10 | **Doctor Clinical Portrait Photo** | Monogrammed SVG Arch Placeholder (`/images/doctors/dr-lavesh-bohra.jpg`) | Home Doctor Section, Doctor Profile (`/doctors`), Hero Preview | Supply high-resolution professional portrait of Dr. Lavesh Bohra. |
@@ -47,7 +47,16 @@ The following verified facts are actively applied across the **VANKAL AYURVEDA**
 - [ ] Verify Agora 10,000 free minutes/month threshold and configure usage alert webhook/email at 8,000 minutes.
 - [ ] Confirm no Cloud Recording or Media Storage add-on is enabled (zero-recording policy).
 
-### C. Doctor Console Credentials (/admin)
+### C. Resend Email Service & Custom Domain Verification
+- [ ] Sign in to [Resend Dashboard](https://resend.com/).
+- [ ] Add and verify the custom clinical domain (e.g. `vankalayurveda.com` or `mail.vankalayurveda.com`).
+- [ ] Add the required DNS records (DKIM, SPF, MX/Return-Path) in your DNS provider (Cloudflare, Namecheap, GoDaddy, etc.).
+- [ ] **Crucial Note:** Resend's free default onboarding sender (`onboarding@resend.dev`) strictly delivers **ONLY** to the single registered Resend account owner's email address. Domain verification is mandatory before live launch so transactional OTPs reach real patients!
+- [ ] Generate a production API key: `re_...`
+- [ ] Set `RESEND_API_KEY` in Vercel.
+- [ ] Set `EMAIL_FROM` in Vercel to your verified sender (e.g., `VANKAL AYURVEDA <care@vankalayurveda.com>`).
+
+### D. Doctor Console Credentials (/admin)
 - [ ] Confirm official doctor sign-in email: `DOCTOR_EMAIL` (configured: `laveshbohra@gmail.com`).
 - [ ] Generate a production bcrypt password hash for Dr. Lavesh Bohra using:
   ```bash
@@ -55,7 +64,7 @@ The following verified facts are actively applied across the **VANKAL AYURVEDA**
   ```
 - [ ] Set `DOCTOR_PASSWORD_HASH` and `DOCTOR_JWT_SECRET` (32+ character random string) in Vercel.
 
-### D. Supabase Production Database Migrations
+### E. Supabase Production Database Migrations
 - [ ] Execute `supabase/migrations/20261122000000_vankal_booking_schema.sql` in the Supabase SQL Editor:
   - Creates `public.bookings` table with status checks (`PENDING_PAYMENT`, `CONFIRMED`, `COMPLETED`, `NO_SHOW`, `CANCELLED`, `EXPIRED`).
   - Creates partial unique index `uq_active_doctor_slot` to prevent double-booking.
@@ -64,8 +73,13 @@ The following verified facts are actively applied across the **VANKAL AYURVEDA**
 - [ ] Execute `supabase/migrations/20261122010000_vankal_agora_call_schema.sql`:
   - Adds call lifecycle columns (`doctor_joined_at`, `patient_joined_at`, `call_started_at`, `call_ended_at`, `last_patient_ping_at`, `last_doctor_ping_at`).
   - Updates status checks to include `COMPLETED` and `NO_SHOW`.
+- [ ] Execute `supabase/migrations/20261124000000_patient_auth_my_bookings.sql`:
+  - Adds `email_normalized` column to `public.bookings` and backfills existing entries.
+  - Creates index `idx_bookings_email_slot` on `(email_normalized, slot_start)`.
+  - Creates `public.auth_challenges` table for 6-digit OTP codes and magic link tokens with rate-limiting indexes (`ip_hash`, `email_normalized`, `link_token_hash`, `expires_at`).
+  - Grants RLS service-role permissions.
 
-### E. Vercel Environment Variables
+### F. Vercel Environment Variables
 Add the following in **Vercel Project Settings → Environment Variables** (Production & Preview):
 
 | Variable Name | Environment | Description / Example |
@@ -81,6 +95,10 @@ Add the following in **Vercel Project Settings → Environment Variables** (Prod
 | `DOCTOR_EMAIL` | Production | `laveshbohra@gmail.com` (Doctor login email) |
 | `DOCTOR_PASSWORD_HASH` | Production | Bcrypt hash generated for Dr. Bohra's password |
 | `DOCTOR_JWT_SECRET` | Production | 32+ character random secret for signing doctor session cookies |
+| `PATIENT_SESSION_SECRET` | Production & Preview | 32+ character random secret for signing patient session JWT cookies (14-day validity) |
+| `OTP_HMAC_SECRET` | Production & Preview | 32+ character random secret for HMAC-SHA256 hashing of OTP codes, tokens, and IP hashes |
+| `RESEND_API_KEY` | Production | Resend API Key (`re_...`) for patient sign-in OTP emails |
+| `EMAIL_FROM` | Production | Verified sender address (e.g., `VANKAL AYURVEDA <care@vankalayurveda.com>`) |
 | `NEXT_PUBLIC_SUPABASE_URL` | Production | `https://<project-id>.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Production | Supabase Anonymous Client Key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Production | Supabase Service Role Secret Key (Server-only) |

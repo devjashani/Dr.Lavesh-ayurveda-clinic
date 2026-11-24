@@ -6,6 +6,7 @@ import { buildAgoraToken, signPatientProof, getPatientProofCookieName } from '@/
 import { requireDoctor, requirePatientAccess } from '@/lib/agora/auth';
 import { checkCallRateLimit } from '@/lib/utils/callRateLimit';
 import { isRazorpayLiveConfigured } from '@/lib/razorpay';
+import { getPatientSession } from '@/lib/auth/patientSession';
 
 const tokenRequestSchema = z.object({
   bookingId: z.string().uuid({ message: 'Invalid booking ID format' }),
@@ -51,11 +52,30 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Fetch booking from Supabase
-    const { data: booking, error: fetchError } = await supabaseAdmin
+    let booking: any = null;
+    const res1 = await supabaseAdmin
       .from('bookings')
-      .select('id, status, appointment_date, slot_start, slot_end, patient_whatsapp, razorpay_order_id')
+      .select('id, status, appointment_date, slot_start, slot_end, patient_whatsapp, patient_email, email_normalized, razorpay_order_id')
       .eq('id', bookingId)
       .single();
+
+    let fetchError = res1.error;
+    if (!res1.error && res1.data) {
+      booking = res1.data;
+    } else if (
+      res1.error &&
+      (res1.error.code === 'PGRST204' ||
+        res1.error.code === '42703' ||
+        res1.error.message?.includes('email_normalized'))
+    ) {
+      const resFallback = await supabaseAdmin
+        .from('bookings')
+        .select('id, status, appointment_date, slot_start, slot_end, patient_whatsapp, patient_email, razorpay_order_id')
+        .eq('id', bookingId)
+        .single();
+      booking = resFallback.data;
+      fetchError = resFallback.error;
+    }
 
     if (fetchError || !booking) {
       return NextResponse.json(
@@ -68,69 +88,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3. Environment & test booking detection
-    const isTestBooking =
-      !isRazorpayLiveConfigured() ||
-      Boolean(booking.razorpay_order_id?.startsWith('order_test_')) ||
-      Boolean(booking.razorpay_order_id?.startsWith('order_dev_test_')) ||
-      process.env.NODE_ENV !== 'production';
-
-    // Strict status check: must be CONFIRMED (paid) in production
-    if (booking.status !== 'CONFIRMED' && !isTestBooking) {
-      return NextResponse.json(
-        {
-          success: false,
-          code: 'NOT_CONFIRMED',
-          message: 'Video consultation is only accessible for confirmed bookings.',
-        },
-        { status: 403 }
-      );
-    }
-
-    // Auto-heal status for dev/test bookings so subsequent checks remain green
-    if (isTestBooking && booking.status !== 'CONFIRMED') {
-      Promise.resolve(
-        supabaseAdmin.from('bookings').update({ status: 'CONFIRMED' }).eq('id', booking.id)
-      ).catch(() => {});
-    }
-
-    // 4. Server-side time window validation in Asia/Kolkata (UTC+05:30)
-    const serverNowMs = Date.now();
-    const windowInfo = calculateCallWindow(
-      booking.appointment_date,
-      booking.slot_start,
-      booking.slot_end,
-      role as CallRole,
-      serverNowMs
-    );
-
-    if (windowInfo.isTooEarly && !isTestBooking) {
-      return NextResponse.json(
-        {
-          success: false,
-          code: 'TOO_EARLY',
-          message: `The consultation room opens at ${windowInfo.windowOpensAt} (IST).`,
-          windowOpensAt: windowInfo.windowOpensAt,
-          serverTime: new Date(serverNowMs).toISOString(),
-        },
-        { status: 403 }
-      );
-    }
-
-    if (windowInfo.isEnded && !isTestBooking) {
-      return NextResponse.json(
-        {
-          success: false,
-          code: 'ENDED',
-          message: 'This consultation session window has ended.',
-          windowClosesAt: windowInfo.windowClosesAt,
-          serverTime: new Date(serverNowMs).toISOString(),
-        },
-        { status: 410 }
-      );
-    }
-
-    // 5. Role-specific authentication
+    // 3. Role-specific authentication
     if (role === 'doctor') {
       const doctorAuth = await requireDoctor(request);
       if (!doctorAuth.authorized) {
@@ -144,10 +102,27 @@ export async function POST(request: NextRequest) {
         );
       }
     } else {
-      // Patient authentication: require phoneLast4 match or valid existing signed proof
+      // Patient authentication: check patient session first; fallback to phoneLast4 or signed proof
       let isVerified = false;
+      const patientSession = await getPatientSession();
+      const bookingEmail = (booking.email_normalized || booking.patient_email || '').trim().toLowerCase();
 
-      if (phoneLast4) {
+      if (patientSession?.email) {
+        const sessionEmail = patientSession.email.trim().toLowerCase();
+        if (sessionEmail && bookingEmail && sessionEmail === bookingEmail) {
+          isVerified = true;
+        } else {
+          // Never accept a session for another email's booking (generic error)
+          return NextResponse.json(
+            {
+              success: false,
+              code: 'INVALID_CREDENTIALS',
+              message: 'Invalid details provided.',
+            },
+            { status: 403 }
+          );
+        }
+      } else if (phoneLast4) {
         const cleanedBookingPhone = (booking.patient_whatsapp || '').replace(/\D/g, '');
         const expectedLast4 = cleanedBookingPhone.slice(-4);
 
@@ -183,6 +158,92 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // 4. Environment & test booking detection
+    const isTestBooking =
+      !isRazorpayLiveConfigured() ||
+      Boolean(booking.razorpay_order_id?.startsWith('order_test_')) ||
+      Boolean(booking.razorpay_order_id?.startsWith('order_dev_test_')) ||
+      process.env.NODE_ENV !== 'production';
+
+    // Strict status check: must be CONFIRMED (paid) in production
+    if (booking.status !== 'CONFIRMED' && !isTestBooking) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'NOT_CONFIRMED',
+          message: 'Video consultation is only accessible for confirmed bookings.',
+        },
+        { status: 403 }
+      );
+    }
+
+    // Auto-heal status for dev/test bookings so subsequent checks remain green
+    if (isTestBooking && booking.status !== 'CONFIRMED') {
+      Promise.resolve(
+        supabaseAdmin.from('bookings').update({ status: 'CONFIRMED' }).eq('id', booking.id)
+      ).catch(() => {});
+    }
+
+    // 5. Server-side time window validation in Asia/Kolkata (UTC+05:30)
+    const serverNowMs = Date.now();
+    const windowInfo = calculateCallWindow(
+      booking.appointment_date,
+      booking.slot_start,
+      booking.slot_end,
+      role as CallRole,
+      serverNowMs
+    );
+
+    if (windowInfo.isTooEarly && !isTestBooking) {
+      const response = NextResponse.json(
+        {
+          success: false,
+          code: 'TOO_EARLY',
+          message: `The consultation room opens at ${windowInfo.windowOpensAt} (IST).`,
+          windowOpensAt: windowInfo.windowOpensAt,
+          serverTime: new Date(serverNowMs).toISOString(),
+        },
+        {
+          status: 403,
+          headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+        }
+      );
+
+      // If verified patient via phoneLast4, preserve signed proof so waiting room auto-connects
+      if (role === 'patient') {
+        const proofToken = signPatientProof(booking.id, windowInfo.windowEndMs);
+        const cookieName = getPatientProofCookieName(booking.id);
+        const maxAgeSeconds = Math.max(60, Math.floor((windowInfo.windowEndMs - serverNowMs) / 1000));
+        response.cookies.set({
+          name: cookieName,
+          value: proofToken,
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+          maxAge: maxAgeSeconds,
+        });
+      }
+
+      return response;
+    }
+
+    if (windowInfo.isEnded && !isTestBooking) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'ENDED',
+          message: 'This consultation session window has ended.',
+          windowClosesAt: windowInfo.windowClosesAt,
+          serverTime: new Date(serverNowMs).toISOString(),
+        },
+        {
+          status: 410,
+          headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+        }
+      );
+    }
+
     // 6. Generate deterministic Agora channel name and token
     const channelName = deriveChannelName(booking.id);
     const tokenResult = buildAgoraToken(channelName, role as CallRole, windowInfo.secondsRemaining);
@@ -191,20 +252,25 @@ export async function POST(request: NextRequest) {
     const proofToken = signPatientProof(booking.id, windowInfo.windowEndMs);
     const cookieName = getPatientProofCookieName(booking.id);
 
-    const response = NextResponse.json({
-      success: true,
-      bookingId: booking.id,
-      role,
-      token: tokenResult.token,
-      channelName: tokenResult.channelName,
-      uid: tokenResult.uid,
-      appId: tokenResult.appId,
-      windowOpensAt: windowInfo.windowOpensAt,
-      windowClosesAt: windowInfo.windowClosesAt,
-      secondsRemaining: tokenResult.secondsRemaining,
-      serverTime: new Date(serverNowMs).toISOString(),
-      proofToken,
-    });
+    const response = NextResponse.json(
+      {
+        success: true,
+        bookingId: booking.id,
+        role,
+        token: tokenResult.token,
+        channelName: tokenResult.channelName,
+        uid: tokenResult.uid,
+        appId: tokenResult.appId,
+        windowOpensAt: windowInfo.windowOpensAt,
+        windowClosesAt: windowInfo.windowClosesAt,
+        secondsRemaining: tokenResult.secondsRemaining,
+        serverTime: new Date(serverNowMs).toISOString(),
+        proofToken,
+      },
+      {
+        headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+      }
+    );
 
     // Set signed proof in HttpOnly cookie so patient /ping calls do not require phoneLast4
     if (role === 'patient') {

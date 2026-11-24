@@ -124,7 +124,7 @@ function PinnedTherapyCard({
   );
 
   return (
-    <div className="shrink-0 w-[340px] lg:w-[370px] xl:w-[385px] h-[335px] lg:h-[355px] xl:h-[370px] rounded-[4px] bg-cream border border-forest/20 flex flex-col justify-between p-5 lg:p-5.5 shadow-[0_4px_24px_rgba(20,41,28,0.04)] hover:border-turmeric/60 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] relative overflow-hidden group">
+    <div className="shrink-0 w-[350px] lg:w-[380px] xl:w-[400px] h-[390px] lg:h-[410px] xl:h-[430px] rounded-[4px] bg-cream border border-forest/20 flex flex-col justify-between p-5 lg:p-6 shadow-[0_4px_24px_rgba(20,41,28,0.04)] hover:border-turmeric/60 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] relative overflow-hidden group">
       {/* Corner arrow circle reveal */}
       <div
         aria-hidden="true"
@@ -134,7 +134,7 @@ function PinnedTherapyCard({
       </div>
 
       {/* Background Arch Image with slow zoom */}
-      <div className="absolute top-0 right-0 w-32 h-36 lg:w-36 lg:h-40 rounded-bl-[100px] overflow-hidden opacity-30 group-hover:opacity-45 transition-opacity duration-500 pointer-events-none">
+      <div className="absolute top-0 right-0 w-36 h-40 lg:w-40 lg:h-44 rounded-bl-[100px] overflow-hidden opacity-30 group-hover:opacity-45 transition-opacity duration-500 pointer-events-none">
         <Image
           src={therapy.image}
           alt={therapy.name}
@@ -146,7 +146,7 @@ function PinnedTherapyCard({
 
       {/* Top: Number & Dosha Badge with Parallax Offset */}
       <div className="relative z-10">
-        <div className="flex items-center justify-between mb-2 lg:mb-2.5">
+        <div className="flex items-center justify-between mb-3 lg:mb-3.5">
           <motion.span
             style={{ x: numberX }}
             className="font-mono text-2xl lg:text-3xl font-normal text-forest/70 group-hover:text-turmeric transition-colors inline-block"
@@ -169,23 +169,23 @@ function PinnedTherapyCard({
           {therapy.name}
         </motion.h3>
 
-        <p className="text-xs text-ink/75 leading-relaxed mt-2 line-clamp-2 lg:line-clamp-3">{therapy.benefit}</p>
+        <p className="text-xs text-ink/75 leading-relaxed mt-2.5 line-clamp-3">{therapy.benefit}</p>
       </div>
 
       {/* Bottom: Specs & CTA */}
-      <div className="relative z-10 pt-2.5 lg:pt-3 border-t border-forest/15 space-y-2">
+      <div className="relative z-10 pt-3 lg:pt-3.5 border-t border-forest/15 space-y-2.5">
         <div className="flex items-center justify-between text-xs text-ink/70">
           <div className="flex items-center gap-1.5 font-mono text-[11px]">
             <Clock className="w-3.5 h-3.5 text-turmeric shrink-0" />
             <span>{therapy.duration}</span>
           </div>
-          <div className="text-[11px] text-forest/80 line-clamp-1 max-w-[180px] lg:max-w-[200px] text-right">
+          <div className="text-[11px] text-forest/80 line-clamp-1 max-w-[200px] text-right">
             <strong className="text-deep-forest font-medium">Herbs: </strong>
             {therapy.herbs}
           </div>
         </div>
 
-        <div className="pt-0.5">
+        <div className="pt-1">
           <Button
             href={`/treatments/${therapy.id}`}
             variant="text-link"
@@ -233,7 +233,7 @@ export function SignatureTherapies() {
         ref={containerRef}
         className="hidden md:block relative h-[280dvh] bg-paper border-b border-forest/15"
       >
-        <div className="sticky top-0 h-[100dvh] flex flex-col justify-between pt-20 pb-8 lg:pt-22 lg:pb-12 xl:pb-14 overflow-hidden">
+        <div className="sticky top-0 h-[100dvh] flex flex-col justify-between pt-20 pb-4 lg:pt-24 lg:pb-6 overflow-hidden">
           {/* 4. Section Margin Number revealed with a mask slide */}
           <SectionMarginIndex number="02" label="THERAPIES" gujaratiLabel="ચિકિત્સા" />
           {/* Header */}
@@ -273,7 +273,7 @@ export function SignatureTherapies() {
           </div>
 
           {/* Horizontally Pinned Card Carousel */}
-          <div className="w-full overflow-hidden px-6 sm:px-8 lg:px-12 my-auto flex-1 flex items-center min-h-0 py-2">
+          <div className="w-full overflow-hidden px-6 sm:px-8 lg:px-12 my-auto flex-1 flex items-center min-h-0">
             <motion.div
               style={{ x }}
               className="flex gap-6 lg:gap-8 w-max will-change-transform py-2"
@@ -289,7 +289,7 @@ export function SignatureTherapies() {
           </div>
 
           {/* Bottom helper navigation hint */}
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full flex items-center justify-between text-xs text-forest/70 font-mono shrink-0 pt-3 border-t border-forest/15 mt-2">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full flex items-center justify-between text-xs text-forest/70 font-mono shrink-0 pt-1">
             <span>↓ Scroll vertically to glide across signature therapies</span>
             <span>01 – 0{therapies.length} Classical Protocols</span>
           </div>

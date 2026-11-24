@@ -73,7 +73,7 @@ export function ReviewClient() {
         return;
       }
       const parsed: BookingDraft = JSON.parse(stored);
-      if (!parsed.patientName || !parsed.date || !parsed.slotStart) {
+      if (!parsed.patientName || !parsed.date || !parsed.slotStart || !parsed.patientEmail) {
         router.replace('/book');
         return;
       }
@@ -112,7 +112,7 @@ export function ReviewClient() {
         body: JSON.stringify({
           patientName: draft.patientName,
           patientWhatsapp: draft.patientWhatsapp,
-          patientEmail: draft.patientEmail || undefined,
+          patientEmail: draft.patientEmail.trim().toLowerCase(),
           patientAge: draft.patientAge,
           patientGender: draft.patientGender,
           primaryComplaint: draft.primaryComplaint,
@@ -165,15 +165,26 @@ export function ReviewClient() {
         }
       }
 
-      // Check Razorpay script availability
-      if (typeof window === 'undefined' || !window.Razorpay) {
-        setPaymentError(
-          language === 'GU'
-            ? 'ચુકવણી ગેટવે લોડ થઈ રહ્યો છે. કૃપા કરીને થોડી ક્ષણો પછી ફરી પ્રયાસ કરો.'
-            : 'Payment gateway script is loading. Please try again in a few seconds.'
-        );
-        setIsSubmitting(false);
-        return;
+      // Ensure Razorpay checkout script is loaded and ready
+      if (typeof window !== 'undefined' && !window.Razorpay) {
+        const loaded = await new Promise<boolean>((resolve) => {
+          const script = document.createElement('script');
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          script.async = true;
+          script.onload = () => resolve(true);
+          script.onerror = () => resolve(false);
+          document.body.appendChild(script);
+        });
+
+        if (!loaded || !window.Razorpay) {
+          setPaymentError(
+            language === 'GU'
+              ? 'ચુકવણી ગેટવે સ્ક્રિપ્ટ લોડ થઈ શકી નથી. કૃપા કરીને થોડી ક્ષણો પછી ફરી પ્રયાસ કરો.'
+              : 'Payment gateway script failed to load. Please check your internet connection and try again.'
+          );
+          setIsSubmitting(false);
+          return;
+        }
       }
 
       // Step B: Open Razorpay Checkout Popup
@@ -187,7 +198,7 @@ export function ReviewClient() {
         prefill: {
           name: draft.patientName,
           contact: draft.patientWhatsapp,
-          email: draft.patientEmail || undefined,
+          email: draft.patientEmail.trim().toLowerCase(),
         },
         theme: {
           color: '#1F3D2B', // Deep forest palette
@@ -273,7 +284,7 @@ export function ReviewClient() {
       {/* Load Razorpay script only on this review page */}
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
       />
 
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-36 lg:pb-16 overflow-x-hidden">
@@ -376,7 +387,7 @@ export function ReviewClient() {
             <div className="flex justify-between items-center py-1 border-b border-forest/5">
               <span className="text-ink/60">{t.booking.emailLabelReview}</span>
               <span className="font-body text-deep-forest">
-                {draft.patientEmail || t.booking.notProvided}
+                {draft.patientEmail}
               </span>
             </div>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,6 +18,7 @@ import {
   FileText,
   Loader2,
   Calendar as CalendarIcon,
+  User,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { BOOKING_CONFIG, BookingDraft } from '@/lib/config/booking';
@@ -39,9 +41,9 @@ const patientDetailsSchema = z.object({
   email: z
     .string()
     .trim()
-    .email('Please enter a valid email address')
-    .or(z.literal(''))
-    .optional(),
+    .toLowerCase()
+    .min(1, 'Email address is required')
+    .email('Please enter a valid email address'),
   age: z
     .number({ message: 'Please enter a valid age' })
     .int('Age must be a whole number')
@@ -380,7 +382,7 @@ export function BookClient() {
       slotLabel,
       patientName: formData.fullName,
       patientWhatsapp: `+91${formData.whatsappNumber}`,
-      patientEmail: formData.email || '',
+      patientEmail: formData.email.trim().toLowerCase(),
       patientAge: formData.age,
       patientGender: formData.gender,
       primaryComplaint: formData.primaryComplaint,
@@ -404,21 +406,32 @@ export function BookClient() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-36 lg:pb-16 overflow-x-hidden">
-      {/* Tiny 2-Step Indicator */}
-      <div className="flex items-center gap-2 font-mono text-xs text-forest/70 uppercase tracking-wider mb-8">
-        <span className="inline-flex items-center gap-1.5 font-semibold text-deep-forest">
-          <span className="w-5 h-5 rounded-full bg-forest text-paper flex items-center justify-center text-[11px] font-mono">
-            1
+      {/* Page Header Row: 2-Step Indicator (Left) & My Bookings Outline Pill Button (Right) */}
+      <div className="flex items-center justify-between gap-3 mb-8">
+        <div className="flex items-center gap-2 font-mono text-xs text-forest/70 uppercase tracking-wider">
+          <span className="inline-flex items-center gap-1.5 font-semibold text-deep-forest">
+            <span className="w-5 h-5 rounded-full bg-forest text-paper flex items-center justify-center text-[11px] font-mono">
+              1
+            </span>
+            {t.booking.step1Title}
           </span>
-          {t.booking.step1Title}
-        </span>
-        <span className="text-forest/30">·</span>
-        <span className="inline-flex items-center gap-1.5 text-ink/40">
-          <span className="w-5 h-5 rounded-full border border-forest/20 text-ink/50 flex items-center justify-center text-[11px] font-mono">
-            2
+          <span className="text-forest/30">·</span>
+          <span className="inline-flex items-center gap-1.5 text-ink/40">
+            <span className="w-5 h-5 rounded-full border border-forest/20 text-ink/50 flex items-center justify-center text-[11px] font-mono">
+              2
+            </span>
+            {t.booking.step2Title}
           </span>
-          {t.booking.step2Title}
-        </span>
+        </div>
+
+        <Link
+          href="/my-bookings"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-forest/30 text-forest hover:bg-forest hover:text-sand text-xs font-mono transition-colors shrink-0"
+        >
+          <User className="w-3.5 h-3.5 text-forest" />
+          <span className="hidden xs:inline sm:inline">{t.myBookings?.navLink || 'My Bookings'}</span>
+          <span className="xs:hidden sm:hidden">{language === 'GU' ? 'બુકિંગ્સ' : 'Bookings'}</span>
+        </Link>
       </div>
 
       {/* Main 2-Column Desktop / Single Column Mobile Layout */}
