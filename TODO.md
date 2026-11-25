@@ -22,7 +22,7 @@ The following verified facts are actively applied across the **VANKAL AYURVEDA**
 | 6 | **Report-Upload Storage Configuration** | `Supabase Bucket: medical-reports` (4MB limit, PDF/JPG/PNG max 3) | Booking Page (`/book`), Storage Policies | Provision production Supabase Storage bucket with signed URL access, RLS policies, and 30-day retention auto-cleanup. |
 | 7 | **Privacy Policy: Zero-Recording & Patient Session Cookie** | Active in `/privacy` (TLS 1.3 & AES-256) | Privacy Policy (`/privacy`), Terms (`/terms`) | 1. Stated clearly: *"Video consultations are conducted peer-to-peer via Agora RTC with zero audio/video recording or server storage. Live consultation streams are strictly ephemeral and never retained."*<br>2. **Add Privacy Policy line:** Disclose the 14-day `vankal_patient_session` cookie (httpOnly, sameSite=lax, secure) used for passwordless patient sign-in to view confirmed bookings and join consultations, along with ephemeral 10-minute HMAC OTP challenges. |
 | 8 | **Clinic Physical Address** | `Address: to be added` | Contact Page (`/contact`), Footer, Receipt Voucher, Google SEO JSON-LD | Supply physical location (city, area, address, landmarks) for in-clinic OPD references. |
-| 9 | **Clinic Official Email & Phone** | `Phone: +91 9016432576` · `Email: care@vankalayurveda.com` | Header, Footer, Contact Page, Support Desks | Verify primary customer-facing calling number and clinical support email inbox. |
+| 9 | **Clinic Official Email & Phone** | `Phone: +91 9016432576` · `Email: vankalayurveda@gmail.com` | Header, Footer, Contact Page, Refund Policy, Email Reply-To | Active clinic email is `vankalayurveda@gmail.com`. |
 | 10 | **Doctor Clinical Portrait Photo** | Monogrammed SVG Arch Placeholder (`/images/doctors/dr-lavesh-bohra.jpg`) | Home Doctor Section, Doctor Profile (`/doctors`), Hero Preview | Supply high-resolution professional portrait of Dr. Lavesh Bohra. |
 
 ---
@@ -104,4 +104,4 @@ Add the following in **Vercel Project Settings → Environment Variables** (Prod
 | `SUPABASE_SERVICE_ROLE_KEY` | Production | Supabase Service Role Secret Key (Server-only) |
 | `NEXT_PUBLIC_CLINIC_PHONE` | Production | `+919016432576` |
 | `NEXT_PUBLIC_CLINIC_WHATSAPP` | Production | `+919016432576` |
-| `NEXT_PUBLIC_CLINIC_EMAIL` | Production | `care@vankalayurveda.com` |
+| `NEXT_PUBLIC_CLINIC_EMAIL` | Production | `vankalayurveda@gmail.com` |

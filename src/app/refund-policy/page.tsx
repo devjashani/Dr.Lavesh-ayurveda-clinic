@@ -112,7 +112,7 @@ export default function RefundPolicyPage() {
               </span>
               <span className="flex items-center gap-1.5 text-forest">
                 <Mail className="w-4 h-4 text-turmeric" />
-                <span>care@vankalayurveda.com</span>
+                <span>vankalayurveda@gmail.com</span>
               </span>
             </div>
           </section>

@@ -8,7 +8,7 @@ import {
   generate6DigitCode,
   generateLinkToken,
 } from '@/lib/auth/patientSession';
-import { sendEmail, generateSignInEmail } from '@/lib/email/send';
+import { sendEmail, generateSignInEmail, getSiteBaseUrl } from '@/lib/email/send';
 
 const NO_CACHE_HEADERS = {
   'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
@@ -187,14 +187,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 7. Magic Link & Email Generation
-    const rawSiteUrl =
-      process.env.NEXT_PUBLIC_APP_URL ||
-      (process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : 'http://localhost:3000');
-    const siteUrl = rawSiteUrl.startsWith('http')
-      ? rawSiteUrl
-      : `https://${rawSiteUrl}`;
+    const siteUrl = getSiteBaseUrl(request.nextUrl.origin);
     const verifyUrl = `${siteUrl}/my-bookings/verify?token=${encodeURIComponent(linkToken)}`;
 
     const emailContent = generateSignInEmail({ code, verifyUrl });

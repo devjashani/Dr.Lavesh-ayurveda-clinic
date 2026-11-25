@@ -1,7 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import crypto from 'crypto';
 import { supabaseAdmin } from '@/lib/supabase';
 import { RAZORPAY_KEY_SECRET, isRazorpayLiveConfigured } from '@/lib/razorpay';
+import { getSiteBaseUrl } from '@/lib/email/send';
+import {
+  sendBookingConfirmationEmails,
+  type ConfirmedBookingEmailRecord,
+} from '@/lib/email/bookingConfirmation';
 
 export async function POST(request: NextRequest) {
   try {
@@ -103,9 +108,10 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // 5. Atomically mark CONFIRMED and record payment
+    // 5. Atomically mark CONFIRMED only if not already CONFIRMED (prevents duplicate emails across verify/webhook)
     const nowIso = new Date().toISOString();
-    let { error: updateError } = await supabaseAdmin
+    let confirmedRow: ConfirmedBookingEmailRecord | null = null;
+    let { data: updatedPrimary, error: updateError } = await supabaseAdmin
       .from('bookings')
       .update({
         status: 'CONFIRMED',
@@ -113,7 +119,12 @@ export async function POST(request: NextRequest) {
         paid_at: nowIso,
         updated_at: nowIso,
       })
-      .eq('id', bookingId);
+      .eq('id', bookingId)
+      .neq('status', 'CONFIRMED')
+      .select('*')
+      .maybeSingle();
+
+    confirmedRow = updatedPrimary as ConfirmedBookingEmailRecord | null;
 
     // Resilient fallback if paid_at or updated_at triggers any schema issue
     if (updateError) {
@@ -124,8 +135,12 @@ export async function POST(request: NextRequest) {
           status: 'CONFIRMED',
           razorpay_payment_id,
         })
-        .eq('id', bookingId);
+        .eq('id', bookingId)
+        .neq('status', 'CONFIRMED')
+        .select('*')
+        .maybeSingle();
       updateError = fallback.error;
+      confirmedRow = fallback.data as ConfirmedBookingEmailRecord | null;
     }
 
     if (updateError) {
@@ -140,10 +155,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // New-Booking Alert for Dr. Lavesh Bohra Console
+    // New-Booking Alert for Dr. Lavesh Bohra Console & Confirmation Emails (Patient + Doctor)
     console.log(
       `[CLINICAL ALERT: NEW CONFIRMED BOOKING] Booking ID: ${bookingId} | Razorpay Payment ID: ${razorpay_payment_id} | Paid At: ${nowIso}`
     );
+
+    if (confirmedRow) {
+      const siteUrl = getSiteBaseUrl(request.nextUrl.origin);
+      const emailBooking = confirmedRow;
+      after(async () => {
+        await sendBookingConfirmationEmails(emailBooking, siteUrl);
+      });
+    }
 
     return NextResponse.json({
       success: true,

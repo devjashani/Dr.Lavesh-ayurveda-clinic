@@ -102,6 +102,7 @@ export async function validateDoctorCredentials(
   const validEmails = new Set([
     configuredEmail,
     'laveshbohra@gmail.com',
+    'vankalayurveda@gmail.com',
     'care@vankalayurveda.com',
   ]);
 

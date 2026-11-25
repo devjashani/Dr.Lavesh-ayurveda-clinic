@@ -6,11 +6,44 @@
 export const DEFAULT_FROM_EMAIL =
   process.env.EMAIL_FROM || 'Vankal Ayurveda <onboarding@resend.dev>';
 
+export const DEFAULT_REPLY_TO_EMAIL =
+  process.env.EMAIL_REPLY_TO ||
+  process.env.NEXT_PUBLIC_CLINIC_EMAIL ||
+  'vankalayurveda@gmail.com';
+
 export interface SendEmailParams {
   to: string;
   subject: string;
   html: string;
   text: string;
+  replyTo?: string;
+}
+
+/**
+ * Resolves the canonical public base URL for links inside transactional emails.
+ */
+export function getSiteBaseUrl(requestOrigin?: string): string {
+  const configured = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  const isProd = process.env.NODE_ENV === 'production';
+
+  // In production, ignore localhost NEXT_PUBLIC_APP_URL if a real origin or VERCEL_URL exists
+  const isLocalConfigured =
+    configured?.includes('localhost') || configured?.includes('127.0.0.1');
+
+  const rawSiteUrl =
+    (configured && !(isProd && isLocalConfigured) ? configured : '') ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : '') ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '') ||
+    requestOrigin ||
+    'http://localhost:3000';
+
+  const normalized = rawSiteUrl.startsWith('http')
+    ? rawSiteUrl
+    : `https://${rawSiteUrl}`;
+
+  return normalized.replace(/\/+$/, '');
 }
 
 export interface SendEmailResult {
@@ -72,6 +105,7 @@ export async function sendEmail({
   subject,
   html,
   text,
+  replyTo,
 }: SendEmailParams): Promise<SendEmailResult> {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   const isDev = process.env.NODE_ENV !== 'production';
@@ -104,6 +138,7 @@ export async function sendEmail({
       body: JSON.stringify({
         from: DEFAULT_FROM_EMAIL,
         to: [to],
+        reply_to: replyTo || DEFAULT_REPLY_TO_EMAIL,
         subject,
         html,
         text,

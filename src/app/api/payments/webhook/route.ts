@@ -1,7 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import crypto from 'crypto';
 import { supabaseAdmin } from '@/lib/supabase';
 import { RAZORPAY_WEBHOOK_SECRET } from '@/lib/razorpay';
+import { getSiteBaseUrl } from '@/lib/email/send';
+import {
+  sendBookingConfirmationEmails,
+  type ConfirmedBookingEmailRecord,
+} from '@/lib/email/bookingConfirmation';
 
 export async function POST(request: NextRequest) {
   try {
@@ -61,19 +66,45 @@ export async function POST(request: NextRequest) {
           .single();
 
         if (booking && booking.status !== 'CONFIRMED') {
-          await supabaseAdmin
+          const nowIso = new Date().toISOString();
+          let { data: updatedBooking, error: updateErr } = await supabaseAdmin
             .from('bookings')
             .update({
               status: 'CONFIRMED',
               razorpay_payment_id: paymentId || null,
-              paid_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
+              paid_at: nowIso,
+              updated_at: nowIso,
             })
-            .eq('id', booking.id);
+            .eq('id', booking.id)
+            .neq('status', 'CONFIRMED')
+            .select('*')
+            .maybeSingle();
+
+          if (updateErr) {
+            const fallback = await supabaseAdmin
+              .from('bookings')
+              .update({
+                status: 'CONFIRMED',
+                razorpay_payment_id: paymentId || null,
+              })
+              .eq('id', booking.id)
+              .neq('status', 'CONFIRMED')
+              .select('*')
+              .maybeSingle();
+            updatedBooking = fallback.data;
+          }
 
           console.log(
             `[CLINICAL ALERT: WEBHOOK CONFIRMED BOOKING] Booking ID: ${booking.id} | Order: ${orderId} | Payment: ${paymentId || 'captured'}`
           );
+
+          if (updatedBooking) {
+            const siteUrl = getSiteBaseUrl(request.nextUrl.origin);
+            const emailBooking = updatedBooking as ConfirmedBookingEmailRecord;
+            after(async () => {
+              await sendBookingConfirmationEmails(emailBooking, siteUrl);
+            });
+          }
         }
       }
     } else if (eventType === 'payment.failed') {
