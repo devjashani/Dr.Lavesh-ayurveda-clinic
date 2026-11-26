@@ -12,21 +12,13 @@ export function JsonLd() {
     logo: 'https://vankalayurveda.com/logo.png',
     image: 'https://vankalayurveda.com/og-image.jpg',
     telephone: '+91 9016432576',
-    email: 'Email: to be added',
+    email: 'vankalayurveda@gmail.com',
     priceRange: '₹₹',
     medicalSpecialty: [
       'https://schema.org/Holistic',
       'https://schema.org/PrimaryCare',
       'Ayurveda',
     ],
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'Address: to be added',
-      addressLocality: 'Location: to be added',
-      addressRegion: 'India',
-      postalCode: '',
-      addressCountry: 'IN',
-    },
     founder: {
       '@type': 'Physician',
       name: 'Dr. Lavesh Bohra',

@@ -53,7 +53,7 @@ export default function PrivacyPage() {
               When you schedule a consultation, engage with our online Dosha assessment, or undergo Panchakarma therapy at Vankal Ayurveda, we collect the following categories of information:
             </p>
             <ul className="list-disc pl-5 space-y-1 text-ink/75">
-              <li>Personal identity details: Full legal name, date of birth, biological sex, contact address, and telephone number.</li>
+              <li>Personal identity details: Full legal name, date of birth, biological sex, email address, and telephone number.</li>
               <li>Clinical health records: Prior medical diagnoses, current pharmaceutical prescriptions, pathology blood tests, radiological scans, surgical history, and allergy logs.</li>
               <li>Ayurvedic diagnostic findings: Radial pulse parameters (Nadi), Prakriti-Vikriti assessments, tongue photographs (Jihwa), digestive patterns, and bowel habits.</li>
               <li>Financial records: Consultation fee invoices, insurance claim documents, and digital transaction receipts. (We do not store credit card CVVs or bank PINs).</li>
@@ -114,9 +114,9 @@ export default function PrivacyPage() {
               For questions regarding medical privacy, data correction, or regulatory compliance, please contact:
             </p>
             <div className="p-3 bg-cream rounded-[3px] border border-forest/10 font-mono text-xs space-y-1">
-              <div>Medical Records & Privacy</div>
-              <div>Vankal Ayurveda · Address: to be added</div>
-              <div>Email: to be added</div>
+              <div>Medical Records &amp; Privacy</div>
+              <div>Vankal Ayurveda · Online Video Consultations</div>
+              <div>Email: vankalayurveda@gmail.com</div>
               <div>+91 9016432576</div>
             </div>
           </section>

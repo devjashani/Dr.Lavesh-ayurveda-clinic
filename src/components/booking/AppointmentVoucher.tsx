@@ -154,7 +154,7 @@ export function AppointmentVoucher({
               </span>
             </div>
             <p className="font-mono text-xs text-ink/60 mt-0.5">
-              Address: to be added
+              Online Video Consultation
             </p>
           </div>
 

@@ -235,7 +235,7 @@ export function FaqClient({ faqs }: FaqClientProps) {
                 Contact Consultation Desk
               </Button>
               <div className="text-[11px] font-mono text-paper/70 text-center">
-                Phone & WhatsApp: to be added
+                Phone &amp; WhatsApp: +91 9016432576
               </div>
             </div>
           </div>

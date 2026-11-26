@@ -274,8 +274,7 @@ export const gu: TranslationDictionary = {
     clinicInfo: 'પરામર્શ વિગતો',
     hoursTitle: 'પરામર્શ સમય',
     hoursMonSat: 'સોમવાર – શનિવાર: પૂર્વ એપોઇન્ટમેન્ટ દ્વારા',
-    hoursSun: 'રવિવાર: રજા / કટોકટી સારવાર ઉપલબ્ધ નથી',
-    address: 'સરનામું: ઉમેરવાનું બાકી છે',
+    address: 'ઓનલાઇન વિડિયો પરામર્શ',
     phone: '+91 9016432576',
     email: 'vankalayurveda@gmail.com',
     disclaimer:

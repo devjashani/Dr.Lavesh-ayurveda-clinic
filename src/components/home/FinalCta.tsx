@@ -6,7 +6,7 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { BotanicalDivider } from '@/components/ui/BotanicalDivider';
 import { Badge } from '@/components/ui/Badge';
-import { Calendar, MessageCircle, Phone, MapPin, ShieldCheck } from 'lucide-react';
+import { Calendar, MessageCircle, Phone, ShieldCheck } from 'lucide-react';
 import { Reveal, RevealText, Magnetic } from '@/components/motion';
 
 export function FinalCta() {
@@ -76,15 +76,10 @@ export function FinalCta() {
 
         {/* Reassurance Grid */}
         <Reveal delay={0.28} direction="up">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12 pt-8 border-t border-forest/40 text-xs text-paper/70">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto mt-12 pt-8 border-t border-forest/40 text-xs text-paper/70">
             <div className="flex items-center justify-center gap-2">
               <ShieldCheck className="w-4 h-4 text-turmeric shrink-0" />
               <span>Registered Ayurvedic Practitioner</span>
-            </div>
-
-            <div className="flex items-center justify-center gap-2">
-              <MapPin className="w-4 h-4 text-turmeric shrink-0" />
-              <span>Address: to be added</span>
             </div>
 
             <a

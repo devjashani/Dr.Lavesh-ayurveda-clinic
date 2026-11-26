@@ -272,8 +272,7 @@ export const en = {
     clinicInfo: 'Clinic Information',
     hoursTitle: 'Consultation Hours',
     hoursMonSat: 'Mon – Sat: By Prior Appointment',
-    hoursSun: 'Sunday: Closed / Emergency hospital care not provided',
-    address: 'Address: to be added',
+    address: 'Online Video Consultations',
     phone: '+91 9016432576',
     email: 'vankalayurveda@gmail.com',
     disclaimer:

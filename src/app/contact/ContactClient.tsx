@@ -7,17 +7,12 @@ import * as z from 'zod';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import {
-  MapPin,
   Phone,
-  Mail,
   Clock,
   MessageCircle,
   CheckCircle2,
-  Calendar,
   Send,
-  Sparkles,
-  Building,
-  Navigation,
+  Video,
 } from 'lucide-react';
 
 const contactFormSchema = z.object({
@@ -51,13 +46,11 @@ export function ContactClient() {
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
-      consultationMode: 'in-clinic',
+      consultationMode: 'online',
       preferredDate: '',
       healthConcern: '',
       fullName: '',
@@ -65,8 +58,6 @@ export function ContactClient() {
       phone: '',
     },
   });
-
-  const selectedMode = watch('consultationMode');
 
   const onSubmit = async (data: ContactFormData) => {
     // Simulate brief network delay
@@ -137,61 +128,25 @@ export function ContactClient() {
               </h2>
             </div>
 
-            {/* Mode Selector (In-Clinic vs Online) */}
+            {/* Mode Info (Online Video Consultation Only) */}
             <div>
               <label className="block font-mono text-xs uppercase tracking-wider text-deep-forest/80 mb-2 font-medium">
                 Consultation Mode:
               </label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setValue('consultationMode', 'in-clinic')}
-                  className={`p-3.5 rounded-[3px] border text-left transition-all ${
-                    selectedMode === 'in-clinic'
-                      ? 'border-forest bg-forest text-paper shadow-xs'
-                      : 'border-forest/20 bg-cream text-deep-forest hover:bg-paper'
-                  }`}
-                >
+              <div className="p-3.5 rounded-[3px] border border-forest bg-forest text-paper shadow-xs flex items-center justify-between gap-3">
+                <div>
                   <div className="flex items-center gap-2 font-display text-sm font-medium">
-                    <Building className="w-4 h-4" />
-                    <span>In-Clinic Visit</span>
+                    <Video className="w-4 h-4 text-turmeric" />
+                    <span>Online Video Consultation</span>
                   </div>
-                  <div
-                    className={`text-[11px] font-body mt-1 ${
-                      selectedMode === 'in-clinic' ? 'text-paper/80' : 'text-ink/60'
-                    }`}
-                  >
-                    In-Person Pulse & Lifestyle Session
+                  <div className="text-[11px] font-body mt-1 text-paper/80">
+                    High-Definition 1-on-1 Ayurvedic Video Consultation
                   </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setValue('consultationMode', 'online')}
-                  className={`p-3.5 rounded-[3px] border text-left transition-all ${
-                    selectedMode === 'online'
-                      ? 'border-forest bg-forest text-paper shadow-xs'
-                      : 'border-forest/20 bg-cream text-deep-forest hover:bg-paper'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 font-display text-sm font-medium">
-                    <Phone className="w-4 h-4" />
-                    <span>Online Video Consult</span>
-                  </div>
-                  <div
-                    className={`text-[11px] font-body mt-1 ${
-                      selectedMode === 'online' ? 'text-paper/80' : 'text-ink/60'
-                    }`}
-                  >
-                    High-Definition Video Consultation
-                  </div>
-                </button>
+                </div>
+                <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-paper/15 text-turmeric shrink-0">
+                  Active
+                </span>
               </div>
-              {errors.consultationMode && (
-                <p className="font-body text-[11px] text-clay mt-1">
-                  {errors.consultationMode.message}
-                </p>
-              )}
             </div>
 
             {/* Full Name & Phone */}
@@ -322,19 +277,22 @@ export function ContactClient() {
             </h3>
           </div>
 
-          <div className="p-3 bg-cream/70 rounded-[3px] border border-forest/10">
+          <div className="p-3 bg-cream/70 rounded-[3px] border border-forest/10 space-y-1">
             <p className="font-mono text-xs text-deep-forest font-medium">
-              OPD Timings: [Update Real Timings]
+              Morning: 10:00 AM – 01:00 PM IST
+            </p>
+            <p className="font-mono text-xs text-deep-forest font-medium">
+              Evening: 05:00 PM – 08:10 PM IST (Mon – Sat)
             </p>
           </div>
         </div>
 
-        {/* Embedded Map & Address Card */}
+        {/* Online Consultation Desk Card */}
         <div className="bg-paper border border-forest/15 rounded-[4px] p-6 shadow-xs space-y-4">
           <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-clay" />
+            <Video className="w-4 h-4 text-forest" />
             <h3 className="font-mono text-xs uppercase tracking-wider text-deep-forest font-medium">
-              Clinic Location & Access
+              Online Consultation Desk
             </h3>
           </div>
 
@@ -342,21 +300,9 @@ export function ContactClient() {
             <p className="font-medium text-deep-forest text-sm">
               Vankal Ayurveda
             </p>
-            <p className="text-ink/60">Address: to be added</p>
-          </div>
-
-          {/* Styled Visual Map Placeholder */}
-          <div className="relative w-full h-40 bg-gradient-to-br from-cream via-paper to-mist rounded-[3px] border border-forest/15 overflow-hidden flex flex-col items-center justify-center p-4 text-center">
-            <Navigation className="w-6 h-6 text-forest mb-1 animate-pulse" />
-            <span className="font-display text-xs text-deep-forest font-medium">
-              Clinic Location
-            </span>
-            <span className="font-mono text-[10px] text-ink/60 mt-0.5">
-              Address: to be added
-            </span>
-            <div className="mt-2 text-[10px] font-mono bg-paper/90 px-2 py-0.5 rounded border border-forest/10 text-forest">
-              Details will be updated upon finalization
-            </div>
+            <p className="text-ink/70">
+              All consultations are currently conducted online via secure video call.
+            </p>
           </div>
 
           {/* Contact Details Card */}
@@ -383,7 +329,12 @@ export function ContactClient() {
             </div>
             <div className="p-2.5 rounded-[3px] bg-cream/70 border border-forest/10 flex items-center justify-between">
               <span className="font-mono text-[11px] text-forest">Email:</span>
-              <span className="font-mono text-ink/70">to be added</span>
+              <a
+                href="mailto:vankalayurveda@gmail.com"
+                className="font-mono text-ink/80 hover:text-turmeric transition-colors"
+              >
+                vankalayurveda@gmail.com
+              </a>
             </div>
           </div>
         </div>

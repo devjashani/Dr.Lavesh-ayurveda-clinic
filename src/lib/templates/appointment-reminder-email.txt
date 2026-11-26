@@ -13,7 +13,7 @@ Consultation Type   : {{service_name}}
 Attending Physician : {{doctor_name}}
 Consultation Mode   : {{consultation_mode}}
 Date & Time         : Tomorrow, {{appointment_date}} at {{appointment_slot}}
-Location            : Address: to be added
+Mode                : Online Video Consultation
 
 PRE-APPOINTMENT CHECKLIST
 --------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ The video consultation takes place on this website. Open this link 10 minutes be
 
 Need immediate assistance?
 Phone Helpline: +91 9016432576
-WhatsApp Helpline: WhatsApp: to be added
+WhatsApp Helpline: +91 9016432576
 
 We look forward to guiding your health journey.
 

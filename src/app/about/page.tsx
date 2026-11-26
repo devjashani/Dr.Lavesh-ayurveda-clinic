@@ -131,7 +131,7 @@ export default function AboutPage() {
               </div>
 
               <div className="pt-3 border-t border-forest/10 flex items-center justify-between text-xs font-mono text-sage">
-                <span>Location: to be added</span>
+                <span>Online Video Consultations</span>
                 <span>Registered Practitioner</span>
               </div>
             </div>

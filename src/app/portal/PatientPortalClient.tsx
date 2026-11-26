@@ -478,17 +478,8 @@ export function PatientPortalClient() {
                 <div>
                   <span className="text-ink/50 font-mono text-[10px] uppercase block">Mode & Location</span>
                   <span className="font-medium text-forest flex items-center gap-1 mt-0.5">
-                    {nextAppointment.mode === 'in-clinic' ? (
-                      <>
-                        <Building className="w-3.5 h-3.5 text-forest" />
-                        Address: to be added
-                      </>
-                    ) : (
-                      <>
-                        <Video className="w-3.5 h-3.5 text-forest" />
-                        Online Video Room
-                      </>
-                    )}
+                    <Video className="w-3.5 h-3.5 text-forest" />
+                    Online Video Room
                   </span>
                 </div>
               </div>
@@ -698,9 +689,6 @@ export function PatientPortalClient() {
                     <h3 className="font-display text-lg text-deep-forest font-medium">
                       Vankal Ayurveda
                     </h3>
-                    <p className="font-mono text-[10px] text-ink/60">
-                      Address: to be added
-                    </p>
                     <p className="font-mono text-[10px] text-forest mt-0.5">
                       Physician: Dr. Lavesh Bohra, BAMS (2026), SMIAS, Gujarat Ayurved University
                     </p>
@@ -960,18 +948,6 @@ export function PatientPortalClient() {
                     className="w-full px-3.5 py-2 rounded-[3px] bg-cream/50 text-xs font-mono text-ink/50 border border-forest/10 cursor-not-allowed"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block font-mono text-xs uppercase text-deep-forest font-medium mb-1">
-                  Postal Address
-                </label>
-                <textarea
-                  rows={3}
-                  value={profileAddress}
-                  onChange={(e) => setProfileAddress(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-[3px] bg-cream text-xs font-body text-deep-forest border border-forest/15 focus:outline-none focus:ring-1 focus:ring-forest resize-none"
-                />
               </div>
 
               <Button type="submit" variant="primary" className="text-xs">

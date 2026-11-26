@@ -151,10 +151,7 @@ export function Footer() {
             <div className="text-sm text-paper/80 space-y-2.5">
               <div>
                 <p className="text-cream font-medium">
-                  {language === 'GU' ? 'પરામર્શ અને સંપર્ક' : 'Consultations & Care'}
-                </p>
-                <p className="text-xs text-paper/70 leading-relaxed mt-0.5">
-                  {t.footer.address}
+                  {language === 'GU' ? 'ઓનલાઇન વિડિયો પરામર્શ' : 'Online Video Consultations'}
                 </p>
               </div>
 
@@ -163,8 +160,7 @@ export function Footer() {
                   {t.footer.hoursTitle}
                 </span>
                 <p className="text-xs text-paper/80 mt-0.5">
-                  {t.footer.hoursMonSat}<br />
-                  {t.footer.hoursSun}
+                  {t.footer.hoursMonSat}
                 </p>
               </div>
 
