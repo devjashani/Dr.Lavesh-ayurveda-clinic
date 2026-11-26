@@ -4,6 +4,7 @@ import { BOOKING_CONFIG } from '@/lib/config/booking';
 import { isRazorpayLiveConfigured } from '@/lib/razorpay';
 import { requireDoctor } from '@/lib/agora/auth';
 import { getPatientSession } from '@/lib/auth/patientSession';
+import { extractReportFilename, resolveBookingReportsBatch } from '@/lib/utils/reports';
 
 export async function GET(
   request: NextRequest,
@@ -95,7 +96,7 @@ export async function GET(
       Boolean(booking.razorpay_order_id?.startsWith('order_test_')) ||
       Boolean(booking.razorpay_payment_id?.startsWith('pay_test_'));
 
-    // Generate signed URLs for uploaded medical reports if available (Doctor access only)
+    // Resolve uploaded medical reports (Cloudinary HTTPS URLs directly or legacy Supabase signed URLs) for doctor view
     let signedReports: Array<{ id: string; name: string; url: string }> = [];
     if (
       isDoctor &&
@@ -103,28 +104,19 @@ export async function GET(
       Array.isArray(booking.report_file_ids) &&
       booking.report_file_ids.length > 0
     ) {
-      try {
-        const { data: urls } = await supabaseAdmin.storage
-          .from('medical-reports')
-          .createSignedUrls(booking.report_file_ids, 3600); // 1 hour access
-
-        if (urls && Array.isArray(urls)) {
-          signedReports = urls
-            .filter((u) => !!u.signedUrl && !u.error)
-            .map((u, idx) => {
-              const rawPath = u.path || booking.report_file_ids[idx];
-              const parts = rawPath.split('/');
-              const filename = parts[parts.length - 1].replace(/^\d+_/, '') || `Report-${idx + 1}`;
-              return {
-                id: rawPath,
-                name: filename,
-                url: u.signedUrl as string,
-              };
-            });
-        }
-      } catch (storageErr) {
-        console.warn('Could not generate signed report URLs:', storageErr);
-      }
+      const urlMap = await resolveBookingReportsBatch([booking.report_file_ids]);
+      signedReports = booking.report_file_ids
+        .map((pathOrUrl: string, idx: number) => {
+          const resolvedUrl =
+            urlMap.get(pathOrUrl) || (pathOrUrl.startsWith('http') ? pathOrUrl : '');
+          if (!resolvedUrl) return null;
+          return {
+            id: pathOrUrl,
+            name: extractReportFilename(pathOrUrl, idx),
+            url: resolvedUrl,
+          };
+        })
+        .filter(Boolean) as Array<{ id: string; name: string; url: string }>;
     }
 
     return NextResponse.json(

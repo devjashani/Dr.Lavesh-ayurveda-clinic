@@ -25,7 +25,6 @@ import { BOOKING_CONFIG, BookingDraft } from '@/lib/config/booking';
 import { CustomBookingCalendar } from '@/components/booking/CustomBookingCalendar';
 import { SlotPicker } from '@/components/booking/SlotPicker';
 import { DayScheduleResponse, DaySlotResponse } from '@/app/api/slots/route';
-import { supabase } from '@/lib/supabase';
 
 // Schema for Patient Details Validation
 const patientDetailsSchema = z.object({
@@ -62,7 +61,9 @@ const patientDetailsSchema = z.object({
 type PatientFormData = z.infer<typeof patientDetailsSchema>;
 
 export interface UploadedReportItem {
-  id: string; // Storage path or ID
+  id: string; // Cloudinary HTTPS URL (or fallback storage path)
+  publicId?: string;
+  resourceType?: string;
   name: string;
   size: number;
   progress: number;
@@ -274,7 +275,7 @@ export function BookClient() {
     return day?.slots || [];
   }, [selectedDate, scheduleDays]);
 
-  // File Upload to Supabase Storage
+  // File Upload to Cloudinary (via server /api/uploads/cloudinary)
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -312,37 +313,39 @@ export function BookClient() {
       setUploadedReports((prev) => [...prev, newReport]);
 
       try {
-        const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-        const storagePath = `reports/${Date.now()}_${sanitizedName}`;
+        const formData = new FormData();
+        formData.append('file', file);
 
-        const { data, error } = await supabase.storage
-          .from('medical-reports')
-          .upload(storagePath, file, {
-            cacheControl: '3600',
-            upsert: false,
-          });
+        const uploadRes = await fetch('/api/uploads/cloudinary', {
+          method: 'POST',
+          body: formData,
+        });
+        const uploadJson = await uploadRes.json().catch(() => ({}));
 
-        if (error) {
-          setUploadedReports((prev) =>
-            prev.map((r) =>
-              r.id === tempId ? { ...r, status: 'error', error: error.message } : r
-            )
-          );
+        if (!uploadRes.ok || !uploadJson.success || !uploadJson.url) {
+          const errMessage = uploadJson.message || 'Upload failed. Please try again.';
+          setUploadError(errMessage);
+          setUploadedReports((prev) => prev.filter((r) => r.id !== tempId));
         } else {
-          const finalId = data?.path || storagePath;
           setUploadedReports((prev) =>
             prev.map((r) =>
-              r.id === tempId ? { ...r, id: finalId, status: 'complete', progress: 100 } : r
+              r.id === tempId
+                ? {
+                    ...r,
+                    id: uploadJson.url,
+                    publicId: uploadJson.publicId || undefined,
+                    resourceType: uploadJson.resourceType || undefined,
+                    status: 'complete',
+                    progress: 100,
+                  }
+                : r
             )
           );
         }
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : 'Upload failed';
-        setUploadedReports((prev) =>
-          prev.map((r) =>
-            r.id === tempId ? { ...r, status: 'error', error: message } : r
-          )
-        );
+        setUploadError(message);
+        setUploadedReports((prev) => prev.filter((r) => r.id !== tempId));
       }
     }
 
@@ -350,10 +353,18 @@ export function BookClient() {
   };
 
   const handleRemoveReport = async (reportId: string) => {
+    const target = uploadedReports.find((r) => r.id === reportId);
     setUploadedReports((prev) => prev.filter((r) => r.id !== reportId));
     try {
       if (!reportId.startsWith('temp-')) {
-        await supabase.storage.from('medical-reports').remove([reportId]);
+        await fetch('/api/uploads/cloudinary', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            publicId: target?.publicId || reportId,
+            resourceType: target?.resourceType,
+          }),
+        });
       }
     } catch {
       // Ignore cleanup error
@@ -680,9 +691,20 @@ export function BookClient() {
                       >
                         <div className="flex items-center gap-2 truncate">
                           <FileText className="w-4 h-4 text-forest shrink-0" />
-                          <span className="truncate max-w-[180px] sm:max-w-xs text-deep-forest">
-                            {report.name}
-                          </span>
+                          {report.id.startsWith('http') ? (
+                            <a
+                              href={report.id}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="truncate max-w-[180px] sm:max-w-xs text-deep-forest underline hover:text-forest"
+                            >
+                              {report.name}
+                            </a>
+                          ) : (
+                            <span className="truncate max-w-[180px] sm:max-w-xs text-deep-forest">
+                              {report.name}
+                            </span>
+                          )}
                           {report.status === 'uploading' && (
                             <Loader2 className="w-3.5 h-3.5 animate-spin text-turmeric shrink-0" />
                           )}

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { requireDoctor } from '@/lib/agora/auth';
 import { BOOKING_CONFIG } from '@/lib/config/booking';
+import { extractReportFilename, resolveBookingReportsBatch } from '@/lib/utils/reports';
 
 export async function GET(request: NextRequest) {
   try {
@@ -59,32 +60,10 @@ export async function GET(request: NextRequest) {
       return true;
     });
 
-    // 3. Collect all report file IDs across all bookings to batch generate signed URLs
-    const allReportIds: string[] = [];
-    activeBookings.forEach((b) => {
-      if (b.report_file_ids && Array.isArray(b.report_file_ids)) {
-        b.report_file_ids.forEach((id: string) => {
-          if (id && typeof id === 'string' && !allReportIds.includes(id)) allReportIds.push(id);
-        });
-      }
-    });
-
-    const reportUrlMap = new Map<string, string>();
-    if (allReportIds.length > 0) {
-      try {
-        const { data: urls } = await supabaseAdmin.storage
-          .from('medical-reports')
-          .createSignedUrls(allReportIds, 3600); // 1 hour access
-
-        (urls || []).forEach((u) => {
-          if (u.signedUrl && u.path) {
-            reportUrlMap.set(u.path, u.signedUrl);
-          }
-        });
-      } catch (storageErr) {
-        console.warn('Admin storage signed URLs warning:', storageErr);
-      }
-    }
+    // 3. Resolve report URLs (direct Cloudinary HTTPS URLs pass through; legacy Supabase paths are signed)
+    const reportUrlMap = await resolveBookingReportsBatch(
+      activeBookings.map((b) => b.report_file_ids)
+    );
 
     // 4. Transform into clean typed response for doctor console
     const formattedBookings = activeBookings.map((b) => {
@@ -115,16 +94,11 @@ export async function GET(request: NextRequest) {
       }
 
       const reports = (Array.isArray(b.report_file_ids) ? b.report_file_ids : []).map(
-        (path: string, idx: number) => {
-          const parts = typeof path === 'string' ? path.split('/') : [];
-          const rawName = parts[parts.length - 1] || `Report-${idx + 1}`;
-          const filename = rawName.replace(/^\d+_/, '') || `Report-${idx + 1}`;
-          return {
-            id: path,
-            name: filename,
-            url: reportUrlMap.get(path) || '#',
-          };
-        }
+        (pathOrUrl: string, idx: number) => ({
+          id: pathOrUrl,
+          name: extractReportFilename(pathOrUrl, idx),
+          url: reportUrlMap.get(pathOrUrl) || (pathOrUrl.startsWith('http') ? pathOrUrl : '#'),
+        })
       );
 
       return {

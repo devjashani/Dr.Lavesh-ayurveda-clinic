@@ -13,7 +13,7 @@ const createOrderSchema = z.object({
   patientAge: z.coerce.number().int().min(1).max(120),
   patientGender: z.enum(['Female', 'Male', 'Other']),
   primaryComplaint: z.string().trim().min(10).max(600),
-  reportFileIds: z.array(z.string()).max(3).optional().default([]),
+  reportFileIds: z.array(z.string().trim().max(500)).max(3).optional().default([]),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   slotStart: z.string().regex(/^\d{2}:\d{2}$/),
   slotEnd: z.string().regex(/^\d{2}:\d{2}$/).optional(),
