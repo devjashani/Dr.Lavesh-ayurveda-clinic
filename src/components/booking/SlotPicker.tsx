@@ -3,6 +3,7 @@
 import React from 'react';
 import { Clock, Sun, Moon, CheckCircle2 } from 'lucide-react';
 import { DaySlotResponse } from '@/app/api/slots/route';
+import { CLINIC_SCHEDULE, formatTime12h } from '@/lib/config/schedule';
 
 interface SlotPickerProps {
   slots: DaySlotResponse[];
@@ -84,7 +85,7 @@ export function SlotPicker({
               isSelected ? 'text-turmeric' : isDisabled ? 'text-ink/20' : 'text-forest'
             }`}
           />
-          <span className="font-mono text-xs sm:text-sm font-medium">{slot.start}</span>
+          <span className="font-mono text-xs sm:text-sm font-medium">{slot.label}</span>
         </div>
 
         {isSelected ? (
@@ -119,11 +120,11 @@ export function SlotPicker({
               </h4>
             </div>
             <span className="font-mono text-[11px] text-ink/60">
-              10:00 AM – 01:00 PM
+              {formatTime12h(CLINIC_SCHEDULE.windows.morning.start)} – {formatTime12h(CLINIC_SCHEDULE.windows.morning.end)}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {morningSlots.map(renderSlotButton)}
           </div>
         </div>
@@ -140,11 +141,11 @@ export function SlotPicker({
               </h4>
             </div>
             <span className="font-mono text-[11px] text-ink/60">
-              05:00 PM – 07:00 PM
+              {formatTime12h(CLINIC_SCHEDULE.windows.evening.start)} – {formatTime12h(CLINIC_SCHEDULE.windows.evening.end)}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {eveningSlots.map(renderSlotButton)}
           </div>
         </div>

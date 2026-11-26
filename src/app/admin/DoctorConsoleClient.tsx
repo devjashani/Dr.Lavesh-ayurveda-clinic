@@ -24,10 +24,16 @@ import {
   ShieldCheck,
   Check,
   X,
+  Pill,
+  Download,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { DOCTOR_EARLY_MINUTES, CALL_GRACE_MINUTES } from '@/lib/config/call';
+import { supabase } from '@/lib/supabase';
+import type { ConsultationPrescription } from '@/lib/prescription/types';
+import { downloadPrescriptionPdf } from '@/lib/prescription/pdf';
+import { DoctorPrescriptionPanel } from '@/components/consult/DoctorPrescriptionPanel';
 
 export interface AdminBooking {
   id: string;
@@ -81,6 +87,51 @@ export function DoctorConsoleClient({ doctorName }: DoctorConsoleClientProps) {
     consultUrl: string;
     phoneLast4: string;
   } | null>(null);
+  const [rxModalBooking, setRxModalBooking] = useState<AdminBooking | null>(null);
+  const [rxModalData, setRxModalData] = useState<ConsultationPrescription | null>(null);
+  const [isLoadingRx, setIsLoadingRx] = useState(false);
+
+  const openRxModal = async (booking: AdminBooking) => {
+    setRxModalBooking(booking);
+    setRxModalData({
+      bookingId: booking.id,
+      medicines: [],
+      clinicalAdvice: '',
+      updatedAt: '',
+    });
+    setIsLoadingRx(true);
+    try {
+      const res = await fetch(`/api/call/prescription?bookingId=${booking.id}`, {
+        cache: 'no-store',
+      });
+      const data = await res.json();
+      if (res.ok && data.success && data.prescription) {
+        setRxModalData(data.prescription);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setIsLoadingRx(false);
+    }
+  };
+
+  const handleAdminRxUpdate = (updated: ConsultationPrescription) => {
+    setRxModalData(updated);
+    const channel = supabase.channel(`consult-rx-${updated.bookingId}`);
+    channel.subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        channel
+          .send({
+            type: 'broadcast',
+            event: 'rx_update',
+            payload: updated,
+          })
+          .finally(() => {
+            setTimeout(() => supabase.removeChannel(channel), 500);
+          });
+      }
+    });
+  };
 
   // ---------------------------------------------------------------------------
   // 1. Live IST Clock
@@ -629,7 +680,7 @@ export function DoctorConsoleClient({ doctorName }: DoctorConsoleClientProps) {
                         {friendlyDateTime}
                       </span>
                       <span className="font-mono text-xs text-ink/50 hidden sm:inline">
-                        ({booking.slotStart} – {booking.slotEnd || '20m'})
+                        ({booking.slotStart} – {booking.slotEnd || '30m'})
                       </span>
                     </div>
 
@@ -751,16 +802,28 @@ export function DoctorConsoleClient({ doctorName }: DoctorConsoleClientProps) {
 
                   {/* Card Actions Bottom Row */}
                   <div className="pt-3 border-t border-forest/10 flex flex-wrap items-center justify-between gap-3">
-                    {/* Direct WhatsApp Contact Button */}
-                    <a
-                      href={waUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-mono font-medium border border-emerald-200 transition-colors"
-                    >
-                      <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Contact on WhatsApp</span>
-                    </a>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {/* Direct WhatsApp Contact Button */}
+                      <a
+                        href={waUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-mono font-medium border border-emerald-200 transition-colors"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Contact on WhatsApp</span>
+                      </a>
+
+                      {/* Live Rx / Prescribe Medicines Button */}
+                      <button
+                        type="button"
+                        onClick={() => openRxModal(booking)}
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-mono font-medium border border-amber-300 transition-colors cursor-pointer"
+                      >
+                        <Pill className="w-3.5 h-3.5 text-turmeric-dark" />
+                        <span>Live Rx / Prescription</span>
+                      </button>
+                    </div>
 
                     {/* Start Video Call Action */}
                     <div className="flex items-center gap-2">
@@ -799,6 +862,82 @@ export function DoctorConsoleClient({ doctorName }: DoctorConsoleClientProps) {
           </div>
         )}
       </main>
+
+      {/* Doctor Portal Prescription Modal */}
+      {rxModalBooking && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
+          onClick={() => setRxModalBooking(null)}
+        >
+          <div
+            className="w-full max-w-lg bg-paper border border-forest/20 rounded-xl shadow-2xl overflow-hidden text-deep-forest"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="px-5 py-4 bg-deep-forest text-paper flex items-center justify-between">
+              <div>
+                <h3 className="font-display text-base font-medium flex items-center gap-2">
+                  <Pill className="w-4 h-4 text-turmeric" />
+                  <span>Live Prescription (Rx)</span>
+                </h3>
+                <p className="font-mono text-[11px] text-paper/75 mt-0.5">
+                  {rxModalBooking.patientName} ({rxModalBooking.age}y · {rxModalBooking.gender}) · {rxModalBooking.tokenNumber}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setRxModalBooking(null)}
+                className="p-1 text-paper/70 hover:text-white cursor-pointer"
+                aria-label="Close prescription modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-5 space-y-4">
+              {isLoadingRx || !rxModalData ? (
+                <div className="py-10 text-center font-mono text-xs text-forest/70 flex flex-col items-center gap-2">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Loading prescription...</span>
+                </div>
+              ) : (
+                <>
+                  <DoctorPrescriptionPanel
+                    bookingId={rxModalBooking.id}
+                    medicines={rxModalData.medicines}
+                    clinicalAdvice={rxModalData.clinicalAdvice}
+                    onPrescriptionChange={handleAdminRxUpdate}
+                    variant="light"
+                  />
+
+                  <div className="pt-2 border-t border-forest/10 flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() =>
+                        downloadPrescriptionPdf({
+                          bookingRef: rxModalBooking.tokenNumber,
+                          appointmentDate: rxModalBooking.date,
+                          slotLabel: rxModalBooking.slot,
+                          patientName: rxModalBooking.patientName,
+                          patientAge: rxModalBooking.age,
+                          patientGender: rxModalBooking.gender,
+                          doctorName: rxModalBooking.doctorName,
+                          medicines: rxModalData.medicines,
+                          clinicalAdvice: rxModalData.clinicalAdvice,
+                        })
+                      }
+                      className="text-xs py-2 px-4 bg-turmeric hover:bg-turmeric/90 text-deep-forest font-semibold cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5 mr-1.5" />
+                      <span>Download PDF</span>
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

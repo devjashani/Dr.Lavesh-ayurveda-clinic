@@ -3,10 +3,10 @@
  * 
  * All timings and dates are strictly in the Asia/Kolkata (IST, UTC+05:30) timezone.
  * 
- * ⚠️ PLACEHOLDER TIMINGS NOTICE:
- * The morning (10:00 - 13:00) and evening (17:00 - 19:00) 20-minute slot windows
- * are placeholder defaults. Real practitioner clinic timings must be updated
- * as flagged in TODO.md.
+ * Active OPD Schedule:
+ * - 30-minute consultation slots followed by a 20-minute clinical buffer/rest gap
+ * - Morning session: 10:00 AM to 01:00 PM (10:00–10:30, 10:50–11:20, 11:40–12:10, 12:30–13:00)
+ * - Evening session: 05:00 PM to 08:10 PM (17:00–17:30, 17:50–18:20, 18:40–19:10, 19:30–20:00)
  */
 
 export interface ScheduleWindow {
@@ -17,6 +17,7 @@ export interface ScheduleWindow {
 export interface ClinicScheduleConfig {
   timezone: string;
   slotDurationMinutes: number;
+  bufferMinutes: number;
   activeDaysOfWeek: number[]; // 0=Sunday, 1=Monday, ..., 6=Saturday
   windows: {
     morning: ScheduleWindow;
@@ -27,19 +28,20 @@ export interface ClinicScheduleConfig {
 
 export const CLINIC_SCHEDULE: ClinicScheduleConfig = {
   timezone: 'Asia/Kolkata',
-  slotDurationMinutes: 20,
+  slotDurationMinutes: 30,
+  bufferMinutes: 20,
   // Monday (1) through Saturday (6) active; Sunday (0) closed
   activeDaysOfWeek: [1, 2, 3, 4, 5, 6],
   windows: {
-    // PLACEHOLDER: 10:00 AM to 01:00 PM (9 slots: 10:00, 10:20, 10:40, 11:00, 11:20, 11:40, 12:00, 12:20, 12:40)
+    // 10:00 AM to 01:00 PM (4 slots: 10:00–10:30, 10:50–11:20, 11:40–12:10, 12:30–13:00)
     morning: {
       start: '10:00',
       end: '13:00',
     },
-    // PLACEHOLDER: 05:00 PM to 07:00 PM (6 slots: 17:00, 17:20, 17:40, 18:00, 18:20, 18:40)
+    // 05:00 PM to 08:10 PM (4 slots: 17:00–17:30, 17:50–18:20, 18:40–19:10, 19:30–20:00)
     evening: {
       start: '17:00',
-      end: '19:00',
+      end: '20:10',
     },
   },
   blockedDates: [],
@@ -47,8 +49,8 @@ export const CLINIC_SCHEDULE: ClinicScheduleConfig = {
 
 export interface GeneratedSlot {
   start: string; // "10:00"
-  end: string;   // "10:20"
-  label: string; // "10:00 AM – 10:20 AM"
+  end: string;   // "10:30"
+  label: string; // "10:00 AM – 10:30 AM"
   period: 'morning' | 'evening';
 }
 
@@ -66,11 +68,12 @@ export function formatTime12h(time24: string): string {
 }
 
 /**
- * Generates all sequential slots for a single window
+ * Generates sequential slots for a window with a buffer gap after each slot
  */
 function generateWindowSlots(
   window: ScheduleWindow,
   durationMinutes: number,
+  bufferMinutes: number,
   period: 'morning' | 'evening'
 ): GeneratedSlot[] {
   const slots: GeneratedSlot[] = [];
@@ -97,7 +100,7 @@ function generateWindowSlots(
       period,
     });
 
-    currentTotalMin += durationMinutes;
+    currentTotalMin += durationMinutes + bufferMinutes;
   }
 
   return slots;
@@ -110,11 +113,13 @@ export function getStandardDaySlots(): GeneratedSlot[] {
   const morning = generateWindowSlots(
     CLINIC_SCHEDULE.windows.morning,
     CLINIC_SCHEDULE.slotDurationMinutes,
+    CLINIC_SCHEDULE.bufferMinutes,
     'morning'
   );
   const evening = generateWindowSlots(
     CLINIC_SCHEDULE.windows.evening,
     CLINIC_SCHEDULE.slotDurationMinutes,
+    CLINIC_SCHEDULE.bufferMinutes,
     'evening'
   );
   return [...morning, ...evening];

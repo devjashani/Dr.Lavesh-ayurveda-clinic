@@ -30,10 +30,18 @@ import {
   Info,
   X,
   Volume2,
+  Download,
+  Printer,
+  Pill,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { supabase } from '@/lib/supabase';
+import type { ConsultationPrescription } from '@/lib/prescription/types';
+import { downloadPrescriptionPdf, printPrescriptionSheet } from '@/lib/prescription/pdf';
+import { PatientLivePrescriptionOverlay } from '@/components/consult/PatientLivePrescriptionOverlay';
+import { DoctorPrescriptionPanel } from '@/components/consult/DoctorPrescriptionPanel';
 import type {
   IAgoraRTCClient,
   ICameraVideoTrack,
@@ -145,8 +153,18 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
   const [networkQuality, setNetworkQuality] = useState<number>(1); // 1 = good
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [doctorPanelOpen, setDoctorPanelOpen] = useState(true);
+  const [doctorPanelTab, setDoctorPanelTab] = useState<'intake' | 'rx'>('rx');
   const [isJoining, setIsJoining] = useState(false);
   const [statusBanner, setStatusBanner] = useState<string | null>(null);
+
+  // Live Prescription State
+  const [prescription, setPrescription] = useState<ConsultationPrescription>({
+    bookingId,
+    medicines: [],
+    clinicalAdvice: '',
+    updatedAt: '',
+  });
+  const rxChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
 
   // Audio Playback & Activity State
   const [audioAutoplayBlocked, setAudioAutoplayBlocked] = useState(false);
@@ -186,6 +204,74 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
     }
     return null;
   }, [bookingId]);
+
+  const fetchPrescription = useCallback(async () => {
+    try {
+      const headers: Record<string, string> = {};
+      if (tokenDataRef.current?.proofToken) {
+        headers['x-patient-proof'] = tokenDataRef.current.proofToken;
+      }
+      const res = await fetch(`/api/call/prescription?bookingId=${bookingId}`, {
+        headers,
+        cache: 'no-store',
+      });
+      const data = await res.json();
+      if (res.ok && data.success && data.prescription) {
+        setPrescription(data.prescription);
+      }
+    } catch {
+      // Graceful fallback
+    }
+  }, [bookingId]);
+
+  const handleDoctorPrescriptionUpdate = useCallback(
+    (updated: ConsultationPrescription) => {
+      setPrescription(updated);
+      if (rxChannelRef.current) {
+        rxChannelRef.current
+          .send({
+            type: 'broadcast',
+            event: 'rx_update',
+            payload: updated,
+          })
+          .catch(() => {});
+      }
+    },
+    []
+  );
+
+  // Subscribe to real-time live prescription updates during call & fetch on ended
+  useEffect(() => {
+    if (phase !== 'waiting' && phase !== 'in_call' && phase !== 'ended') return;
+
+    fetchPrescription();
+
+    if (phase !== 'in_call') return;
+
+    const channel = supabase
+      .channel(`consult-rx-${bookingId}`, {
+        config: { broadcast: { self: false } },
+      })
+      .on('broadcast', { event: 'rx_update' }, (msg) => {
+        const incoming = msg?.payload as ConsultationPrescription | undefined;
+        if (incoming && incoming.bookingId === bookingId) {
+          setPrescription(incoming);
+        }
+      })
+      .subscribe();
+
+    rxChannelRef.current = channel;
+
+    const pollTimer = setInterval(() => {
+      fetchPrescription();
+    }, 3000);
+
+    return () => {
+      clearInterval(pollTimer);
+      rxChannelRef.current = null;
+      supabase.removeChannel(channel);
+    };
+  }, [phase, bookingId, fetchPrescription]);
 
   useEffect(() => {
     let isMounted = true;
@@ -1484,10 +1570,15 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
               <button
                 onClick={() => setDoctorPanelOpen(!doctorPanelOpen)}
                 className="px-3 py-1 text-xs font-mono bg-white/15 hover:bg-white/25 text-white border border-white/25 rounded-md cursor-pointer transition-colors font-medium flex items-center gap-1.5 shadow-sm"
-                title="Toggle Patient Details Panel"
+                title="Toggle Patient Details & Prescription Panel"
               >
-                <FileText className="w-3.5 h-3.5 text-amber-400" />
-                <span>{ct.patientDetails}</span>
+                <Pill className="w-3.5 h-3.5 text-amber-400" />
+                <span>Rx &amp; {ct.patientDetails}</span>
+                {prescription.medicines.length > 0 && (
+                  <span className="px-1.5 py-0.2 rounded-full bg-amber-400 text-black text-[10px] font-bold">
+                    {prescription.medicines.length}
+                  </span>
+                )}
               </button>
             )}
           </div>
@@ -1560,6 +1651,14 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
             </div>
           )}
 
+          {/* Patient Left-Side Live Prescription Overlay */}
+          {role === 'patient' && (
+            <PatientLivePrescriptionOverlay
+              medicines={prescription.medicines}
+              clinicalAdvice={prescription.clinicalAdvice}
+            />
+          )}
+
           {/* Local Video Stream: Picture-in-Picture (PiP) */}
           <div
             onClick={() => setIsPipSwapped(!isPipSwapped)}
@@ -1581,15 +1680,35 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
           </div>
         </div>
 
-        {/* Doctor Clinical Profile Side Panel (Collapsible) */}
+        {/* Doctor Clinical Profile & Live Rx Side Panel (Collapsible) */}
         {role === 'doctor' && doctorPanelOpen && booking && (
-          <aside className="absolute top-14 bottom-26 right-4 z-40 w-full sm:w-88 bg-neutral-900/95 backdrop-blur-xl border border-white/15 rounded-2xl p-5 flex flex-col space-y-4 overflow-y-auto shadow-2xl text-white">
-            <div className="flex items-center justify-between pb-3 border-b border-white/10">
-              <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-amber-400" />
-                <span className="font-display text-sm text-white font-semibold">
-                  {ct.patientDetails}
-                </span>
+          <aside className="absolute top-14 bottom-26 right-4 z-40 w-[calc(100%-2rem)] sm:w-96 bg-neutral-900/95 backdrop-blur-xl border border-white/15 rounded-2xl p-4 sm:p-5 flex flex-col space-y-3 overflow-y-auto shadow-2xl text-white">
+            <div className="flex items-center justify-between pb-2.5 border-b border-white/10">
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setDoctorPanelTab('rx')}
+                  className={`px-2.5 py-1.5 rounded-md text-xs font-mono font-semibold flex items-center gap-1.5 cursor-pointer transition-colors ${
+                    doctorPanelTab === 'rx'
+                      ? 'bg-amber-500 text-black'
+                      : 'bg-white/10 text-neutral-300 hover:text-white'
+                  }`}
+                >
+                  <Pill className="w-3.5 h-3.5" />
+                  <span>Live Rx ({prescription.medicines.length})</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDoctorPanelTab('intake')}
+                  className={`px-2.5 py-1.5 rounded-md text-xs font-mono font-semibold flex items-center gap-1.5 cursor-pointer transition-colors ${
+                    doctorPanelTab === 'intake'
+                      ? 'bg-amber-500 text-black'
+                      : 'bg-white/10 text-neutral-300 hover:text-white'
+                  }`}
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>{ct.patientDetails}</span>
+                </button>
               </div>
               <button
                 onClick={() => setDoctorPanelOpen(false)}
@@ -1600,53 +1719,73 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
               </button>
             </div>
 
-            <div className="space-y-3 text-xs font-mono">
-              <div className="bg-black/50 p-3 rounded-lg border border-white/10 space-y-1">
-                <span className="text-neutral-400 block text-[10px] uppercase tracking-wider font-semibold">Patient Name</span>
-                <span className="font-bold text-sm text-white block">{booking.patientName}</span>
-                <span className="text-neutral-300 text-[11px] block">WhatsApp: +91 {booking.whatsappNumber.slice(-10)}</span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div className="bg-black/40 p-2.5 rounded-lg border border-white/10">
-                  <span className="text-neutral-400 block text-[10px] uppercase font-semibold">Age</span>
-                  <span className="font-semibold text-white">{booking.age} Years</span>
+            {doctorPanelTab === 'rx' ? (
+              <div className="flex-1 flex flex-col space-y-3 min-h-0">
+                {/* Compact Patient Summary Header inside Rx Tab */}
+                <div className="bg-black/45 px-3 py-2 rounded-lg border border-white/10 text-[11px] font-mono flex items-center justify-between">
+                  <span className="font-semibold text-white truncate">
+                    {booking.patientName} ({booking.age}y · {booking.gender})
+                  </span>
+                  <span className="text-amber-300 shrink-0 ml-2">LIVE SYNC</span>
                 </div>
-                <div className="bg-black/40 p-2.5 rounded-lg border border-white/10">
-                  <span className="text-neutral-400 block text-[10px] uppercase font-semibold">Gender</span>
-                  <span className="font-semibold text-white">{booking.gender}</span>
+
+                <DoctorPrescriptionPanel
+                  bookingId={bookingId}
+                  medicines={prescription.medicines}
+                  clinicalAdvice={prescription.clinicalAdvice}
+                  onPrescriptionChange={handleDoctorPrescriptionUpdate}
+                  variant="dark"
+                />
+              </div>
+            ) : (
+              <div className="space-y-3 text-xs font-mono flex-1 overflow-y-auto">
+                <div className="bg-black/50 p-3 rounded-lg border border-white/10 space-y-1">
+                  <span className="text-neutral-400 block text-[10px] uppercase tracking-wider font-semibold">Patient Name</span>
+                  <span className="font-bold text-sm text-white block">{booking.patientName}</span>
+                  <span className="text-neutral-300 text-[11px] block">WhatsApp: +91 {booking.whatsappNumber.slice(-10)}</span>
                 </div>
-              </div>
 
-              <div className="space-y-1">
-                <span className="text-neutral-400 block text-[10px] uppercase tracking-wider font-semibold">{ct.primaryComplaint}</span>
-                <p className="font-body text-xs text-neutral-100 bg-black/50 p-3 rounded-lg leading-relaxed border border-white/10">
-                  {booking.primaryComplaint || 'None provided'}
-                </p>
-              </div>
-
-              <div className="space-y-1.5">
-                <span className="text-neutral-400 block text-[10px] uppercase tracking-wider font-semibold">{ct.medicalReports}</span>
-                {booking.reports && booking.reports.length > 0 ? (
-                  <div className="space-y-1.5">
-                    {booking.reports.map((report) => (
-                      <a
-                        key={report.id}
-                        href={report.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between p-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 transition-colors border border-white/10 font-medium"
-                      >
-                        <span className="truncate max-w-[200px] text-xs">{report.name}</span>
-                        <ExternalLink className="w-3.5 h-3.5 shrink-0 ml-1 text-white" />
-                      </a>
-                    ))}
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-black/40 p-2.5 rounded-lg border border-white/10">
+                    <span className="text-neutral-400 block text-[10px] uppercase font-semibold">Age</span>
+                    <span className="font-semibold text-white">{booking.age} Years</span>
                   </div>
-                ) : (
-                  <span className="text-neutral-400 italic block text-[11px]">{ct.noReports}</span>
-                )}
+                  <div className="bg-black/40 p-2.5 rounded-lg border border-white/10">
+                    <span className="text-neutral-400 block text-[10px] uppercase font-semibold">Gender</span>
+                    <span className="font-semibold text-white">{booking.gender}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-neutral-400 block text-[10px] uppercase tracking-wider font-semibold">{ct.primaryComplaint}</span>
+                  <p className="font-body text-xs text-neutral-100 bg-black/50 p-3 rounded-lg leading-relaxed border border-white/10">
+                    {booking.primaryComplaint || 'None provided'}
+                  </p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <span className="text-neutral-400 block text-[10px] uppercase tracking-wider font-semibold">{ct.medicalReports}</span>
+                  {booking.reports && booking.reports.length > 0 ? (
+                    <div className="space-y-1.5">
+                      {booking.reports.map((report) => (
+                        <a
+                          key={report.id}
+                          href={report.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between p-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 transition-colors border border-white/10 font-medium"
+                        >
+                          <span className="truncate max-w-[200px] text-xs">{report.name}</span>
+                          <ExternalLink className="w-3.5 h-3.5 shrink-0 ml-1 text-white" />
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="text-neutral-400 italic block text-[11px]">{ct.noReports}</span>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Doctor Clinical Actions */}
             <div className="pt-3 border-t border-white/10 space-y-2 mt-auto">
@@ -1738,14 +1877,46 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
   // RENDER: Ended Phase
   // ===========================================================================
   const canRejoin = callStatus ? !callStatus.isEnded : false;
+  const hasPrescriptionContent =
+    prescription.medicines.length > 0 || Boolean(prescription.clinicalAdvice?.trim());
+
+  const handleDownloadEndedPrescription = () => {
+    if (!booking) return;
+    downloadPrescriptionPdf({
+      bookingRef: booking.tokenNumber,
+      appointmentDate: booking.date,
+      slotLabel: booking.slot,
+      patientName: booking.patientName,
+      patientAge: booking.age,
+      patientGender: booking.gender,
+      doctorName: booking.doctorName || ct.doctorName,
+      medicines: prescription.medicines,
+      clinicalAdvice: prescription.clinicalAdvice,
+    });
+  };
+
+  const handlePrintEndedPrescription = () => {
+    if (!booking) return;
+    printPrescriptionSheet({
+      bookingRef: booking.tokenNumber,
+      appointmentDate: booking.date,
+      slotLabel: booking.slot,
+      patientName: booking.patientName,
+      patientAge: booking.age,
+      patientGender: booking.gender,
+      doctorName: booking.doctorName || ct.doctorName,
+      medicines: prescription.medicines,
+      clinicalAdvice: prescription.clinicalAdvice,
+    });
+  };
 
   return (
-    <div className="h-[100dvh] w-full bg-[#fbf9f4] text-deep-forest flex flex-col items-center justify-center p-6 text-center select-none">
-      <div className="w-full max-w-md bg-paper border border-forest/20 rounded-xl p-8 shadow-xl space-y-6">
-        <div className="w-14 h-14 rounded-full bg-forest/10 text-forest flex items-center justify-center mx-auto">
-          <CheckCircle2 className="w-8 h-8 text-forest" />
-        </div>
-        <div className="space-y-2">
+    <div className="min-h-[100dvh] w-full bg-[#fbf9f4] text-deep-forest flex flex-col items-center justify-center p-4 sm:p-6 select-none">
+      <div className="w-full max-w-lg bg-paper border border-forest/20 rounded-xl p-6 sm:p-8 shadow-xl space-y-5">
+        <div className="text-center space-y-2">
+          <div className="w-14 h-14 rounded-full bg-forest/10 text-forest flex items-center justify-center mx-auto">
+            <CheckCircle2 className="w-8 h-8 text-forest" />
+          </div>
           <h2 className="font-display text-2xl font-medium text-deep-forest">
             {ct.endedSummaryTitle}
           </h2>
@@ -1755,14 +1926,102 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
         </div>
 
         {booking && (
-          <div className="p-3 bg-forest/5 rounded-lg text-xs font-mono text-ink/70 space-y-1">
-            <div>Patient: {booking.patientName}</div>
-            <div>Doctor: {ct.doctorName}</div>
-            {elapsedSeconds > 0 && <div>Call Duration: {formatTimer(elapsedSeconds)}</div>}
+          <div className="p-3 bg-forest/5 rounded-lg text-xs font-mono text-ink/75 space-y-1">
+            <div className="flex justify-between">
+              <span>Patient:</span>
+              <span className="font-semibold text-deep-forest">{booking.patientName}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Doctor:</span>
+              <span className="font-semibold text-forest">{ct.doctorName}</span>
+            </div>
+            {elapsedSeconds > 0 && (
+              <div className="flex justify-between">
+                <span>Call Duration:</span>
+                <span>{formatTimer(elapsedSeconds)}</span>
+              </div>
+            )}
           </div>
         )}
 
-        <div className="space-y-3 pt-2">
+        {/* Ordered Prescription Preview & Download Section */}
+        <div className="bg-cream border border-forest/20 rounded-lg p-4 space-y-3">
+          <div className="flex items-center justify-between border-b border-forest/10 pb-2">
+            <div className="flex items-center gap-2">
+              <Pill className="w-4 h-4 text-forest" />
+              <h3 className="font-display text-sm font-semibold text-deep-forest">
+                Prescribed Medicines (Rx)
+              </h3>
+            </div>
+            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-forest/10 text-forest font-semibold">
+              {prescription.medicines.length} {prescription.medicines.length === 1 ? 'Item' : 'Items'}
+            </span>
+          </div>
+
+          {prescription.medicines.length > 0 ? (
+            <ol className="space-y-1.5 max-h-48 overflow-y-auto pr-1 text-left">
+              {prescription.medicines.map((med, idx) => (
+                <li
+                  key={med.id}
+                  className="flex items-start gap-2 text-xs bg-paper p-2 rounded border border-forest/10"
+                >
+                  <span className="font-mono font-bold text-forest shrink-0">
+                    {med.order || idx + 1}.
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <span className="font-semibold text-deep-forest block">{med.name}</span>
+                    {(med.dosage || med.timing || med.duration) && (
+                      <span className="font-mono text-[10px] text-ink/70 block">
+                        {[med.dosage, med.timing, med.duration].filter(Boolean).join(' · ')}
+                      </span>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="font-body text-xs text-ink/60 text-center py-2">
+              No medicines were added to the live prescription during this call.
+            </p>
+          )}
+
+          {prescription.clinicalAdvice?.trim() && (
+            <div className="text-left bg-paper p-2.5 rounded border border-forest/10">
+              <span className="font-mono text-[10px] uppercase text-forest/80 font-semibold block mb-0.5">
+                Clinical Advice &amp; Pathya
+              </span>
+              <p className="font-body text-xs text-ink/80 whitespace-pre-wrap">
+                {prescription.clinicalAdvice}
+              </p>
+            </div>
+          )}
+
+          {booking && (
+            <div className="flex flex-col sm:flex-row gap-2 pt-1">
+              <Button
+                onClick={handleDownloadEndedPrescription}
+                variant="primary"
+                className="flex-1 py-3 bg-turmeric hover:bg-turmeric/90 text-deep-forest font-semibold text-xs cursor-pointer shadow-sm"
+              >
+                <Download className="w-4 h-4 mr-1.5" />
+                <span>
+                  {hasPrescriptionContent ? 'Download Prescription (PDF)' : 'Download Consultation Summary'}
+                </span>
+              </Button>
+              <button
+                type="button"
+                onClick={handlePrintEndedPrescription}
+                className="px-3.5 py-2.5 rounded-[3px] border border-forest/20 bg-paper hover:bg-forest/5 text-deep-forest text-xs font-mono font-medium inline-flex items-center justify-center gap-1.5 cursor-pointer"
+                title="Print Prescription"
+              >
+                <Printer className="w-4 h-4 text-forest" />
+                <span>Print</span>
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-2.5 pt-1">
           {canRejoin && (
             <Button
               onClick={() => {
@@ -1776,11 +2035,11 @@ export function ConsultationClient({ bookingId, initialRole }: ConsultationClien
           )}
 
           <Button
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/my-bookings')}
             variant="secondary"
             className="w-full py-3 bg-sand text-deep-forest hover:bg-sand/80 text-xs font-medium cursor-pointer border border-forest/20"
           >
-            {ct.returnHome}
+            Go to My Bookings
           </Button>
         </div>
       </div>

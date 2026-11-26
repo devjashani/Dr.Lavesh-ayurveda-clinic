@@ -8,6 +8,8 @@
  * - Numeric UIDs: Doctor = 1, Patient = 2 (assigned strictly by server, never from client)
  */
 
+import { CLINIC_SCHEDULE } from '@/lib/config/schedule';
+
 export const PATIENT_EARLY_MINUTES = 10;
 export const DOCTOR_EARLY_MINUTES = 15;
 export const CALL_GRACE_MINUTES = 15;
@@ -44,7 +46,7 @@ function normalizeTime(timeStr?: string): string {
 }
 
 /**
- * Calculates slot end time given start time and duration (default 20 mins)
+ * Calculates slot end time given start time and duration (default 30 mins)
  */
 function addMinutesToTime(timeStr: string, minutes: number): string {
   const [h, m] = normalizeTime(timeStr).split(':').map(Number);
@@ -61,14 +63,16 @@ function addMinutesToTime(timeStr: string, minutes: number): string {
 export function calculateCallWindow(
   dateStr: string, // YYYY-MM-DD or ISO string
   slotStart: string, // HH:mm
-  slotEnd?: string, // HH:mm (optional, defaults to +20 mins)
+  slotEnd?: string, // HH:mm (optional, defaults to slotDurationMinutes)
   role: CallRole = 'patient',
   serverNowMs: number = Date.now()
 ): CallWindowInfo {
   // Normalize date string to YYYY-MM-DD
   const cleanDate = dateStr.includes('T') ? dateStr.split('T')[0] : dateStr.trim();
   const cleanStart = normalizeTime(slotStart);
-  const cleanEnd = slotEnd ? normalizeTime(slotEnd) : addMinutesToTime(cleanStart, 20);
+  const cleanEnd = slotEnd
+    ? normalizeTime(slotEnd)
+    : addMinutesToTime(cleanStart, CLINIC_SCHEDULE.slotDurationMinutes);
 
   // Parse IST slot boundaries (Asia/Kolkata is UTC+05:30)
   const slotStartIso = `${cleanDate}T${cleanStart}:00+05:30`;

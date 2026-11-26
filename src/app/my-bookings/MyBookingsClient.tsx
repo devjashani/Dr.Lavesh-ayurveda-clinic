@@ -17,9 +17,11 @@ import {
   CalendarPlus,
   RefreshCw,
   Lock,
+  Pill,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { calculateCallWindow } from '@/lib/config/call';
+import { downloadPrescriptionPdf } from '@/lib/prescription/pdf';
 
 export interface PatientBookingItem {
   id: string;
@@ -33,6 +35,9 @@ export interface PatientBookingItem {
   amount: number;
   serviceName: string;
   doctorName: string;
+  patientName?: string;
+  patientAge?: number;
+  patientGender?: string;
   serverNow: string;
 }
 
@@ -808,6 +813,41 @@ export function MyBookingsClient() {
                         <FileText className="w-3.5 h-3.5 text-forest/70" />
                         <span>{strings.receipt}</span>
                       </Link>
+
+                      {/* Action 2b: Download Prescription PDF (for completed or confirmed calls) */}
+                      {booking.status === 'COMPLETED' && (
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            try {
+                              const res = await fetch(
+                                `/api/call/prescription?bookingId=${booking.id}`,
+                                { cache: 'no-store' }
+                              );
+                              const data = await res.json();
+                              if (res.ok && data.success && data.prescription) {
+                                downloadPrescriptionPdf({
+                                  bookingRef: booking.bookingRef,
+                                  appointmentDate: booking.date,
+                                  slotLabel: `${booking.raw_start} – ${booking.raw_end}`,
+                                  patientName: booking.patientName || patientEmail || 'Patient',
+                                  patientAge: booking.patientAge,
+                                  patientGender: booking.patientGender,
+                                  doctorName: booking.doctorName,
+                                  medicines: data.prescription.medicines || [],
+                                  clinicalAdvice: data.prescription.clinicalAdvice || '',
+                                });
+                              }
+                            } catch {
+                              // silent fail
+                            }
+                          }}
+                          className="min-h-[44px] px-3.5 py-2.5 rounded-[3px] border border-turmeric/40 bg-turmeric/15 text-deep-forest text-xs font-mono font-semibold hover:bg-turmeric/25 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Pill className="w-3.5 h-3.5 text-turmeric-dark" />
+                          <span>{language === 'GU' ? 'પ્રિસ્ક્રિપ્શન' : 'Prescription'}</span>
+                        </button>
+                      )}
                     </div>
 
                     {/* Action 3: Add to Calendar (.ics download) */}

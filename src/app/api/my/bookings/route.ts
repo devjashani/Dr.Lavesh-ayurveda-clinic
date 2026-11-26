@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     let { data: bookings, error: fetchErr } = await supabaseAdmin
       .from('bookings')
       .select(
-        'id, appointment_date, slot_start, slot_end, status, fee_amount, service_id, doctor_name, created_at'
+        'id, appointment_date, slot_start, slot_end, status, fee_amount, service_id, doctor_name, patient_name, patient_age, patient_gender, created_at'
       )
       .or(`email_normalized.eq.${email},patient_email.eq.${email}`)
       .in('status', ['CONFIRMED', 'COMPLETED', 'NO_SHOW'])
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
       const retryRes = await supabaseAdmin
         .from('bookings')
         .select(
-          'id, appointment_date, slot_start, slot_end, status, fee_amount, service_id, doctor_name, created_at'
+          'id, appointment_date, slot_start, slot_end, status, fee_amount, service_id, doctor_name, patient_name, patient_age, patient_gender, created_at'
         )
         .eq('patient_email', email)
         .in('status', ['CONFIRMED', 'COMPLETED', 'NO_SHOW'])
@@ -86,6 +86,9 @@ export async function GET(request: NextRequest) {
         amount: b.fee_amount, // 49900 paise = ₹499
         serviceName: BOOKING_CONFIG.service.name,
         doctorName: b.doctor_name || BOOKING_CONFIG.doctorName,
+        patientName: b.patient_name || '',
+        patientAge: b.patient_age || undefined,
+        patientGender: b.patient_gender || '',
         serverNow,
       };
     });

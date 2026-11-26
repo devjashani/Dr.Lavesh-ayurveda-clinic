@@ -18,7 +18,7 @@ export const BOOKING_SERVICE: BookingServiceConfig = {
   sanskrit: 'વિડિયો પરામર્શ',
   category: 'Clinical Consultation',
   tagline: 'Direct one-on-one Ayurvedic consultation with personalized clinical evaluation and lifestyle guidance.',
-  duration: '40 Mins',
+  duration: '30 Mins',
   feeInr: 499,
   feePaise: 49900,
   icon: Video,
