@@ -233,7 +233,7 @@ export function SignatureTherapies() {
         ref={containerRef}
         className="hidden md:block relative h-[280dvh] bg-paper border-b border-forest/15"
       >
-        <div className="sticky top-0 h-[100dvh] flex flex-col justify-between pt-20 pb-4 lg:pt-24 lg:pb-6 overflow-hidden">
+        <div className="sticky top-0 h-[100dvh] flex flex-col justify-between pt-16 pb-4 lg:pt-20 lg:pb-5 overflow-hidden">
           {/* 4. Section Margin Number revealed with a mask slide */}
           <SectionMarginIndex number="02" label="THERAPIES" gujaratiLabel="ચિકિત્સા" />
           {/* Header */}
@@ -297,7 +297,7 @@ export function SignatureTherapies() {
       </section>
 
       {/* MOBILE / TABLET: Native Swipeable Carousel */}
-      <section className="md:hidden relative py-16 bg-paper border-b border-forest/15 overflow-hidden content-auto">
+      <section className="md:hidden relative py-10 bg-paper border-b border-forest/15 overflow-hidden content-auto">
         <div className="px-5 mb-6">
           <SectionHeading
             eyebrow="Signature Chikitsa"

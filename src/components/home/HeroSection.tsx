@@ -84,7 +84,7 @@ export function HeroSection() {
       onMouseMove={handleHeroMouseMove}
       onMouseLeave={handleHeroMouseLeave}
       className={cn(
-        "relative pt-1 sm:pt-4 lg:pt-12 pb-6 sm:pb-16 lg:pb-28 overflow-hidden",
+        "relative pt-1 sm:pt-4 lg:pt-10 pb-6 sm:pb-10 lg:pb-16 overflow-hidden",
         !isHeroActive && 'pause-animation'
       )}
     >

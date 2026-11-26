@@ -12,7 +12,7 @@ import { SectionMarginIndex } from '@/components/ui/SectionMarginIndex';
 
 export function PhilosophySection() {
   return (
-    <section className="py-20 sm:py-28 bg-cream/70 border-b border-forest/15 relative overflow-hidden content-auto">
+    <section className="py-12 sm:py-16 lg:py-16 bg-cream/70 border-b border-forest/15 relative overflow-hidden content-auto">
       {/* 1. Asymmetric Hand-Drawn Tulsi Leaf Illustration cropped off the top-right screen edge */}
       <BotanicalLeafSketch variant="tulsi" position="top-right" />
 

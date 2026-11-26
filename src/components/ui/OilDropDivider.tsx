@@ -21,10 +21,10 @@ export function OilDropDivider({ className, tone = 'paper' }: OilDropDividerProp
     <div
       ref={ref}
       aria-hidden="true"
-      className={cn('relative w-full flex flex-col items-center justify-center py-6 select-none pointer-events-none', className)}
+      className={cn('relative w-full flex flex-col items-center justify-center py-1.5 select-none pointer-events-none', className)}
     >
       <svg
-        className="w-24 h-16 overflow-visible"
+        className="w-20 h-12 overflow-visible"
         viewBox="0 0 96 64"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
