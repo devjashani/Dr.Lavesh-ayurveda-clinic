@@ -8,6 +8,7 @@ import { ScrollProgress } from '@/components/layout/ScrollProgress';
 import { FloatingActions } from '@/components/layout/FloatingActions';
 import { MotionProvider } from '@/components/motion/MotionProvider';
 import { PageTransition } from '@/components/layout/PageTransition';
+import { MainShell } from '@/components/layout/MainShell';
 import { IntroPreloader } from '@/components/layout/IntroPreloader';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 import { BookingSheetProvider } from '@/lib/context/BookingSheetContext';
@@ -128,11 +129,11 @@ export default function RootLayout({
               </Suspense>
 
               {/* Main Content Area with Page Transitions */}
-              <main className="flex-1 flex flex-col pt-14 sm:pt-20 lang-crossfade">
-                <Suspense fallback={null}>
+              <Suspense fallback={null}>
+                <MainShell>
                   <PageTransition>{children}</PageTransition>
-                </Suspense>
-              </main>
+                </MainShell>
+              </Suspense>
 
               {/* Global Footer */}
               <Footer />

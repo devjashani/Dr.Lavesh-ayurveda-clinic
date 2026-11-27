@@ -40,9 +40,6 @@ export function ContactClient() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submissionData, setSubmissionData] = useState<ContactFormData | null>(null);
 
-  // Automatically determine today's day of week (0 to 6)
-  const todayIndex = new Date().getDay();
-
   const {
     register,
     handleSubmit,
